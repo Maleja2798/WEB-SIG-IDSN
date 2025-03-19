@@ -6,7 +6,7 @@
     <title>Mapa SIG de Autorizaciones Sanitarias - Nariño</title>
     
     <!-- CSS de Leaflet (sin atributo integrity) -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
     
     <style>
         #map {
@@ -20,18 +20,23 @@
     <div id="map"></div>
     
     <!-- JS de Leaflet (sin atributo integrity) -->
-    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script>
-        var map = L.map('map').setView([1.213, -77.28], 8);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-            maxZoom: 18,
-        }).addTo(map);
+        // Asegurarse de que Leaflet está cargado antes de usar 'L'
+        if (typeof L !== 'undefined') {
+            var map = L.map('map').setView([1.213, -77.28], 8);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+                maxZoom: 18,
+            }).addTo(map);
 
-        L.marker([1.213, -77.28]).addTo(map)
-            .bindPopup("Ejemplo de marcador en Nariño.")
-            .openPopup();
+            L.marker([1.213, -77.28]).addTo(map)
+                .bindPopup("Ejemplo de marcador en Nariño.")
+                .openPopup();
+        } else {
+            console.error("Leaflet no se ha cargado correctamente.");
+        }
     </script>
 </body>
 </html>
