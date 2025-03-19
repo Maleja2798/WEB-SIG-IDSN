@@ -3,10 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prueba de GitHub Pages</title>
+    <title>Mapa SIG de Autorizaciones Sanitarias - Nariño</title>
+    <!-- Enlace a Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+          integrity="sha256-sA+3I0sDEz9+AZCz9R3fyGz4w0qKqJ6+0u0kP2t6AdM="
+          crossorigin=""/>
+    <style>
+        /* Define el tamaño del contenedor del mapa */
+        #map {
+            height: 600px;
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
-    <h1>¡Hola, GitHub Pages!</h1>
-    <p>Si ves este mensaje, la página está funcionando.</p>
+    <h1>Mapa de Autorizaciones Sanitarias de Agua en Nariño</h1>
+    <!-- Contenedor para el mapa -->
+    <div id="map"></div>
+    <!-- Enlace a Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+            integrity="sha256-QVbKHiZb4ZB+V7kFWlA0uhmBlRQMWfAPMVF4aC2u4Hc="
+            crossorigin=""></script>
+    <script>
+        // Inicializa el mapa centrado en Nariño (coordenadas aproximadas)
+        var map = L.map('map').setView([1.213, -77.28], 8);
+        
+        // Agrega la capa base de OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+            maxZoom: 18,
+        }).addTo(map);
+        
+        // Ejemplo: agrega un marcador en el centro (puedes reemplazarlo con tus datos)
+        var marker = L.marker([1.213, -77.28]).addTo(map);
+        marker.bindPopup("<b>Ubicación de ejemplo</b><br>Aquí se muestra un ejemplo.").openPopup();
+        
+        // Aquí puedes agregar más código para cargar datos dinámicos (por ejemplo, desde un archivo GeoJSON)
+    </script>
 </body>
 </html>
