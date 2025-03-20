@@ -74,6 +74,38 @@
             margin-right: 10px;
             border: 1px solid white;
         }
+
+        /* --- ESTILOS DEL CONTROL DE ZOOM --- */
+        .leaflet-control-zoom {
+            background: rgba(0, 0, 0, 0.7); /* Fondo negro con transparencia */
+            border-radius: 10px; /* Bordes redondeados */
+            box-shadow: 3px 3px 10px rgba(255, 255, 255, 0.3); /* Relieve */
+            padding: 5px;
+        }
+
+        /* Botones de zoom personalizados */
+        .leaflet-control-zoom-in,
+        .leaflet-control-zoom-out {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            border: 1px solid white;
+            border-radius: 10px;
+            width: 35px;
+            height: 35px;
+            text-align: center;
+            line-height: 35px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        /* Efecto al pasar el cursor */
+        .leaflet-control-zoom-in:hover,
+        .leaflet-control-zoom-out:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -132,6 +164,7 @@
 
 </body>
 </html>
+
 
 
 
