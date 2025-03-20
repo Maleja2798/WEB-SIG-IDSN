@@ -75,7 +75,7 @@
             };
         }
 
-        fetch('ruta/del/geojson.geojson') // Reemplaza con la URL o ruta correcta
+        fetch('https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/Munip_Nari%C3%B1o.geojson') 
             .then(response => response.json())
             .then(data => {
                 geojsonLayer = L.geoJson(data, {
