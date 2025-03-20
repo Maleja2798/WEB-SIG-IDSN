@@ -46,7 +46,7 @@
 
         var geojsonLayer;
         
-        fetch('municipios_narino.geojson')  // Asegúrate de tener este archivo
+        fetch('https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/Munip_Nari%C3%B1o.geojson') 
             .then(response => response.json())
             .then(data => {
                 geojsonLayer = L.geoJson(data, {
