@@ -12,13 +12,12 @@
         /* Estilo del fondo de la página */
         body {
             background-color: #000000; /* Negro */
-            color: white; /* Texto en blanco para mejor visibilidad */
+            color: white;
             font-family: 'Arial Narrow', sans-serif;
         }
 
         /* Estilo del título */
         h1 {
-            font-family: 'Arial Narrow', sans-serif;
             font-size: 30px;
             font-weight: bold;
             color: #FFFFFF; /* Blanco */
@@ -30,49 +29,10 @@
 
         /* Estilo del mapa */
         #map {
-            height: 90vh;  /* 90% de la altura de la pantalla */
+            height: 90vh;
             width: 100%;
             border: 2px solid #FFFFFF;
             border-radius: 10px;
-        }
-
-        /* Estilo del control de capas */
-        .leaflet-control-layers {
-            background: rgba(0, 0, 0, 0.7); /* Negro con transparencia */
-            border-radius: 10px;
-            padding: 10px;
-            box-shadow: 3px 3px 10px rgba(255, 255, 255, 0.3); /* Relieve */
-            font-family: 'Arial Narrow', sans-serif;
-            color: white;
-        }
-
-        /* Botón de control de capas con solo un ícono */
-        .leaflet-control-layers-toggle {
-            border-radius: 10px;
-            background: rgba(0, 0, 0, 0.8);
-            padding: 5px;
-            border: 1px solid white;
-            background-image: url('https://cdn-icons-png.flaticon.com/512/2991/2991186.png'); /* Ícono de capas */
-            background-size: 25px;
-            background-repeat: no-repeat;
-            background-position: center;
-        }
-
-        /* Opciones de mapas base en el control */
-        .leaflet-control-layers-base label {
-            display: flex;
-            align-items: center;
-            padding: 5px;
-            cursor: pointer;
-        }
-
-        /* Íconos dentro del control */
-        .map-icon {
-            width: 30px;
-            height: 30px;
-            border-radius: 5px;
-            margin-right: 10px;
-            border: 1px solid white;
         }
 
         /* --- ESTILOS DEL CONTROL DE ZOOM --- */
@@ -80,7 +40,7 @@
             background: rgba(0, 0, 0, 0.7); /* Fondo negro con transparencia */
             border-radius: 10px; /* Bordes redondeados */
             box-shadow: 3px 3px 10px rgba(255, 255, 255, 0.3); /* Relieve */
-            padding: 5px;
+            overflow: hidden; /* Para que los botones se mantengan unidos */
         }
 
         /* Botones de zoom personalizados */
@@ -90,21 +50,33 @@
             color: white;
             font-size: 20px;
             font-weight: bold;
-            border: 1px solid white;
-            border-radius: 10px;
-            width: 35px;
-            height: 35px;
+            border: none;
+            width: 40px;
+            height: 40px;
             text-align: center;
-            line-height: 35px;
+            line-height: 40px;
             cursor: pointer;
             transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Bordes redondeados solo en los extremos */
+        .leaflet-control-zoom-in {
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .leaflet-control-zoom-out {
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
         }
 
         /* Efecto al pasar el cursor */
         .leaflet-control-zoom-in:hover,
         .leaflet-control-zoom-out:hover {
             background: rgba(255, 255, 255, 0.2);
-            color: white;
         }
     </style>
 </head>
@@ -135,11 +107,11 @@
             maxZoom: 17
         });
 
-        // Agregar control de capas con íconos en el texto
+        // Agregar control de capas
         var baseMaps = {
-            "<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/OpenStreetMap_logo.svg/512px-OpenStreetMap_logo.svg.png' class='map-icon'> OpenStreetMap": osm,
-            "<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Esri_logo.svg/512px-Esri_logo.svg.png' class='map-icon'> Esri Satélite": esri,
-            "<img src='https://upload.wikimedia.org/wikipedia/commons/2/21/Topographic_map_icon.svg' class='map-icon'> Topográfico": topo
+            "OpenStreetMap": osm,
+            "Esri Satélite": esri,
+            "Topográfico": topo
         };
 
         L.control.layers(baseMaps).addTo(map);
@@ -164,9 +136,3 @@
 
 </body>
 </html>
-
-
-
-
-
-
