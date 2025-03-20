@@ -3,86 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mapa SIG - Nariño</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+    <title>Mapa de Autorizaciones Sanitarias de Agua en Nariño</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <style>
         body {
             margin: 0;
-            font-family: "Arial Narrow", sans-serif;
-            background: black;
+            font-family: 'Arial Narrow', sans-serif;
+            background-color: black;
             color: white;
-            text-align: center;
         }
         #map {
             height: 90vh;
             width: 100%;
-            border: 2px solid white;
         }
-        .leaflet-control-zoom-in, .leaflet-control-zoom-out {
-            background-color: white !important;
-            color: black !important;
-            font-weight: bold;
+        h1 {
+            text-align: center;
+            background-color: black;
+            padding: 10px;
+        }
+        .leaflet-control-zoom {
+            background-color: white;
             border-radius: 5px;
         }
-        .municipio-label {
-            font-family: "Arial Narrow", sans-serif;
+        .leaflet-popup-content {
+            font-size: 14px;
             font-weight: bold;
-            color: black;
-            text-shadow: 2px 2px 4px white;
+            text-align: center;
         }
     </style>
 </head>
 <body>
     <h1>MAPA DE AUTORIZACIONES SANITARIAS DE AGUA EN NARIÑO</h1>
     <div id="map"></div>
-    
     <script>
-        var map = L.map('map').setView([1.214, -77.281], 8);
+        var map = L.map('map').setView([1.2, -77.3], 8);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
 
         var geojsonLayer;
-        
-        fetch('https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/Munip_Nari%C3%B1o.geojson') 
+        var highlightedLayer;
+
+        function onEachFeature(feature, layer) {
+            var nombre = feature.properties.NOMBRE || "Desconocido"; // Ajusta la clave si es necesario
+            layer.bindPopup("Municipio: " + nombre);
+            
+            layer.on('click', function (e) {
+                if (highlightedLayer) {
+                    geojsonLayer.resetStyle(highlightedLayer);
+                }
+                highlightedLayer = layer;
+                layer.setStyle({
+                    color: 'red',
+                    weight: 3,
+                    fillColor: 'yellow',
+                    fillOpacity: 0.7
+                });
+                map.fitBounds(layer.getBounds());
+            });
+        }
+
+        function style(feature) {
+            return {
+                fillColor: 'blue',
+                weight: 1,
+                opacity: 1,
+                color: 'black',
+                fillOpacity: 0.5
+            };
+        }
+
+        fetch('ruta/del/geojson.geojson') // Reemplaza con la URL o ruta correcta
             .then(response => response.json())
             .then(data => {
                 geojsonLayer = L.geoJson(data, {
-                    style: function(feature) {
-                        return {
-                            color: 'black',
-                            weight: 1,
-                            fillColor: 'blue',
-                            fillOpacity: 0.5
-                        };
-                    },
-                    onEachFeature: function(feature, layer) {
-                        // Mostrar nombres de municipios
-                        var label = L.divIcon({
-                            className: 'municipio-label',
-                            html: feature.properties.NOMBRE,
-                            iconSize: [100, 40]
-                        });
-                        L.marker(layer.getBounds().getCenter(), { icon: label }).addTo(map);
-
-                        // Interacción al hacer clic
-                        layer.on('click', function() {
-                            geojsonLayer.eachLayer(function(l) {
-                                geojsonLayer.resetStyle(l);
-                            });
-                            layer.setStyle({
-                                fillColor: 'yellow',
-                                color: 'red',
-                                weight: 3
-                            });
-                            map.fitBounds(layer.getBounds());
-                        });
-                    }
+                    style: style,
+                    onEachFeature: onEachFeature
                 }).addTo(map);
+
+                geojsonLayer.eachLayer(function (layer) {
+                    var nombre = layer.feature.properties.NOMBRE || ""; // Ajusta según el GeoJSON
+                    var label = L.divIcon({
+                        className: 'municipio-label',
+                        html: '<span style="font-family: Arial Narrow; font-weight: bold; color: black; text-shadow: 1px 1px 3px white;">' + nombre + '</span>',
+                        iconSize: [100, 20]
+                    });
+                    L.marker(layer.getBounds().getCenter(), { icon: label }).addTo(map);
+                });
             });
     </script>
 </body>
 </html>
-
