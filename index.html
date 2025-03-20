@@ -3,152 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mapa Autorizaciones Sanitarias de agua - Nariño</title>
-    
-    <!-- CSS de Leaflet -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"/>
-
+    <title>Mapa de Autorizaciones Sanitarias de Agua en Nariño</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <style>
-        /* Estilo del fondo de la página */
-        body {
-            background-color: #000000; /* Negro */
-            color: white;
-            font-family: 'Arial Narrow', sans-serif;
-        }
-
-        /* Estilo del título */
-        h1 {
-            font-size: 30px;
-            font-weight: bold;
-            color: #FFFFFF; /* Blanco */
-            text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-top: 10px;
-        }
-
-        /* Estilo del mapa */
         #map {
-            height: 90vh;
             width: 100%;
-            border: 2px solid #FFFFFF;
-            border-radius: 10px;
+            height: 600px;
         }
 
-        /* --- ESTILOS DEL CONTROL DE ZOOM --- */
-        .leaflet-control-zoom {
-            background: rgba(0, 0, 0, 0.7); /* Fondo negro con transparencia */
-            border-radius: 10px; /* Bordes redondeados */
-            box-shadow: 3px 3px 10px rgba(255, 255, 255, 0.3); /* Relieve */
-            overflow: hidden; /* Para que los botones se mantengan unidos */
-        }
-
-        /* Botones de zoom personalizados */
-        .leaflet-control-zoom-in,
-        .leaflet-control-zoom-out {
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            font-size: 20px;
+        .municipio-label {
+            font-family: 'Arial Narrow', sans-serif;
             font-weight: bold;
-            border: none;
-            width: 40px;
-            height: 40px;
-            text-align: center;
-            line-height: 40px;
-            cursor: pointer;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            font-size: 12px;
+            color: black;
+            text-shadow: 2px 2px 4px white, -2px -2px 4px white, 2px -2px 4px white, -2px 2px 4px white;
+            white-space: nowrap;
         }
 
-        /* Bordes redondeados solo en los extremos */
-        .leaflet-control-zoom-in {
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
-        }
-
-        .leaflet-control-zoom-out {
-            border-bottom-left-radius: 10px;
-            border-bottom-right-radius: 10px;
-        }
-
-        /* Efecto al pasar el cursor */
-        .leaflet-control-zoom-in:hover,
-        .leaflet-control-zoom-out:hover {
-            background: rgba(255, 255, 255, 0.2);
+        .highlight {
+            fill: yellow !important;
+            fill-opacity: 0.5 !important;
+            stroke: black !important;
+            stroke-width: 2px !important;
         }
     </style>
 </head>
 <body>
 
-    <h1>Mapa de Autorizaciones Sanitarias de Agua en Nariño</h1>
-    <div id="map"></div>
+<h1>MAPA DE AUTORIZACIONES SANITARIAS DE AGUA EN NARIÑO</h1>
+<div id="map"></div>
 
-    <!-- JS de Leaflet -->
-    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+<script>
+    var map = L.map('map').setView([1.21, -77.28], 8);
 
-    <script>
-        var map = L.map('map').setView([1.213, -77.28], 8);
+    // Capa base
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
 
-        // Definir mapas base
-        var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-            maxZoom: 18
-        }).addTo(map);
+    // Variable para almacenar el municipio resaltado
+    let highlightedLayer = null;
 
-        var esri = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-            attribution: '&copy; <a href="https://www.esri.com">Esri</a>',
-            maxZoom: 18
-        });
+    fetch("https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/Munip_Nari%C3%B1o.geojson")
+        .then(response => response.json())
+        .then(data => {
+            let municipios = L.geoJSON(data, {
+                style: function () {
+                    return {
+                        color: "#000",
+                        weight: 1,
+                        fillColor: "#3388ff",
+                        fillOpacity: 0.4
+                    };
+                },
+                onEachFeature: function (feature, layer) {
+                    if (feature.properties && feature.properties.NOMBRE) {
+                        let label = L.divIcon({
+                            className: 'municipio-label',
+                            html: feature.properties.NOMBRE,
+                            iconSize: [100, 30]
+                        });
 
-        var topo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://opentopomap.org">OpenTopoMap</a>',
-            maxZoom: 17
-        });
+                        let center = layer.getBounds().getCenter();
+                        L.marker(center, { icon: label }).addTo(map);
 
-        // Agregar control de capas
-        var baseMaps = {
-            "OpenStreetMap": osm,
-            "Esri Satélite": esri,
-            "Topográfico": topo
-        };
+                        // Evento click para resaltar el municipio y hacer zoom
+                        layer.on('click', function () {
+                            if (highlightedLayer) {
+                                municipios.resetStyle(highlightedLayer);
+                            }
+                            highlightedLayer = layer;
+                            layer.setStyle({
+                                fillColor: 'yellow',
+                                fillOpacity: 0.5,
+                                color: 'black',
+                                weight: 2
+                            });
 
-        L.control.layers(baseMaps).addTo(map);
-
-        // Cargar el archivo GeoJSON con municipios de Nariño
-      fetch("https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/Munip_Nari%C3%B1o.geojson")
-    .then(response => response.json())
-    .then(data => {
-        L.geoJSON(data, {
-            style: function (feature) {
-                return {
-                    color: "#FFFFFF", // Bordes blancos
-                    weight: 2,
-                    fillColor: getRandomBlue(), // Color aleatorio azul
-                    fillOpacity: 0.8
-                };
-            },
-            onEachFeature: function (feature, layer) {
-                if (feature.properties && feature.properties.NOMBRE) {
-                    layer.bindPopup(feature.properties.NOMBRE); // Muestra nombre del municipio
+                            map.fitBounds(layer.getBounds(), { maxZoom: 12 });
+                        });
+                    }
                 }
-            }
-        }).addTo(map);
-    })
-    .catch(error => console.error('Error cargando el JSON:', error));
-
-// Función para generar tonos aleatorios de azul
-function getRandomBlue() {
-    let shades = ["#003f5c", "#2f4b7c", "#665191", "#557a95", "#1d3557", "#457b9d"];
-    return shades[Math.floor(Math.random() * shades.length)];
-}
-
-        // Ejemplo de marcador
-        L.marker([1.213, -77.28]).addTo(map)
-            .bindPopup("Marcador dpto Nariño.")
-            .openPopup();
-    </script>
+            }).addTo(map);
+        })
+        .catch(error => console.error("Error cargando el JSON:", error));
+</script>
 
 </body>
 </html>
