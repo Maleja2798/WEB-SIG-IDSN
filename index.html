@@ -28,67 +28,70 @@
             font-family: "Arial Narrow", sans-serif;
             font-size: 14px;
         }
+        .leaflet-control-layers {
+            background: rgba(0, 0, 0, 0.6) !important;
+            color: white;
+            font-family: "Arial Narrow", sans-serif;
+            border-radius: 5px;
+            padding: 5px;
+        }
+        .leaflet-bar a {
+            background: rgba(0, 0, 0, 0.6) !important;
+            color: white !important;
+            border: none;
+            box-shadow: 2px 2px 5px rgba(255, 255, 255, 0.2);
+        }
+        .leaflet-bar a:hover {
+            background: rgba(50, 50, 50, 0.8) !important;
+        }
     </style>
 </head>
 <body>
+    <h1>MAPA DE AUTORIZACIONES SANITARIAS DE AGUA EN NARIÑO</h1>
+    <div id="map"></div>
 
-<h1>MAPA DE AUTORIZACIONES SANITARIAS DE AGUA EN NARIÑO</h1>
-<div id="map"></div>
+    <script>
+        var map = L.map('map').setView([1.289, -77.29], 8);
 
-<script>
-    // Inicializar el mapa
-    var map = L.map('map').setView([1.289, -77.29], 8);
+        var baseMaps = {
+            "Mapa Estándar": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map),
+            "Satélite": L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenTopoMap contributors'
+            }),
+            "Toner": L.tileLayer('https://stamen-tiles.a.ssl.fastly.net/toner/{z}/{x}/{y}.png', {
+                attribution: '&copy; Stamen Design'
+            })
+        };
 
-    // Agregar capa base
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
+        L.control.layers(baseMaps).addTo(map);
 
-    // Función para generar un color azul más claro y variado
-    function getRandomLightBlueColor() {
-        let blueValue = Math.floor(Math.random() * 100) + 155;  // Entre 155 y 255
-        let greenValue = Math.floor(Math.random() * 50) + 100;  // Entre 100 y 150
-        return `rgb(${greenValue}, ${greenValue}, ${blueValue})`;
-    }
+        function getRandomBlueColor() {
+            let blueValue = Math.floor(Math.random() * 100) + 150;
+            let greenValue = Math.floor(Math.random() * 100) + 100;
+            return `rgb(0, ${greenValue}, ${blueValue})`;
+        }
 
-    // Cargar datos GeoJSON
-    fetch('https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/Munip_Nari%C3%B1o.geojson')  
-        .then(response => response.json())
-        .then(data => {
-            var geojsonLayer = L.geoJson(data, {
-                style: function(feature) {
-                    return {
-                        color: 'black', 
-                        weight: 1, 
-                        fillColor: getRandomLightBlueColor(), 
-                        fillOpacity: 0.7
-                    };
-                },
-                onEachFeature: function(feature, layer) {
-                    var nombreMunicipio = feature.properties.NOMBRE_ENT || "Sin nombre";
-
-                    // Evento de clic para resaltar y hacer zoom
-                    layer.on('click', function() {
-                        geojsonLayer.resetStyle();
-                        layer.setStyle({
+        fetch('https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/Munip_Nari%C3%B1o.geojson')
+            .then(response => response.json())
+            .then(data => {
+                L.geoJson(data, {
+                    style: function() {
+                        return {
                             color: 'black',
-                            weight: 3,
-                            fillColor: 'green',
+                            weight: 1,
+                            fillColor: getRandomBlueColor(),
                             fillOpacity: 0.7
-                        });
-                        map.fitBounds(layer.getBounds());
-                    });
-
-                    // Popup con formato personalizado
-                    layer.bindPopup(
-                        `<b style="font-family: 'Arial Narrow', sans-serif; font-size: 14px;">MUNICIPIO</b><br>
-                        <span style="font-family: 'Arial Narrow', sans-serif; font-size: 14px; font-weight: normal;">${nombreMunicipio}</span>`
-                    );
-                }
-            }).addTo(map);
-        })
-        .catch(error => console.error('Error cargando el GeoJSON:', error));
-</script>
-
+                        };
+                    },
+                    onEachFeature: function(feature, layer) {
+                        var nombreMunicipio = feature.properties.NOMBRE_ENT || "Sin nombre";
+                        layer.bindPopup("<b>MUNICIPIO:</b> <span style='font-family: Arial Narrow;'>" + nombreMunicipio + "</span>");
+                    }
+                }).addTo(map);
+            })
+            .catch(error => console.error('Error cargando el GeoJSON:', error));
+    </script>
 </body>
 </html>
