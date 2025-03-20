@@ -47,7 +47,7 @@
         var highlightedLayer;
 
         function onEachFeature(feature, layer) {
-            var nombre = feature.properties.NOMBRE || "Desconocido"; // Ajusta la clave si es necesario
+            var nombre = feature.properties.NOMBRE_ENT || "Desconocido"; // Ajusta la clave si es necesario
             layer.bindPopup("Municipio: " + nombre);
             
             layer.on('click', function (e) {
