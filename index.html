@@ -79,7 +79,7 @@
                 L.geoJson(data, {
                     style: function() {
                         return {
-                            color: 'black',
+                            color: 'white',
                             weight: 1,
                             fillColor: getRandomBlueColor(),
                             fillOpacity: 0.7
@@ -89,6 +89,18 @@
                         var nombreMunicipio = feature.properties.NOMBRE_ENT || "Sin nombre";
                         layer.bindPopup("<b>MUNICIPIO:</b> <span style='font-family: Arial Narrow;'>" + nombreMunicipio + "</span>");
                     }
+                    // Evento de clic para resaltar y hacer zoom
+layer.on('click', function() {
+geojsonLayer.resetStyle();
+layer.setStyle({
+color: 'black',
+weight: 3,
+fillColor: 'green',
+fillOpacity: 0.7
+});
+map.fitBounds(layer.getBounds());
+});
+
                 }).addTo(map);
             })
             .catch(error => console.error('Error cargando el GeoJSON:', error));
