@@ -26,15 +26,7 @@
         }
         .leaflet-popup-content {
             font-family: "Arial Narrow", sans-serif;
-            font-weight: bold;
             font-size: 14px;
-        }
-        .municipio-label {
-            font-family: "Arial Narrow", Arial, sans-serif;
-            font-weight: bold;
-            font-size: 14px;
-            color: black;
-            text-shadow: 1px 1px 2px white;
         }
     </style>
 </head>
@@ -52,10 +44,11 @@
         attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
-    // Función para generar un color azul aleatorio
-    function getRandomBlueColor() {
-        let blueValue = Math.floor(Math.random() * 156) + 100;  // Entre 100 y 255
-        return `rgb(0, 0, ${blueValue})`;
+    // Función para generar un color azul más claro y variado
+    function getRandomLightBlueColor() {
+        let blueValue = Math.floor(Math.random() * 100) + 155;  // Entre 155 y 255
+        let greenValue = Math.floor(Math.random() * 50) + 100;  // Entre 100 y 150
+        return `rgb(${greenValue}, ${greenValue}, ${blueValue})`;
     }
 
     // Cargar datos GeoJSON
@@ -67,21 +60,12 @@
                     return {
                         color: 'black', 
                         weight: 1, 
-                        fillColor: getRandomBlueColor(), 
+                        fillColor: getRandomLightBlueColor(), 
                         fillOpacity: 0.7
                     };
                 },
                 onEachFeature: function(feature, layer) {
                     var nombreMunicipio = feature.properties.NOMBRE_ENT || "Sin nombre";
-
-                    // Etiqueta en el mapa
-                    var label = L.marker(layer.getBounds().getCenter(), {
-                        icon: L.divIcon({
-                            className: 'municipio-label',
-                            html: nombreMunicipio,
-                            iconSize: [100, 20]
-                        })
-                    }).addTo(map);
 
                     // Evento de clic para resaltar y hacer zoom
                     layer.on('click', function() {
@@ -95,7 +79,11 @@
                         map.fitBounds(layer.getBounds());
                     });
 
-                    layer.bindPopup("<b>Municipio:</b> " + nombreMunicipio);
+                    // Popup con formato personalizado
+                    layer.bindPopup(
+                        `<b style="font-family: 'Arial Narrow', sans-serif; font-size: 14px;">MUNICIPIO</b><br>
+                        <span style="font-family: 'Arial Narrow', sans-serif; font-size: 14px; font-weight: normal;">${nombreMunicipio}</span>`
+                    );
                 }
             }).addTo(map);
         })
@@ -104,4 +92,3 @@
 
 </body>
 </html>
-
