@@ -73,6 +73,19 @@
 
         L.control.layers(baseMaps).addTo(map);
 
+        // Cargar el archivo GeoJSON con municipios de Nariño
+        fetch('https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/Narino_Municipios.json')
+            .then(response => response.json())
+            .then(data => {
+                L.geoJSON(data, {
+                    style: function (feature) {
+                        return { color: "blue", weight: 2, fillOpacity: 0.5 };
+                    }
+                }).addTo(map);
+            })
+            .catch(error => console.error('Error cargando el JSON:', error));
+
+
         // Ejemplo de marcador
         L.marker([1.213, -77.28]).addTo(map)
             .bindPopup("Marcador dpto Nariño.")
