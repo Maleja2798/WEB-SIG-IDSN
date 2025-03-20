@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mapa Autorizaciones Sanitarias de agua- Nariño</title>
+    <title>Mapa Autorizaciones Sanitarias de agua - Nariño</title>
     
     <!-- CSS de Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"/>
@@ -35,6 +35,41 @@
             border: 2px solid #FFFFFF;
             border-radius: 10px;
         }
+
+        /* Estilo del control de capas */
+        .leaflet-control-layers {
+            background: rgba(0, 0, 0, 0.7); /* Negro con transparencia */
+            border-radius: 10px; /* Bordes redondeados */
+            padding: 10px;
+            box-shadow: 3px 3px 10px rgba(255, 255, 255, 0.3); /* Relieve más visible */
+            font-family: 'Arial Narrow', sans-serif;
+            color: white;
+        }
+
+        /* Botón de control de capas */
+        .leaflet-control-layers-toggle {
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 5px;
+            border: 1px solid white;
+        }
+
+        /* Opciones de mapas base en el control */
+        .leaflet-control-layers-base label {
+            display: flex;
+            align-items: center;
+            padding: 5px;
+            cursor: pointer;
+        }
+
+        /* Iconos dentro del control */
+        .leaflet-control-layers-base img {
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+            margin-right: 10px;
+            border: 1px solid white;
+        }
     </style>
 </head>
 <body>
@@ -48,7 +83,7 @@
     <script>
         var map = L.map('map').setView([1.213, -77.28], 8);
 
-        // Definir mapas base
+        // Definir mapas base con imágenes representativas
         var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
             maxZoom: 18
@@ -64,39 +99,12 @@
             maxZoom: 17
         });
 
-        // Agregar control de capas
+        // Agregar control de capas con iconos personalizados
         var baseMaps = {
-            "OpenStreetMap": osm,
-            "Esri Satélite": esri,
-            "Topográfico": topo
+            "<img src='https://upload.wikimedia.org/wikipedia/commons/8/88/Openstreetmap_logo.svg' width='20' height='20'> OpenStreetMap": osm,
+            "<img src='https://upload.wikimedia.org/wikipedia/commons/1/1b/Esri_Logo.png' width='20' height='20'> Esri Satélite": esri,
+            "<img src='https://upload.wikimedia.org/wikipedia/commons/2/21/Topographic_map_icon.svg' width='20' height='20'> Topográfico": topo
         };
-
-        /* Estilo del control de capas */
-.leaflet-control-layers {
-    background: rgba(0, 0, 0, 0.7); /* Negro con transparencia */
-    border-radius: 10px; /* Bordes redondeados */
-    padding: 10px;
-    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5); /* Relieve */
-    font-family: 'Arial Narrow', sans-serif;
-    color: white;
-}
-
-/* Estilo de las opciones dentro del control de capas */
-.leaflet-control-layers-base label {
-    display: flex;
-    align-items: center;
-    padding: 5px;
-    cursor: pointer;
-}
-
-/* Ajuste de iconos dentro del control */
-.leaflet-control-layers-base img {
-    width: 40px;
-    height: 40px;
-    border-radius: 5px;
-    margin-right: 10px;
-    border: 1px solid white;
-}
 
         L.control.layers(baseMaps).addTo(map);
 
@@ -112,7 +120,6 @@
             })
             .catch(error => console.error('Error cargando el JSON:', error));
 
-
         // Ejemplo de marcador
         L.marker([1.213, -77.28]).addTo(map)
             .bindPopup("Marcador dpto Nariño.")
@@ -121,5 +128,6 @@
 
 </body>
 </html>
+
 
 
