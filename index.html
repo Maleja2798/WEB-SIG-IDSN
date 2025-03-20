@@ -46,7 +46,7 @@
         /* Botones de zoom personalizados */
         .leaflet-control-zoom-in,
         .leaflet-control-zoom-out {
-            background: rgba(1,1, 1, 0.8);
+            background: rgba(0, 0, 0, 0.8);
             color: white;
             font-size: 20px;
             font-weight: bold;
@@ -117,16 +117,32 @@
         L.control.layers(baseMaps).addTo(map);
 
         // Cargar el archivo GeoJSON con municipios de Nariño
-        fetch('https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/Narino_Municipios.json')
-            .then(response => response.json())
-            .then(data => {
-                L.geoJSON(data, {
-                    style: function (feature) {
-                        return { color: "blue", weight: 2, fillOpacity: 0.5 };
-                    }
-                }).addTo(map);
-            })
-            .catch(error => console.error('Error cargando el JSON:', error));
+       fetch('https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/Municipios_Nari%C3%B1o.geojson')
+    .then(response => response.json())
+    .then(data => {
+        L.geoJSON(data, {
+            style: function (feature) {
+                return {
+                    color: "#FFFFFF", // Bordes blancos
+                    weight: 2,
+                    fillColor: getRandomBlue(), // Color aleatorio azul
+                    fillOpacity: 0.5
+                };
+            },
+            onEachFeature: function (feature, layer) {
+                if (feature.properties && feature.properties.NOMBRE) {
+                    layer.bindPopup(feature.properties.NOMBRE); // Muestra nombre del municipio
+                }
+            }
+        }).addTo(map);
+    })
+    .catch(error => console.error('Error cargando el JSON:', error));
+
+// Función para generar tonos aleatorios de azul
+function getRandomBlue() {
+    let shades = ["#003f5c", "#2f4b7c", "#665191", "#557a95", "#1d3557", "#457b9d"];
+    return shades[Math.floor(Math.random() * shades.length)];
+}
 
         // Ejemplo de marcador
         L.marker([1.213, -77.28]).addTo(map)
