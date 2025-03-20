@@ -20,7 +20,7 @@
         h1 {
             font-family: 'Arial Narrow', sans-serif;
             font-size: 30px;
-            font-weight: bold; /* Negrilla */
+            font-weight: bold;
             color: #FFFFFF; /* Blanco */
             text-align: center;
             text-transform: uppercase;
@@ -39,19 +39,23 @@
         /* Estilo del control de capas */
         .leaflet-control-layers {
             background: rgba(0, 0, 0, 0.7); /* Negro con transparencia */
-            border-radius: 10px; /* Bordes redondeados */
+            border-radius: 10px;
             padding: 10px;
-            box-shadow: 3px 3px 10px rgba(255, 255, 255, 0.3); /* Relieve más visible */
+            box-shadow: 3px 3px 10px rgba(255, 255, 255, 0.3); /* Relieve */
             font-family: 'Arial Narrow', sans-serif;
             color: white;
         }
 
-        /* Botón de control de capas */
+        /* Botón de control de capas con solo un ícono */
         .leaflet-control-layers-toggle {
             border-radius: 10px;
             background: rgba(0, 0, 0, 0.8);
             padding: 5px;
             border: 1px solid white;
+            background-image: url('https://cdn-icons-png.flaticon.com/512/2991/2991186.png'); /* Ícono de capas */
+            background-size: 25px;
+            background-repeat: no-repeat;
+            background-position: center;
         }
 
         /* Opciones de mapas base en el control */
@@ -62,8 +66,8 @@
             cursor: pointer;
         }
 
-        /* Iconos dentro del control */
-        .leaflet-control-layers-base img {
+        /* Íconos dentro del control */
+        .map-icon {
             width: 30px;
             height: 30px;
             border-radius: 5px;
@@ -83,7 +87,7 @@
     <script>
         var map = L.map('map').setView([1.213, -77.28], 8);
 
-        // Definir mapas base con imágenes representativas
+        // Definir mapas base
         var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
             maxZoom: 18
@@ -99,11 +103,11 @@
             maxZoom: 17
         });
 
-        // Agregar control de capas con iconos personalizados
+        // Agregar control de capas con íconos en el texto
         var baseMaps = {
-            "<img src='https://upload.wikimedia.org/wikipedia/commons/8/88/Openstreetmap_logo.svg' width='20' height='20'> OpenStreetMap": osm,
-            "<img src='https://upload.wikimedia.org/wikipedia/commons/1/1b/Esri_Logo.png' width='20' height='20'> Esri Satélite": esri,
-            "<img src='https://upload.wikimedia.org/wikipedia/commons/2/21/Topographic_map_icon.svg' width='20' height='20'> Topográfico": topo
+            "<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/OpenStreetMap_logo.svg/512px-OpenStreetMap_logo.svg.png' class='map-icon'> OpenStreetMap": osm,
+            "<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Esri_logo.svg/512px-Esri_logo.svg.png' class='map-icon'> Esri Satélite": esri,
+            "<img src='https://upload.wikimedia.org/wikipedia/commons/2/21/Topographic_map_icon.svg' class='map-icon'> Topográfico": topo
         };
 
         L.control.layers(baseMaps).addTo(map);
@@ -128,6 +132,8 @@
 
 </body>
 </html>
+
+
 
 
 
