@@ -59,7 +59,7 @@
     }
 
     // Cargar datos GeoJSON
-    fetch(''https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/Munip_Nari%C3%B1o.geojson'')  
+    fetch('https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/Munip_Nari%C3%B1o.geojson')  
         .then(response => response.json())
         .then(data => {
             var geojsonLayer = L.geoJson(data, {
