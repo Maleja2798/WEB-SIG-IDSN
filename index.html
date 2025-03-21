@@ -4,9 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mapa de Autorizaciones Sanitarias de Agua en Nariño</title>
+
+    <!-- Estilos y librerías de Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <!-- Librería para el mini mapa -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-minimap/dist/Control.MiniMap.min.css">
+    <script src="https://unpkg.com/leaflet-minimap/dist/Control.MiniMap.min.js"></script>
+
     <style>
+        /* Estilos generales */
         body {
             margin: 0;
             font-family: Arial, sans-serif;
@@ -20,14 +28,17 @@
             font-size: 24px;
             font-weight: bold;
         }
+        /* Contenedor del mapa */
         #map {
             height: 90vh;
             width: 100%;
         }
+        /* Estilos para popups */
         .leaflet-popup-content {
             font-family: "Arial Narrow", sans-serif;
             font-size: 14px;
         }
+        /* Estilos para controles del mapa */
         .leaflet-control-layers {
             background: rgba(0, 0, 0, 0.6) !important;
             color: white;
@@ -51,8 +62,10 @@
     <div id="map"></div>
 
     <script>
+        // Inicializar el mapa centrado en Nariño
         var map = L.map('map').setView([1.289, -77.29], 8);
 
+        // Capas base del mapa
         var baseMaps = {
             "Mapa Estándar": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; OpenStreetMap contributors'
@@ -65,46 +78,79 @@
             })
         };
 
+        // Agregar control de capas
         L.control.layers(baseMaps).addTo(map);
 
+        // Función para generar colores aleatorios en tonos de azul
         function getRandomBlueColor() {
             let blueValue = Math.floor(Math.random() * 100) + 150;
             let greenValue = Math.floor(Math.random() * 100) + 100;
             return `rgb(0, ${greenValue}, ${blueValue})`;
         }
 
+        // Cargar el GeoJSON con municipios de Nariño
         fetch('https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/Munip_Nari%C3%B1o.geojson')
-    .then(response => response.json())
-    .then(data => {
-        var geojsonLayer = L.geoJson(data, {
-            style: function() {
-                return {
-                    color: 'white',
-                    weight: 1,
-                    fillColor: getRandomBlueColor(),
-                    fillOpacity: 0.7
-                };
-            },
-            onEachFeature: function(feature, layer) {
-                var nombreMunicipio = feature.properties.NOMBRE_ENT || "Sin nombre";
-                layer.bindPopup("<b>MUNICIPIO:</b> <span style='font-family: Arial Narrow;'>" + nombreMunicipio + "</span>");
+            .then(response => response.json())
+            .then(data => {
+                var geojsonLayer = L.geoJson(data, {
+                    style: function() {
+                        return {
+                            color: 'white',
+                            weight: 1,
+                            fillColor: getRandomBlueColor(),
+                            fillOpacity: 0.7
+                        };
+                    },
+                    onEachFeature: function(feature, layer) {
+                        var nombreMunicipio = feature.properties.NOMBRE_ENT || "Sin nombre";
+                        layer.bindPopup("<b>MUNICIPIO:</b> <span style='font-family: Arial Narrow;'>" + nombreMunicipio + "</span>");
 
-                // Evento de clic para resaltar y hacer zoom
-                layer.on('click', function() {
-                    geojsonLayer.resetStyle(); // Restablecer estilos antes de aplicar uno nuevo
-                    layer.setStyle({
-                        color: 'yellow',
-                        weight: 3,
-                        fillColor: 'green',
-                        fillOpacity: 0.7
-                    });
-                    map.fitBounds(layer.getBounds());
-                });
-            }
+                        // Evento de clic para resaltar y hacer zoom
+                        layer.on('click', function() {
+                            geojsonLayer.resetStyle(); // Restablecer estilos antes de aplicar uno nuevo
+                            layer.setStyle({
+                                color: 'yellow',
+                                weight: 3,
+                                fillColor: 'green',
+                                fillOpacity: 0.7
+                            });
+                            map.fitBounds(layer.getBounds());
+                        });
+                    }
+                }).addTo(map);
+            })
+            .catch(error => console.error('Error cargando el GeoJSON:', error));
+
+        // **1. Agregar Brújula (Norte)**
+        var north = L.control({ position: "topright" });
+        north.onAdd = function(map) {
+            var div = L.DomUtil.create("div", "info legend");
+            div.innerHTML = '<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Map_symbol_north.svg/120px-Map_symbol_north.svg.png" width="50px" />';
+            return div;
+        };
+        north.addTo(map);
+
+        // **2. Agregar Escala gráfica**
+        L.control.scale({
+            position: "bottomleft",  // Ubicación de la escala
+            metric: true,            // Unidades en metros
+            imperial: false          // No mostrar en millas
         }).addTo(map);
-    })
-    .catch(error => console.error('Error cargando el GeoJSON:', error));
+
+        // **3. Agregar Mini Mapa**
+        var miniMapLayer = new L.TileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            minZoom: 0,
+            maxZoom: 13,
+            attribution: '&copy; OpenStreetMap contributors'
+        });
+
+        var miniMap = new L.Control.MiniMap(miniMapLayer, {
+            toggleDisplay: true,  // Permite mostrar/ocultar el minimapa
+            minimized: false,     // Minimapa visible por defecto
+            position: "bottomright" // Ubicación del minimapa
+        }).addTo(map);
 
     </script>
 </body>
 </html>
+
