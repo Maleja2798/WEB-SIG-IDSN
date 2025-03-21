@@ -13,6 +13,10 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet-minimap/dist/Control.MiniMap.min.css">
     <script src="https://unpkg.com/leaflet-minimap/dist/Control.MiniMap.min.js"></script>
 
+    <!-- Librería para el buscador -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
     <style>
         /* Estilos generales */
         body {
@@ -21,6 +25,7 @@
             background-color: black;
             color: white;
         }
+
         h1 {
             text-align: center;
             background-color: black;
@@ -28,16 +33,19 @@
             font-size: 24px;
             font-weight: bold;
         }
+
         /* Contenedor del mapa */
         #map {
             height: 90vh;
             width: 100%;
         }
+
         /* Estilos para popups */
         .leaflet-popup-content {
             font-family: "Arial Narrow", sans-serif;
             font-size: 14px;
         }
+
         /* Estilos para controles del mapa */
         .leaflet-control-layers {
             background: rgba(0, 0, 0, 0.6) !important;
@@ -46,14 +54,24 @@
             border-radius: 5px;
             padding: 5px;
         }
+
         .leaflet-bar a {
             background: rgba(0, 0, 0, 0.6) !important;
             color: white !important;
             border: none;
             box-shadow: 2px 2px 5px rgba(255, 255, 255, 0.2);
         }
+
         .leaflet-bar a:hover {
             background: rgba(50, 50, 50, 0.8) !important;
+        }
+
+        /* Estilos para la brújula */
+        .north-control {
+            width: 50px;
+            height: 50px;
+            background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Map_symbol_north.svg/120px-Map_symbol_north.svg.png') no-repeat center;
+            background-size: contain;
         }
     </style>
 </head>
@@ -79,7 +97,10 @@
         };
 
         // Agregar control de capas
-        L.control.layers(baseMaps).addTo(map);
+        L.control.layers(baseMaps, {}, { position: "topright" }).addTo(map);
+
+        // Control de Zoom reubicado debajo del control de capas
+        L.control.zoom({ position: "topright" }).addTo(map);
 
         // Función para generar colores aleatorios en tonos de azul
         function getRandomBlueColor() {
@@ -107,7 +128,7 @@
 
                         // Evento de clic para resaltar y hacer zoom
                         layer.on('click', function() {
-                            geojsonLayer.resetStyle(); // Restablecer estilos antes de aplicar uno nuevo
+                            geojsonLayer.resetStyle();
                             layer.setStyle({
                                 color: 'yellow',
                                 weight: 3,
@@ -121,23 +142,18 @@
             })
             .catch(error => console.error('Error cargando el GeoJSON:', error));
 
-        // **1. Agregar Brújula (Norte)**
-        var north = L.control({ position: "topright" });
-        north.onAdd = function(map) {
-            var div = L.DomUtil.create("div", "info legend");
-            div.innerHTML = '<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Map_symbol_north.svg/120px-Map_symbol_north.svg.png" width="50px" />';
+        // **1. Agregar Brújula (Norte) en la esquina superior derecha**
+        var northControl = L.control({ position: "topright" });
+        northControl.onAdd = function(map) {
+            var div = L.DomUtil.create("div", "leaflet-bar leaflet-control north-control");
             return div;
         };
-        north.addTo(map);
+        northControl.addTo(map);
 
-        // **2. Agregar Escala gráfica**
-        L.control.scale({
-            position: "bottomleft",  // Ubicación de la escala
-            metric: true,            // Unidades en metros
-            imperial: false          // No mostrar en millas
-        }).addTo(map);
+        // **2. Agregar Escala gráfica en la parte inferior izquierda**
+        L.control.scale({ position: "bottomleft", metric: true, imperial: false }).addTo(map);
 
-        // **3. Agregar Mini Mapa**
+        // **3. Agregar Mini Mapa al lado de la escala gráfica**
         var miniMapLayer = new L.TileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             minZoom: 0,
             maxZoom: 13,
@@ -145,9 +161,15 @@
         });
 
         var miniMap = new L.Control.MiniMap(miniMapLayer, {
-            toggleDisplay: true,  // Permite mostrar/ocultar el minimapa
-            minimized: false,     // Minimapa visible por defecto
-            position: "bottomright" // Ubicación del minimapa
+            toggleDisplay: true,
+            minimized: false,
+            position: "bottomleft"
+        }).addTo(map);
+
+        // **4. Agregar Buscador en la parte superior**
+        L.Control.geocoder({
+            position: 'topleft',
+            defaultMarkGeocode: true
         }).addTo(map);
 
     </script>
