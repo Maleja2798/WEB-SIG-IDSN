@@ -95,9 +95,9 @@ var baseMaps = {
 "Mapa Estándar": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 attribution: '&copy; OpenStreetMap contributors'
 }).addTo(map),
-"Satélite": L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-attribution: '&copy; OpenTopoMap contributors'
-}),
+"Satélite (ESRI)": L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+attribution: 'Tiles &copy; Esri'
+}).addTo(map),
 "Topográfico": L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
 attribution: '&copy; OpenTopoMap contributors'
 }).addTo(map) // Mapa Topográfico por defecto
