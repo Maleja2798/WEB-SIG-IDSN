@@ -9,16 +9,11 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-    <!-- Librería para el mini mapa -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet-minimap/dist/Control.MiniMap.min.css">
-    <script src="https://unpkg.com/leaflet-minimap/dist/Control.MiniMap.min.js"></script>
-
     <!-- Librería de Leaflet Search -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
     <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 
     <style>
-        /* Estilos generales */
         body {
             margin: 0;
             font-family: Arial, sans-serif;
@@ -32,39 +27,15 @@
             font-size: 24px;
             font-weight: bold;
         }
-        /* Contenedor del mapa */
         #map {
             height: 90vh;
             width: 100%;
         }
-        /* Estilos para popups */
-        .leaflet-popup-content {
-            font-family: "Arial Narrow", sans-serif;
-            font-size: 14px;
-        }
-        /* Estilos para controles del mapa */
-        .leaflet-control-layers {
-            background: rgba(0, 0, 0, 0.6) !important;
-            color: white;
-            font-family: "Arial Narrow", sans-serif;
-            border-radius: 5px;
-            padding: 5px;
-        }
-        .leaflet-bar a {
-            background: rgba(0, 0, 0, 0.6) !important;
-            color: white !important;
-            border: none;
-            box-shadow: 2px 2px 5px rgba(255, 255, 255, 0.2);
-        }
-        .leaflet-bar a:hover {
-            background: rgba(50, 50, 50, 0.8) !important;
-        }
-        /* Estilo para el icono de brújula */
         .north-icon {
             width: 50px;
             position: absolute;
             top: 10px;
-            right: 10px;
+            left: 10px; /* Cambiado para que aparezca en el oeste superior */
             z-index: 1000;
         }
     </style>
@@ -74,12 +45,10 @@
     <div id="map"></div>
 
     <script>
-        // Inicializar el mapa centrado en Nariño
         var map = L.map('map', {
-            zoomControl: false  // Desactivar el control de zoom por defecto para reubicarlo
+            zoomControl: false  
         }).setView([1.289, -77.29], 8);
 
-        // Capas base del mapa
         var baseMaps = {
             "Mapa Estándar": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; OpenStreetMap contributors'
@@ -92,20 +61,15 @@
             })
         };
 
-        // Agregar control de capas
         L.control.layers(baseMaps, null, { position: 'topright' }).addTo(map);
-
-        // Agregar control de zoom en la esquina derecha
         L.control.zoom({ position: 'topright' }).addTo(map);
 
-        // Función para generar colores aleatorios en tonos de azul
         function getRandomBlueColor() {
             let blueValue = Math.floor(Math.random() * 100) + 150;
             let greenValue = Math.floor(Math.random() * 100) + 100;
             return `rgb(0, ${greenValue}, ${blueValue})`;
         }
 
-        // Cargar el GeoJSON con municipios de Nariño
         fetch('https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/Munip_Nari%C3%B1o.geojson')
             .then(response => response.json())
             .then(data => {
@@ -122,9 +86,8 @@
                         var nombreMunicipio = feature.properties.NOMBRE_ENT || "Sin nombre";
                         layer.bindPopup("<b>MUNICIPIO:</b> <span style='font-family: Arial Narrow;'>" + nombreMunicipio + "</span>");
 
-                        // Evento de clic para resaltar y hacer zoom
                         layer.on('click', function() {
-                            geojsonLayer.resetStyle(); // Restablecer estilos antes de aplicar uno nuevo
+                            geojsonLayer.resetStyle();
                             layer.setStyle({
                                 color: 'yellow',
                                 weight: 3,
@@ -138,8 +101,8 @@
             })
             .catch(error => console.error('Error cargando el GeoJSON:', error));
 
-        // **1. Agregar Brújula (Norte)**
-        var northIcon = L.control({ position: "topright" });
+        // Brújula en la parte superior oeste
+        var northIcon = L.control({ position: "topleft" });
         northIcon.onAdd = function(map) {
             var div = L.DomUtil.create("div", "north-icon");
             div.innerHTML = '<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/North_arrow.svg/200px-North_arrow.svg.png" width="50px"/>';
@@ -147,26 +110,14 @@
         };
         northIcon.addTo(map);
 
-        // **2. Agregar Escala gráfica en la esquina inferior derecha**
+        // Escala gráfica en la parte inferior este
         L.control.scale({
-            position: "bottomright",
+            position: "bottomright",  
             metric: true,
             imperial: false
         }).addTo(map);
 
-        // **3. Agregar Mini Mapa en la parte inferior izquierda**
-        var miniMapLayer = new L.TileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            minZoom: 0,
-            maxZoom: 13
-        });
-
-        var miniMap = new L.Control.MiniMap(miniMapLayer, {
-            toggleDisplay: true,
-            minimized: false,
-            position: "bottomleft"
-        }).addTo(map);
-
-        // **4. Agregar Buscador de Municipios y Coordenadas**
+        // Buscador de Municipios y Coordenadas
         L.Control.geocoder({
             defaultMarkGeocode: true
         }).addTo(map);
@@ -174,4 +125,3 @@
     </script>
 </body>
 </html>
-
