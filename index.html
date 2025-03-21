@@ -16,7 +16,7 @@
     <style>
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
+            font-family: "Arial Narrow", sans-serif;
             background-color: black;
             color: white;
         }
@@ -35,8 +35,34 @@
             width: 50px;
             position: absolute;
             top: 10px;
-            left: 10px; /* Cambiado para que aparezca en el oeste superior */
+            left: 10px;
             z-index: 1000;
+        }
+        /* Botones con fondo negro transparente */
+        .leaflet-bar a {
+            background: rgba(0, 0, 0, 0.7) !important;
+            color: white !important;
+            border: none;
+            box-shadow: 2px 2px 5px rgba(255, 255, 255, 0.2);
+        }
+        .leaflet-bar a:hover {
+            background: rgba(50, 50, 50, 0.9) !important;
+        }
+        /* Estilos del buscador */
+        .leaflet-control-geocoder-form input {
+            font-family: "Arial Narrow", sans-serif;
+        }
+        .leaflet-control-geocoder-alternatives {
+            background: black !important;
+            font-family: "Arial Narrow", sans-serif;
+            color: white !important;
+        }
+        .leaflet-control-geocoder-alternatives a {
+            background: transparent !important;
+            color: white !important;
+        }
+        .leaflet-control-geocoder-alternatives a:hover {
+            background: rgba(255, 255, 255, 0.2) !important;
         }
     </style>
 </head>
@@ -117,11 +143,16 @@
             imperial: false
         }).addTo(map);
 
-        // Buscador de Municipios y Coordenadas
-        L.Control.geocoder({
+        // Buscador con texto en español y sin resaltado gris
+        var geocoder = L.Control.geocoder({
             defaultMarkGeocode: true
+        }).on('markgeocode', function(e) {
+            var latlng = e.geocode.center;
+            map.setView(latlng, 12);
         }).addTo(map);
 
+        // Personalizar el texto "Search" por "Buscar"
+        document.querySelector(".leaflet-control-geocoder-icon").title = "Buscar";
     </script>
 </body>
 </html>
