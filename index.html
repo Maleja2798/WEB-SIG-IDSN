@@ -10,6 +10,10 @@
 <!-- Librería de Leaflet Search -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
 <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+<!-- Librería de MiniMapa -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet-minimap/dist/Control.MiniMap.min.css" />
+<script src="https://unpkg.com/leaflet-minimap/dist/Control.MiniMap.min.js"></script>
+
 <style>
 body {
 margin: 0;
@@ -157,6 +161,9 @@ map.setView(latlng, 12);
 }).addTo(map);
 // Personalizar el tooltip del buscador
 document.querySelector(".leaflet-control-geocoder-icon").title = "Buscar";
+// MiniMapa de ubicación general
+var miniMapLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+var miniMap = new L.Control.MiniMap(miniMapLayer, { toggleDisplay: true, position: 'bottomleft' }).addTo(map);
 </script>
 </body>
 </html>
