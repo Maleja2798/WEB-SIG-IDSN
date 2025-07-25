@@ -216,7 +216,7 @@ function cargarCSV(url, capaGrupo, color) {
           const marcador = L.marker([lat, lon], {
             icon: L.divIcon({
               className: 'custom-div-icon',
-              html: `<div style="background:${color};border-radius:10px;padding:2px 5px;font-family:'Arial Narrow';color:white">\u2794</div>`,
+              html: `<div style="background:${color};border-radius:10px;padding:2px 5px;font-family:'Arial Narrow';color:white">➔</div>`,
               iconSize: [20, 20],
               iconAnchor: [10, 10]
             })
@@ -227,7 +227,7 @@ function cargarCSV(url, capaGrupo, color) {
               <b>Municipio:</b> ${municipio}<br>
               <b>Corregimiento o Vereda:</b> ${vereda}<br>
               <b>Fuente:</b> ${fuente}<br>
-              <b>N° Autorización:</b> ${autorizacion}<br>
+              <b>Nº Autorización:</b> ${autorizacion}<br>
               <b>Fecha Autorización:</b> ${fecha}<br>
               ${anexo ? `<b>Anexo:</b> <a href="${anexo}" target="_blank">Ver</a>` : ""}
             </div>
@@ -241,7 +241,6 @@ function cargarCSV(url, capaGrupo, color) {
   });
 }
 
-
 function mostrarCapa(anio) {
   map.removeLayer(capa2023);
   map.removeLayer(capa2024);
@@ -252,20 +251,17 @@ function mostrarCapa(anio) {
   }
 }
 
-// Enlace corregido 2023
 cargarCSV(
   'https://docs.google.com/spreadsheets/d/e/2PACX-1vR9MXHFzd2BkQkYDlCp3TS0vLQr6JCzV-prDxyNErrCiXHAnHnKjH95Z1es_jhYbRwnI2C5mZgW0Ccr/pub?gid=0&single=true&output=csv',
   capa2023,
   '#00bfff'
 );
 
-// Enlace corregido 2024
 cargarCSV(
   'https://docs.google.com/spreadsheets/d/e/2PACX-1vQEIfxPwnfsK29s70MMP_eimRMxEIeTyWye0GIsUAslrRrWalcULyXwWlSiyZenbJ_r4-ww-vBHBnun/pub?gid=0&single=true&output=csv',
   capa2024,
   '#ff4500'
 );
-
 </script>
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 </body>
