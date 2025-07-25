@@ -2,121 +2,67 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <title>Visor Autorizaciones Sanitarias - IDSN</title>
+  <title>Visor SIG - Autorizaciones Sanitarias</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Arial+Narrow&display=swap" rel="stylesheet">
+
   <style>
-    body {
+    html, body, #map {
+      height: 100%;
       margin: 0;
       font-family: 'Arial Narrow', sans-serif;
       background-color: black;
-      color: white;
     }
-    #map {
-      height: 100vh;
+
+    .leaflet-control-zoom, 
+    .leaflet-control-layers, 
+    .leaflet-control-geocoder,
+    .leaflet-bar a {
+      background-color: rgba(0,0,0,0.6) !important;
+      color: white !important;
+      border: 1px solid #333;
+      box-shadow: 2px 2px 5px #000;
     }
-    .custom-popup {
-      background: rgba(50, 50, 50, 0.8);
-      padding: 10px;
-      border-radius: 10px;
-      color: white;
+
+    .leaflet-control-geocoder input {
+      color: black !important;
+      font-family: 'Arial Narrow', sans-serif;
     }
-    .leaflet-control-layers {
-      background-color: rgba(0,0,0,0.7);
-      color: white;
-      font-size: 14px;
+
+    .leaflet-popup-content {
+      font-family: 'Arial Narrow', sans-serif;
+      font-size: 13px;
+    }
+
+    .leaflet-control-layers label {
+      font-family: 'Arial Narrow', sans-serif;
     }
   </style>
 </head>
 <body>
   <div id="map"></div>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+  <script src="https://unpkg.com/leaflet-providers/leaflet-providers.js"></script>
+  <script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
 
   <script>
-    const map = L.map('map').setView([1.2, -77.3], 8);
+    const map = L.map('map', {
+      center: [1.2, -77.3],
+      zoom: 8,
+      zoomControl: false
+    });
 
-    // Capa base satelital estilo Google Earth
-    const googleSat = L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
-      subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-      attribution: 'Imágenes © Google Earth',
-    }).addTo(map);
+    // Agregar control de zoom personalizado
+    L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-    // Escala
-    L.control.scale({ position: 'bottomright', imperial: false }).addTo(map);
+    // Capas base
+    const baseLayers = {
+      "Gris": L.tileLayer.provider('CartoDB.PositronNoLabels'),
+      "Satélite": L.tileLayer.provider('Esri.WorldImagery'),
+      "Topográfico": L.tileLayer.
 
-    // Carga los datos de CSV
-    function cargarCSV(url, grupoCapa) {
-      Papa.parse(url, {
-        download: true,
-        header: true,
-        complete: function(results) {
-          const datos = results.data;
-
-          // Agrupar por municipio
-          const agrupado = {};
-          datos.forEach(d => {
-            const muni = d.Municipio;
-            if (!agrupado[muni]) {
-              agrupado[muni] = {
-                veredas: new Set(),
-                fuentes: new Set(),
-                lat: d.Latitud,
-                lon: d.Longitud
-              };
-            }
-            agrupado[muni].veredas.add(d.Vereda || d.Corregimiento);
-            agrupado[muni].fuentes.add(d.Fuente);
-          });
-
-          for (const muni in agrupado) {
-            const v = agrupado[muni];
-            const popup = `
-              <div class="custom-popup">
-                <b>Municipio:</b> ${muni}<br/>
-                <b>Veredas/Corregimientos:</b> ${Array.from(v.veredas).join(', ')}<br/>
-                <b>Fuentes:</b><ul>${Array.from(v.fuentes).map(f => `<li>${f}</li>`).join('')}</ul>
-              </div>
-            `;
-            const marcador = L.marker([v.lat, v.lon]).bindPopup(popup);
-            grupoCapa.addLayer(marcador);
-          }
-        }
-      });
-    }
-
-    // Crear capas para cada año
-    const capa2023 = L.layerGroup();
-    const capa2024 = L.layerGroup();
-
-    // URLs CSV
-    const url2023 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEIfxPwnfsK29s70MMP_eimRMxEIeTyWye0GIsUAslrRrWalcULyXwWlSiyZenbJ_r4-ww-vBHBnun/pub?gid=0&single=true&output=csv";
-    const url2024 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR9MXHFzd2BkQkYDlCp3TS0vLQr6JCzV-prDxyNErrCiXHAnHnKjH95Z1es_jhYbRwnI2C5mZgW0Ccr/pub?gid=0&single=true&output=csv";
-
-    cargarCSV(url2023, capa2023);
-    cargarCSV(url2024, capa2024);
-
-    // Control de capas
-    const overlays = {
-      "Autorizaciones Sanitarias 2023": capa2023,
-      "Autorizaciones Sanitarias 2024": capa2024
-    };
-    L.control.layers(null, overlays, { collapsed: false }).addTo(map);
-
-    // Norte (imagen personalizada)
-    const northIcon = L.control({ position: 'topright' });
-    northIcon.onAdd = function () {
-      const img = L.DomUtil.create('img');
-      img.src = 'image.png'; // Asegúrate que el archivo esté en el mismo directorio
-      img.style.width = '70px';
-      return img;
-    };
-    northIcon.addTo(map);
-  </script>
-</body>
-</html>
 
