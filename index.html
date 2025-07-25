@@ -212,11 +212,12 @@ function cargarCSVLocal(nombreArchivo, capaGrupo, color) {
             const lat = parseFloat(row["LATITUD DECIMAL"]);
             const lon = parseFloat(row["LONGITUD DECIMAL"]);
             const anexo = row["ANEXO"];
+
             if (!isNaN(lat) && !isNaN(lon)) {
               const marcador = L.marker([lat, lon], {
                 icon: L.divIcon({
                   className: 'custom-div-icon',
-                  html: <div style="background:${color};border-radius:10px;padding:2px 5px;font-family:'Arial Narrow';color:white">\u2794</div>,
+                  html: `<div style="background:${color};border-radius:10px;padding:2px 5px;font-family:'Arial Narrow';color:white">\u2794</div>`,
                   iconSize: [20, 20],
                   iconAnchor: [10, 10]
                 })
@@ -229,7 +230,7 @@ function cargarCSVLocal(nombreArchivo, capaGrupo, color) {
                   <b>Fuente:</b> ${fuente}<br>
                   <b>N° Autorización:</b> ${autorizacion}<br>
                   <b>Fecha Autorización:</b> ${fecha}<br>
-                  ${anexo ? <b>Anexo:</b> <a href="${anexo}" target="_blank">Ver</a> : ""}
+                  ${anexo ? `<b>Anexo:</b> <a href="${anexo}" target="_blank">Ver</a>` : ""}
                 </div>
               `;
 
@@ -252,12 +253,12 @@ function mostrarCapa(anio) {
   }
 }
 
-// Llamadas para cargar CSV local
-cargarCSVLocal('datos2023.csv', capa2023, '#00bfff');
-cargarCSVLocal('datos2024.csv', capa2024, '#ff4500');
+// Llamadas para cargar CSV desde GitHub
+cargarCSVLocal('https://TU_USUARIO.github.io/TU_REPOSITORIO/datos2023.csv', capa2023, '#00bfff');
+cargarCSVLocal('https://TU_USUARIO.github.io/TU_REPOSITORIO/datos2024.csv', capa2024, '#ff4500');
+
 
 
 </script>
-<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 </body>
 </html>
