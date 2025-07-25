@@ -1,68 +1,66 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
+  <title>Visor SIG Autorizaciones Sanitarias - IDSN</title>
   <meta charset="utf-8" />
-  <title>Visor SIG - Autorizaciones Sanitarias</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
   <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Arial+Narrow&display=swap" rel="stylesheet">
 
   <style>
     html, body, #map {
       height: 100%;
       margin: 0;
-      font-family: 'Arial Narrow', sans-serif;
+      font-family: "Arial Narrow", sans-serif;
       background-color: black;
     }
-
-    .leaflet-control-zoom, 
-    .leaflet-control-layers, 
-    .leaflet-control-geocoder,
+    .leaflet-control-zoom a {
+      background-color: rgba(0, 0, 0, 0.6);
+      color: white;
+      font-weight: bold;
+      box-shadow: 0px 0px 5px #888;
+    }
     .leaflet-bar a {
-      background-color: rgba(0,0,0,0.6) !important;
-      color: white !important;
-      border: 1px solid #333;
-      box-shadow: 2px 2px 5px #000;
+      border-radius: 5px;
     }
-
-    .leaflet-control-geocoder input {
-      color: black !important;
-      font-family: 'Arial Narrow', sans-serif;
-    }
-
     .leaflet-popup-content {
-      font-family: 'Arial Narrow', sans-serif;
+      font-family: "Arial Narrow", sans-serif;
       font-size: 13px;
-    }
-
-    .leaflet-control-layers label {
-      font-family: 'Arial Narrow', sans-serif;
     }
   </style>
 </head>
 <body>
-  <div id="map"></div>
 
-  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
-  <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-  <script src="https://unpkg.com/leaflet-providers/leaflet-providers.js"></script>
-  <script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
+<div id="map"></div>
 
-  <script>
-    const map = L.map('map', {
-      center: [1.2, -77.3],
-      zoom: 8,
-      zoomControl: false
-    });
+<script>
+  const map = L.map('map').setView([1.2136, -77.2811], 8); // Centrado en Nariño
 
-    // Agregar control de zoom personalizado
-    L.control.zoom({ position: 'bottomright' }).addTo(map);
+  // Mapa base estilo satélite tipo Google Earth Pro
+  const satelite = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+    maxZoom: 20,
+    attribution: '&copy; Google Maps'
+  }).addTo(map);
 
-    // Capas base
-    const baseLayers = {
-      "Gris": L.tileLayer.provider('CartoDB.PositronNoLabels'),
-      "Satélite": L.tileLayer.provider('Esri.WorldImagery'),
-      "Topográfico": L.tileLayer.
+  // Escala
+  L.control.scale({ position: 'bottomright' }).addTo(map);
+
+  // Botones de Zoom personalizados ya están con estilos
+
+  // Geocoder
+  L.Control.geocoder({
+    defaultMarkGeocode: true,
+    placeholder: "Buscar municipio...",
+    showResultIcons: false
+  }).addTo(map);
+
+</script>
+
+</body>
+</html>
+
 
 
