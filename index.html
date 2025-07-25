@@ -204,11 +204,11 @@ function cargarCSV(url, capaGrupo, color) {
       const municipios = {};
 
       datos.forEach(row => {
-        const municipio = row["Nombre del Municipio"];
-        const vereda = row["Nombre del Corregimiento o Vereda"];
-        const fuente = row["Nombre de la Fuente"];
-        const lat = parseFloat(row["Latitud"]);
-        const lon = parseFloat(row["Longitud"]);
+        const municipio = row["MUNICIPIO"];
+        const vereda = row["CORREGIMIENTO O VEREDA"];
+        const fuente = row["FUENTE"];
+        const lat = parseFloat(row["LATITUD DECIMAL"]);
+        const lon = parseFloat(row["LONGITUD DECIMAL"]);
 
         if (!isNaN(lat) && !isNaN(lon)) {
           if (!municipios[municipio]) {
