@@ -195,52 +195,52 @@ var miniMap = new L.Control.MiniMap(miniMapLayer, { toggleDisplay: true, positio
 var capa2023 = L.layerGroup();
 var capa2024 = L.layerGroup();
 
-function cargarCSV(url, capaGrupo, color) {
-  Papa.parse(url, {
-    download: true,
-    header: true,
-    complete: function(results) {
-      const datos = results.data;
+function cargarCSVLocal(nombreArchivo, capaGrupo, color) {
+  fetch(nombreArchivo)
+    .then(response => response.text())
+    .then(csvText => {
+      Papa.parse(csvText, {
+        header: true,
+        complete: function(results) {
+          const datos = results.data;
+          datos.forEach(row => {
+            const municipio = row["MUNICIPIO"] || row["MUNICIPIOS"];
+            const vereda = row["CORREGIMIENTO O VEREDA"];
+            const fuente = row["FUENTE"];
+            const autorizacion = row["NO. AUTORIZACION"];
+            const fecha = row["FECHA AUTORIZACION"];
+            const lat = parseFloat(row["LATITUD DECIMAL"]);
+            const lon = parseFloat(row["LONGITUD DECIMAL"]);
+            const anexo = row["ANEXO"];
+            if (!isNaN(lat) && !isNaN(lon)) {
+              const marcador = L.marker([lat, lon], {
+                icon: L.divIcon({
+                  className: 'custom-div-icon',
+                  html: <div style="background:${color};border-radius:10px;padding:2px 5px;font-family:'Arial Narrow';color:white">\u2794</div>,
+                  iconSize: [20, 20],
+                  iconAnchor: [10, 10]
+                })
+              });
 
-      datos.forEach(row => {
-        const municipio = row["MUNICIPIO"] || row["MUNICIPIOS"];
-        const vereda = row["CORREGIMIENTO O VEREDA"];
-        const fuente = row["FUENTE"];
-        const autorizacion = row["NO. AUTORIZACION"];
-        const fecha = row["FECHA AUTORIZACION"];
-        const lat = parseFloat(row["LATITUD DECIMAL"]);
-        const lon = parseFloat(row["LONGITUD DECIMAL"]);
-        const anexo = row["ANEXO"];
+              const contenidoPopup = `
+                <div style="font-family:'Arial Narrow'; font-size:13px;">
+                  <b>Municipio:</b> ${municipio}<br>
+                  <b>Corregimiento o Vereda:</b> ${vereda}<br>
+                  <b>Fuente:</b> ${fuente}<br>
+                  <b>N° Autorización:</b> ${autorizacion}<br>
+                  <b>Fecha Autorización:</b> ${fecha}<br>
+                  ${anexo ? <b>Anexo:</b> <a href="${anexo}" target="_blank">Ver</a> : ""}
+                </div>
+              `;
 
-        if (!isNaN(lat) && !isNaN(lon)) {
-          const marcador = L.marker([lat, lon], {
-            icon: L.divIcon({
-              className: 'custom-div-icon',
-              html: `<div style="background:${color};border-radius:10px;padding:2px 5px;font-family:'Arial Narrow';color:white">\u2794</div>`,
-              iconSize: [20, 20],
-              iconAnchor: [10, 10]
-            })
+              marcador.bindPopup(contenidoPopup);
+              marcador.addTo(capaGrupo);
+            }
           });
-
-          const contenidoPopup = `
-            <div style="font-family:'Arial Narrow'; font-size:13px;">
-              <b>Municipio:</b> ${municipio}<br>
-              <b>Corregimiento o Vereda:</b> ${vereda}<br>
-              <b>Fuente:</b> ${fuente}<br>
-              <b>N° Autorización:</b> ${autorizacion}<br>
-              <b>Fecha Autorización:</b> ${fecha}<br>
-              ${anexo ? `<b>Anexo:</b> <a href="${anexo}" target="_blank">Ver</a>` : ""}
-            </div>
-          `;
-
-          marcador.bindPopup(contenidoPopup);
-          marcador.addTo(capaGrupo);
         }
       });
-    }
-  });
+    });
 }
-
 
 function mostrarCapa(anio) {
   map.removeLayer(capa2023);
@@ -252,19 +252,10 @@ function mostrarCapa(anio) {
   }
 }
 
-// Enlace corregido 2023
-cargarCSV(
-  'https://docs.google.com/spreadsheets/d/e/2PACX-1vR9MXHFzd2BkQkYDlCp3TS0vLQr6JCzV-prDxyNErrCiXHAnHnKjH95Z1es_jhYbRwnI2C5mZgW0Ccr/pub?gid=0&single=true&output=csv',
-  capa2023,
-  '#00bfff'
-);
+// Llamadas para cargar CSV local
+cargarCSVLocal('datos2023.csv', capa2023, '#00bfff');
+cargarCSVLocal('datos2024.csv', capa2024, '#ff4500');
 
-// Enlace corregido 2024
-cargarCSV(
-  'https://docs.google.com/spreadsheets/d/e/2PACX-1vQEIfxPwnfsK29s70MMP_eimRMxEIeTyWye0GIsUAslrRrWalcULyXwWlSiyZenbJ_r4-ww-vBHBnun/pub?gid=0&single=true&output=csv',
-  capa2024,
-  '#ff4500'
-);
 
 </script>
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
