@@ -4,83 +4,79 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mapa de Autorizaciones Sanitarias de Agua en Nariño</title>
-<!-- Estilos y librerías de Leaflet -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<!-- Librería de Leaflet Search -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
 <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-<!-- Librería de MiniMapa -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet-minimap/dist/Control.MiniMap.min.css" />
 <script src="https://unpkg.com/leaflet-minimap/dist/Control.MiniMap.min.js"></script>
 
 <style>
 body {
-margin: 0;
-font-family: "Arial Narrow", sans-serif;
-background-color: black;
-color: white;
+  margin: 0;
+  font-family: "Arial Narrow", sans-serif;
+  background-color: black;
+  color: white;
 }
 h1 {
-text-align: center;
-background-color: black;
-padding: 10px;
-font-size: 24px;
-font-weight: bold;
+  text-align: center;
+  background-color: black;
+  padding: 10px;
+  font-size: 24px;
+  font-weight: bold;
 }
 #map {
-height: 90vh;
-width: 100%;
+  height: 90vh;
+  width: 100%;
 }
 .north-icon {
-width: 50px;
-position: absolute;
-top: 10px;
-left: 10px;
-z-index: 1000;
+  width: 50px;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
 }
-/* Botones en negro con transparencia e iconos en blanco */
 .leaflet-bar a {
-background: rgba(0, 0, 0, 0.7) !important;
-color: white !important;
-border: none;
-box-shadow: 2px 2px 5px rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.7) !important;
+  color: white !important;
+  border: none;
+  box-shadow: 2px 2px 5px rgba(255, 255, 255, 0.2);
 }
 .leaflet-bar a:hover {
-background: rgba(50, 50, 50, 0.9) !important;
+  background: rgba(50, 50, 50, 0.9) !important;
 }
 .leaflet-control-layers {
-background: rgba(0, 0, 0, 0.7) !important;
-color: white !important;
-border-radius: 5px;
+  background: rgba(0, 0, 0, 0.7) !important;
+  color: white !important;
+  border-radius: 5px;
 }
 .leaflet-control-layers label {
-color: white !important;
+  color: white !important;
 }
 .leaflet-control-geocoder {
-background: rgba(0, 0, 0, 0.7) !important;
-border-radius: 5px;
+  background: rgba(0, 0, 0, 0.7) !important;
+  border-radius: 5px;
 }
 .leaflet-control-geocoder-form input {
-font-family: "Arial Narrow", sans-serif;
-background: transparent;
-color: white !important;
-border: none;
+  font-family: "Arial Narrow", sans-serif;
+  background: transparent;
+  color: white !important;
+  border: none;
 }
 .leaflet-control-geocoder-icon {
-filter: invert(1);
+  filter: invert(1);
 }
 .leaflet-control-geocoder-alternatives {
-background: rgba(0, 0, 0, 0.7) !important;
-font-family: "Arial Narrow", sans-serif;
-color: white !important;
+  background: rgba(0, 0, 0, 0.7) !important;
+  font-family: "Arial Narrow", sans-serif;
+  color: white !important;
 }
 .leaflet-control-geocoder-alternatives a {
-background: transparent !important;
-color: white !important;
+  background: transparent !important;
+  color: white !important;
 }
 .leaflet-control-geocoder-alternatives a:hover {
-background: rgba(255, 255, 255, 0.2) !important;
+  background: rgba(255, 255, 255, 0.2) !important;
 }
 </style>
 </head>
@@ -89,81 +85,134 @@ background: rgba(255, 255, 255, 0.2) !important;
 <div id="map"></div>
 <script>
 var map = L.map('map', {
-zoomControl: false 
+  zoomControl: false
 }).setView([1.289, -77.29], 8);
+
+// Capas base
 var baseMaps = {
-"Mapa Estándar": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-attribution: '&copy; OpenStreetMap contributors'
-}).addTo(map),
-"Satélite (ESRI)": L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-attribution: 'Tiles &copy; Esri'
-}).addTo(map),
-"Topográfico": L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-attribution: '&copy; OpenTopoMap contributors'
-}).addTo(map) // Mapa Topográfico por defecto
+  "Mapa Estándar": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map),
+  "Satélite (ESRI)": L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    attribution: 'Tiles &copy; Esri'
+  }),
+  "Topográfico": L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenTopoMap contributors'
+  })
 };
 L.control.layers(baseMaps, null, { position: 'topright' }).addTo(map);
 L.control.zoom({ position: 'topright' }).addTo(map);
+
+// Función de color aleatorio
 function getRandomBlueColor() {
-let blueValue = Math.floor(Math.random() * 100) + 150;
-let greenValue = Math.floor(Math.random() * 100) + 100;
-return `rgb(0, ${greenValue}, ${blueValue})`;
+  let blueValue = Math.floor(Math.random() * 100) + 150;
+  let greenValue = Math.floor(Math.random() * 100) + 100;
+  return `rgb(0, ${greenValue}, ${blueValue})`;
 }
+
+// Municipios de Nariño
 fetch('https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/Munip_Nari%C3%B1o.geojson')
 .then(response => response.json())
 .then(data => {
-var geojsonLayer = L.geoJson(data, {
-style: function() {
-return {
-color: 'white',
-weight: 1,
-fillColor: getRandomBlueColor(),
-fillOpacity: 0.7
-};
-},
-onEachFeature: function(feature, layer) {
-var nombreMunicipio = feature.properties.NOMBRE_ENT || "Sin nombre";
-layer.bindPopup("<b>MUNICIPIO:</b> <span style='font-family: Arial Narrow;'>" + nombreMunicipio + "</span>");
-layer.on('click', function() {
-geojsonLayer.resetStyle();
-layer.setStyle({
-color: 'yellow',
-weight: 3,
-fillColor: 'orange',
-fillOpacity: 0.7
+  var geojsonLayer = L.geoJson(data, {
+    style: function() {
+      return {
+        color: 'white',
+        weight: 1,
+        fillColor: getRandomBlueColor(),
+        fillOpacity: 0.7
+      };
+    },
+    onEachFeature: function(feature, layer) {
+      var nombreMunicipio = feature.properties.NOMBRE_ENT || "Sin nombre";
+      layer.bindPopup("<b>MUNICIPIO:</b> <span style='font-family: Arial Narrow;'>" + nombreMunicipio + "</span>");
+      layer.on('click', function() {
+        geojsonLayer.resetStyle();
+        layer.setStyle({
+          color: 'yellow',
+          weight: 3,
+          fillColor: 'orange',
+          fillOpacity: 0.7
+        });
+        map.fitBounds(layer.getBounds());
+      });
+    }
+  }).addTo(map);
 });
-map.fitBounds(layer.getBounds());
-});
-}
-}).addTo(map);
-})
-.catch(error => console.error('Error cargando el GeoJSON:', error));
-// Brújula en la parte superior oeste
-var northIcon = L.control({ position: "topleft" });
-northIcon.onAdd = function(map) {
-var div = L.DomUtil.create("div", "north-icon");
-div.innerHTML = '<img src="https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/NORTE.png" width="50px"/>';
-return div;
-};
-northIcon.addTo(map);
-// Escala gráfica en la parte inferior derecha
+
+// BRÚJULA
+L.control({ position: "topleft" }).onAdd = function(map) {
+  var div = L.DomUtil.create("div", "north-icon");
+  div.innerHTML = '<img src="https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/NORTE.png" width="50px"/>';
+  return div;
+}.addTo(map);
+
+// ESCALA
 L.control.scale({
-position: "bottomright", 
-metric: true,
-imperial: false
+  position: "bottomright",
+  metric: true,
+  imperial: false
 }).addTo(map);
-// Buscador con fondo negro y texto "Buscar"
-var geocoder = L.Control.geocoder({
-defaultMarkGeocode: true
+
+// BUSCADOR
+L.Control.geocoder({
+  defaultMarkGeocode: true
 }).on('markgeocode', function(e) {
-var latlng = e.geocode.center;
-map.setView(latlng, 12);
+  var latlng = e.geocode.center;
+  map.setView(latlng, 12);
 }).addTo(map);
-// Personalizar el tooltip del buscador
-document.querySelector(".leaflet-control-geocoder-icon").title = "Buscar";
-// MiniMapa de ubicación general
+
+// MINIMAPA
 var miniMapLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
-var miniMap = new L.Control.MiniMap(miniMapLayer, { toggleDisplay: true, position: 'bottomleft' }).addTo(map);
+new L.Control.MiniMap(miniMapLayer, { toggleDisplay: true, position: 'bottomleft' }).addTo(map);
+
+// Cargar CSV 2023
+Papa.parse("https://docs.google.com/spreadsheets/d/e/2PACX-1vQEIfxPwnfsK29s70MMP_eimRMxEIeTyWye0GIsUAslrRrWalcULyXwWlSiyZenbJ_r4-ww-vBHBnun/pub?output=csv", {
+  download: true,
+  header: true,
+  complete: function(results) {
+    var capa2023 = L.layerGroup();
+    results.data.forEach(function(row) {
+      if (row.LATITUD && row.LONGITUD) {
+        L.circleMarker([parseFloat(row.LATITUD), parseFloat(row.LONGITUD)], {
+          radius: 6,
+          fillColor: "#00ffff",
+          color: "#00ffff",
+          weight: 1,
+          opacity: 1,
+          fillOpacity: 0.8
+        }).bindPopup(`<b>Municipio:</b> ${row.MUNICIPIO}<br><b>Vereda:</b> ${row.VEREDA}<br><b>Aut. Sanitaria:</b> ${row.AUTORIZACION}`).addTo(capa2023);
+      }
+    });
+    capa2023.addTo(map);
+    baseMaps["Autorizaciones 2023"] = capa2023;
+  }
+});
+
+// Cargar CSV 2024
+Papa.parse("https://docs.google.com/spreadsheets/d/e/2PACX-1vR9MXHFzd2BkQkYDlCp3TS0vLQr6JCzV-prDxyNErrCiXHAnHnKjH95Z1es_jhYbRwnI2C5mZgW0Ccr/pub?output=csv", {
+  download: true,
+  header: true,
+  complete: function(results) {
+    var capa2024 = L.layerGroup();
+    results.data.forEach(function(row) {
+      if (row.LATITUD && row.LONGITUD) {
+        L.circleMarker([parseFloat(row.LATITUD), parseFloat(row.LONGITUD)], {
+          radius: 6,
+          fillColor: "#ffff00",
+          color: "#ffff00",
+          weight: 1,
+          opacity: 1,
+          fillOpacity: 0.8
+        }).bindPopup(`<b>Municipio:</b> ${row.MUNICIPIO}<br><b>Vereda:</b> ${row.VEREDA}<br><b>Aut. Sanitaria:</b> ${row.AUTORIZACION}`).addTo(capa2024);
+      }
+    });
+    capa2024.addTo(map);
+    baseMaps["Autorizaciones 2024"] = capa2024;
+  }
+});
 </script>
+<!-- PapaParse para leer CSV -->
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
 </body>
 </html>
