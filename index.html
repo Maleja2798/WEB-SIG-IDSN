@@ -1,121 +1,98 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
+  <title>Visor SIG Autorizaciones Sanitarias</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mapa de Autorizaciones Sanitarias de Agua en Nariño</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
-  <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet-minimap/dist/Control.MiniMap.min.css" />
-  <script src="https://unpkg.com/leaflet-minimap/dist/Control.MiniMap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-  <style>/*...ESTILOS MANTENIDOS COMO TU DIJISTE...*/</style>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    body { margin: 0; background: black; font-family: 'Arial Narrow', sans-serif; color: white; }
+    #map { height: 90vh; }
+    h1 { text-align: center; padding: 10px; font-size: 24px; }
+    .botones { text-align: center; margin-bottom: 10px; }
+    .botones button {
+      background: transparent;
+      border: 1px solid white;
+      color: white;
+      padding: 8px 16px;
+      margin: 0 5px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .botones button:hover { background: white; color: black; }
+  </style>
 </head>
 <body>
-  <h1>MAPA DE AUTORIZACIONES SANITARIAS DE AGUA EN NARIÑO</h1>
-  <div id="map"></div>
-  <div id="botones-anio">
-    <div class="boton-anio" onclick="mostrarCapa(2023)">2023</div>
-    <div class="boton-anio" onclick="mostrarCapa(2024)">2024</div>
+  <h1>Visor SIG - Autorizaciones Sanitarias de Agua</h1>
+  <div class="botones">
+    <button onclick="mostrarDatos(2023)">2023</button>
+    <button onclick="mostrarDatos(2024)">2024</button>
   </div>
+  <div id="map"></div>
 
-<script>
-  var map = L.map('map', { zoomControl: false }).setView([1.289, -77.29], 8);
-  var baseMaps = { /*...MANTENIDO IGUAL...*/ };
-  L.control.layers(baseMaps, null, { position: 'topright' }).addTo(map);
-  L.control.zoom({ position: 'topright' }).addTo(map);
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script>
+    const map = L.map('map').setView([1.2, -77.3], 8);
 
-  fetch('https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/Munip_Nari%C3%B1o.geojson')
-    .then(response => response.json())
-    .then(data => {
-      var geojsonLayer = L.geoJson(data, {
-        style: function() {
-          return {
-            color: 'white', weight: 1,
-            fillColor: getRandomBlueColor(), fillOpacity: 0.7
-          };
-        },
-        onEachFeature: function(feature, layer) {
-          var nombreMunicipio = feature.properties.NOMBRE_ENT || "Sin nombre";
-          layer.bindPopup("<b>MUNICIPIO:</b> <span style='font-family: Arial Narrow;'>" + nombreMunicipio + "</span>");
-          layer.on('click', function() {
-            geojsonLayer.resetStyle();
-            layer.setStyle({
-              color: 'yellow', weight: 3,
-              fillColor: 'orange', fillOpacity: 0.7
-            });
-            map.fitBounds(layer.getBounds());
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    let capa2023 = L.layerGroup().addTo(map);
+    let capa2024 = L.layerGroup();
+
+    function limpiarCapas() {
+      capa2023.clearLayers();
+      capa2024.clearLayers();
+    }
+
+    function cargarCSV(url, capa) {
+      Papa.parse(url, {
+        download: true,
+        header: true,
+        complete: function(result) {
+          result.data.forEach(fila => {
+            const lat = parseFloat(fila["LATITUD DECIMAL"]);
+            const lon = parseFloat(fila["LONGITUD DECIMAL"]);
+
+            if (!isNaN(lat) && !isNaN(lon)) {
+              const popup = `<b>${fila.MUNICIPIO}</b><br>
+                             Vereda/Corregimiento: ${fila["VEREDA O CORREGIMIENTO"] || 'N/D'}<br>
+                             Fuente: ${fila.FUENTE || 'N/D'}<br>
+                             <a href="#" onclick="mostrarDetalle('${fila.FUENTE || ''}', '${fila.MUNICIPIO || ''}')">Ver detalle</a>`;
+
+              L.circleMarker([lat, lon], {
+                radius: 6,
+                fillColor: '#00ffff',
+                color: '#00ffff',
+                weight: 1,
+                fillOpacity: 0.8
+              }).bindPopup(popup).addTo(capa);
+            }
           });
         }
-      }).addTo(map);
-    });
+      });
+    }
 
-  var northIcon = L.control({ position: "topleft" });
-  northIcon.onAdd = function(map) {
-    var div = L.DomUtil.create("div", "north-icon");
-    div.innerHTML = '<img src="https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/NORTE.png" width="50px"/>';
-    return div;
-  };
-  northIcon.addTo(map);
+    function mostrarDatos(anio) {
+      limpiarCapas();
+      map.eachLayer(layer => {
+        if (layer instanceof L.CircleMarker) map.removeLayer(layer);
+      });
 
-  L.control.scale({ position: "bottomright", metric: true, imperial: false }).addTo(map);
-  L.Control.geocoder({ defaultMarkGeocode: true }).addTo(map);
-  var miniMapLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
-  new L.Control.MiniMap(miniMapLayer, { toggleDisplay: true, position: 'bottomleft' }).addTo(map);
-
-  const capa2023 = L.layerGroup();
-  const capa2024 = L.layerGroup();
-
-  function cargarCSV(url, capaGrupo, color) {
-    Papa.parse(url, {
-      download: true,
-      header: true,
-      complete: function(results) {
-        const datos = results.data;
-        datos.forEach(row => {
-          const lat = parseFloat(row["LATITUD DECIMAL"]);
-          const lon = parseFloat(row["LONGITUD DECIMAL"]);
-          if (!isNaN(lat) && !isNaN(lon)) {
-            const marcador = L.marker([lat, lon], {
-              icon: L.divIcon({
-                className: 'custom-div-icon',
-                html: `<div style="background:${color};border-radius:10px;padding:2px 5px;font-family:'Arial Narrow';color:white">➔</div>`,
-                iconSize: [20, 20],
-                iconAnchor: [10, 10]
-              })
-            });
-            marcador.bindPopup(`
-              <div style="font-family:'Arial Narrow'; font-size:13px;">
-                <b>Municipio:</b> ${row["MUNICIPIO"] || row["MUNICIPIOS"]}<br>
-                <b>Corregimiento o Vereda:</b> ${row["CORREGIMIENTO O VEREDA"]}<br>
-                <b>Fuente:</b> ${row["FUENTE"]}<br>
-                <b>Nº Autorización:</b> ${row["NO. AUTORIZACION"]}<br>
-                <b>Fecha Autorización:</b> ${row["FECHA AUTORIZACION"]}<br>
-                ${row["ANEXO"] ? `<b>Anexo:</b> <a href="${row["ANEXO"]}" target="_blank">Ver</a>` : ""}
-              </div>`);
-            marcador.addTo(capaGrupo);
-          }
-        });
+      if (anio === 2023) {
+        cargarCSV("https://docs.google.com/spreadsheets/d/e/2PACX-1vQEIfxPwnfsK29s70MMP_eimRMxEIeTyWye0GIsUAslrRrWalcULyXwWlSiyZenbJ_r4-ww-vBHBnun/pub?output=csv", capa2023);
+        capa2023.addTo(map);
+      } else if (anio === 2024) {
+        cargarCSV("https://docs.google.com/spreadsheets/d/e/2PACX-1vR1J7LR3iLUUooYvEDJ_ZwbQOjABz08K_rqUgYt0qqcIA93iNHY5Hb9dCEgkq-iZbsQdLfgs6-V84D6/pub?output=csv", capa2024);
+        capa2024.addTo(map);
       }
-    });
-  }
+    }
 
-  function mostrarCapa(anio) {
-    map.removeLayer(capa2023);
-    map.removeLayer(capa2024);
-    if (anio === 2023) capa2023.addTo(map);
-    else if (anio === 2024) capa2024.addTo(map);
-  }
-
-  cargarCSV(
-    'https://docs.google.com/spreadsheets/d/e/2PACX-1vR9MXHFzd2BkQkYDlCp3TS0vLQr6JCzV-prDxyNErrCiXHAnHnKjH95Z1es_jhYbRwnI2C5mZgW0Ccr/pub?gid=0&single=true&output=csv',
-    capa2023, '#00bfff');
-
-  cargarCSV(
-    'https://docs.google.com/spreadsheets/d/e/2PACX-1vQEIfxPwnfsK29s70MMP_eimRMxEIeTyWye0GIsUAslrRrWalcULyXwWlSiyZenbJ_r4-ww-vBHBnun/pub?gid=0&single=true&output=csv',
-    capa2024, '#ff4500');
-</script>
+    function mostrarDetalle(fuente, municipio) {
+      alert(`Detalle de la fuente: ${fuente}\nMunicipio: ${municipio}`);
+    }
+  </script>
 </body>
 </html>
