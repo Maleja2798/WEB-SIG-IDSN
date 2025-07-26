@@ -185,9 +185,9 @@ function cargarCSV(url, layerGroup) {
       rows.forEach(line => {
         const cols = line.split(';');
         if (cols.length < 8) return;
-        const [municipio, vereda, fuente, no_aut, fecha, lat, lon, anexo] = cols;
+        const [MUNICIPIO, CORREGIMIENTO O VEREDA, FUENTE, NO. AUTORIZACION, FECHA AUTORIZACION, LATITUD DECIMAL, LONGITUD DECIMAL, ANEXO] = cols;
         if (!lat || !lon) return;
-        const key = `${municipio}-${vereda}`;
+        const key = `${MUNICIPIO}-${CORREGIMIENTO O VEREDA}`;
         if (!puntos[key]) {
           puntos[key] = {
             municipio,
@@ -197,15 +197,15 @@ function cargarCSV(url, layerGroup) {
             lon: parseFloat(lon.replace(',', '.'))
           };
         }
-        puntos[key].fuentes.push({ fuente, no_aut, fecha, anexo });
+        puntos[key].fuentes.push({ FUENTE, NO. AUTORIZACION, FECHA AUTORIZACION, ANEXO});
       });
 
-      Object.values(puntos).forEach(({ vereda, fuentes, lat, lon }) => {
-        let popup = `<div style='font-weight:bold;'>${vereda.toUpperCase()}</div>`;
+      Object.values(puntos).forEach(({ CORREGIMIENTO O VEREDA, FUENTE, LATITUD DECIMAL, LONGITUD DECIMAL }) => {
+        let popup = `<div style='font-weight:bold;'>${CORREGIMIENTO O VEREDA.toUpperCase()}</div>`;
         fuentes.forEach(f => {
-          popup += `<div style='cursor:pointer; color:cyan; font-weight:bold;' onclick=\"L.popup().setLatLng([${lat}, ${lon}]).setContent('<div style=\\'font-weight:bold;\\'>${f.fuente}</div><div><b>No. autorización:</b> ${f.no_aut.toLowerCase()}<br><b>Fecha autorización:</b> ${f.fecha.toLowerCase()}<br><b>Anexo:</b> <a href=\\'${f.anexo}\\' target=\\'_blank\\'>ver</a></div>').openOn(map)\">${f.fuente.charAt(0).toUpperCase() + f.fuente.slice(1).toLowerCase()}</div>`;
+          popup += `<div style='cursor:pointer; color:cyan; font-weight:bold;' onclick=\"L.popup().setLatLng([${LATITUD DECIMAL}, ${LONGITUD DECIMAL}]).setContent('<div style=\\'font-weight:bold;\\'>${f.fuente}</div><div><b>No. autorización:</b> ${f.no_aut.toLowerCase()}<br><b>Fecha autorización:</b> ${f.fecha.toLowerCase()}<br><b>Anexo:</b> <a href=\\'${f.anexo}\\' target=\\'_blank\\'>ver</a></div>').openOn(map)\">${f.fuente.charAt(0).toUpperCase() + f.fuente.slice(1).toLowerCase()}</div>`;
         });
-        L.marker([lat, lon]).bindPopup(popup).addTo(layerGroup);
+        L.marker([LATITUD DECIMAL, LONGITUD DECIMAL]).bindPopup(popup).addTo(layerGroup);
       });
     });
 }
