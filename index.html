@@ -1,250 +1,164 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mapa de Autorizaciones Sanitarias de Agua en Nariño</title>
-<!-- Estilos y librerías de Leaflet -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<!-- Librería de Leaflet Search -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
-<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-<!-- Librería de MiniMapa -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet-minimap/dist/Control.MiniMap.min.css" />
-<script src="https://unpkg.com/leaflet-minimap/dist/Control.MiniMap.min.js"></script>
-
-<style>
-body {
-  margin: 0;
-  font-family: "Arial Narrow", sans-serif;
-  background-color: black;
-  color: white;
-}
-h1 {
-  text-align: center;
-  background-color: black;
-  padding: 10px;
-  font-size: 24px;
-  font-weight: bold;
-}
-#map {
-  height: 90vh;
-  width: 100%;
-}
-.north-icon {
-  width: 50px;
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  z-index: 1000;
-}
-.leaflet-bar a {
-  background: rgba(0, 0, 0, 0.7) !important;
-  color: white !important;
-  border: none;
-  box-shadow: 2px 2px 5px rgba(255, 255, 255, 0.2);
-}
-.leaflet-bar a:hover {
-  background: rgba(50, 50, 50, 0.9) !important;
-}
-.leaflet-control-layers {
-  background: rgba(0, 0, 0, 0.7) !important;
-  color: white !important;
-  border-radius: 5px;
-}
-.leaflet-control-layers label {
-  color: white !important;
-}
-.leaflet-control-geocoder {
-  background: rgba(0, 0, 0, 0.7) !important;
-  border-radius: 5px;
-}
-.leaflet-control-geocoder-form input {
-  font-family: "Arial Narrow", sans-serif;
-  background: transparent;
-  color: white !important;
-  border: none;
-}
-.leaflet-control-geocoder-icon {
-  filter: invert(1);
-}
-.leaflet-control-geocoder-alternatives {
-  background: rgba(0, 0, 0, 0.7) !important;
-  font-family: "Arial Narrow", sans-serif;
-  color: white !important;
-}
-.leaflet-control-geocoder-alternatives a {
-  background: transparent !important;
-  color: white !important;
-}
-.leaflet-control-geocoder-alternatives a:hover {
-  background: rgba(255, 255, 255, 0.2) !important;
-}
-#botones-anio {
-  position: absolute;
-  bottom: 40px;
-  right: 10px;
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-.boton-anio {
-  background: rgba(0,0,0,0.6);
-  border: 1px solid white;
-  padding: 6px 12px;
-  color: white;
-  font-family: "Arial Narrow", sans-serif;
-  border-radius: 5px;
-  cursor: pointer;
-  text-align: center;
-}
-.boton-anio:hover {
-  background: rgba(255,255,255,0.1);
-}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mapa de Autorizaciones Sanitarias de Agua en Nariño</title>
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet/dist/leaflet.css"
+  />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css"
+  />
+  <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet-minimap/dist/Control.MiniMap.min.css"
+  />
+  <script src="https://unpkg.com/leaflet-minimap/dist/Control.MiniMap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Arial Narrow", sans-serif;
+      background-color: black;
+      color: white;
+    }
+    h1 {
+      text-align: center;
+      background-color: black;
+      padding: 10px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    #map {
+      height: 90vh;
+      width: 100%;
+    }
+    #botones-anio {
+      position: absolute;
+      bottom: 40px;
+      right: 10px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .boton-anio {
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid white;
+      padding: 6px 12px;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      text-align: center;
+    }
+    .boton-anio:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+  </style>
 </head>
 <body>
-<h1>MAPA DE AUTORIZACIONES SANITARIAS DE AGUA EN NARIÑO</h1>
-<div id="map"></div>
-<div id="botones-anio">
-  <div class="boton-anio" onclick="mostrar(2023)">2023</div>
-  <div class="boton-anio" onclick="mostrar(2024)">2024</div>
-</div>
-<script>
-var map = L.map('map', { zoomControl: false }).setView([1.289, -77.29], 8);
+  <h1>MAPA DE AUTORIZACIONES SANITARIAS DE AGUA EN NARIÑO</h1>
+  <div id="map"></div>
+  <div id="botones-anio">
+    <div class="boton-anio" onclick="mostrarCapa(2023)">2023</div>
+    <div class="boton-anio" onclick="mostrarCapa(2024)">2024</div>
+  </div>
 
-var baseMaps = {
-  "Mapa Estándar": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; OpenStreetMap contributors'
-  }).addTo(map),
-  "Satélite (ESRI)": L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    attribution: 'Tiles &copy; Esri'
-  }),
-  "Topográfico": L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; OpenTopoMap contributors'
-  })
-};
-L.control.layers(baseMaps, null, { position: 'topright' }).addTo(map);
-L.control.zoom({ position: 'topright' }).addTo(map);
-
-function getRandomBlueColor() {
-  let blueValue = Math.floor(Math.random() * 100) + 150;
-  let greenValue = Math.floor(Math.random() * 100) + 100;
-  return `rgb(0, ${greenValue}, ${blueValue})`;
-}
-
-fetch('https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/Munip_Nari%C3%B1o.geojson')
-  .then(response => response.json())
-  .then(data => {
-    var geojsonLayer = L.geoJson(data, {
-      style: () => ({
-        color: 'white',
-        weight: 1,
-        fillColor: getRandomBlueColor(),
-        fillOpacity: 0.7
+  <script>
+    // Inicialización básica del mapa
+    const map = L.map("map", { zoomControl: false }).setView([1.289, -77.29], 8);
+    const baseMaps = {
+      "Mapa Estándar": L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "&copy; OpenStreetMap contributors",
+      }).addTo(map),
+      "Satélite (ESRI)": L.tileLayer("https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
+        attribution: "Tiles &copy; Esri",
       }),
-      onEachFeature: function(feature, layer) {
-        var nombreMunicipio = feature.properties.NOMBRE_ENT || "Sin nombre";
-        layer.bindPopup("<b>MUNICIPIO:</b> <span style='font-family: Arial Narrow;'>" + nombreMunicipio + "</span>");
-        layer.on('click', function() {
-          geojsonLayer.resetStyle();
-          layer.setStyle({ color: 'yellow', weight: 3, fillColor: 'orange', fillOpacity: 0.7 });
-          map.fitBounds(layer.getBounds());
-        });
-      }
+      "Topográfico": L.tileLayer("https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", {
+        attribution: "&copy; OpenTopoMap contributors",
+      }),
+    };
+    L.control.layers(baseMaps, null, { position: "topright" }).addTo(map);
+    L.control.zoom({ position: "topright" }).addTo(map);
+    L.control.scale({ position: "bottomright", metric: true, imperial: false }).addTo(map);
+    L.Control.geocoder({ defaultMarkGeocode: true }).on("markgeocode", e => {
+      map.setView(e.geocode.center, 12);
     }).addTo(map);
-  })
-  .catch(error => console.error('Error cargando el GeoJSON:', error));
+    document.querySelector(".leaflet-control-geocoder-icon").title = "Buscar";
+    new L.Control.MiniMap(
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"),
+      { toggleDisplay: true, position: "bottomleft" }
+    ).addTo(map);
 
-L.control.scale({ position: "bottomright", metric: true, imperial: false }).addTo(map);
+    // Links CSV públicos
+    const data2023 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEIfxPwnfsK29s70MMP_eimRMxEIeTyWye0GIsUAslrRrWalcULyXwWlSiyZenbJ_r4-ww-vBHBnun/pub?output=csv";
+    const data2024 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR9MXHFzd2BkQkYDlCp3TS0vLQr6JCzV-prDxyNErrCiXHAnHnKjH95Z1es_jhYbRwnI2C5mZgW0Ccr/pub?output=csv";
 
-L.Control.geocoder({ defaultMarkGeocode: true })
-  .on('markgeocode', function(e) {
-    map.setView(e.geocode.center, 12);
-  }).addTo(map);
+    const markers = {
+      2023: L.layerGroup(),
+      2024: L.layerGroup()
+    };
 
-document.querySelector(".leaflet-control-geocoder-icon").title = "Buscar";
+    function cargarCsv(year, url) {
+      Papa.parse(url, {
+        download: true,
+        header: true,
+        skipEmptyLines: true,
+        complete: results => {
+          const puntos = {};
+          results.data.forEach(row => {
+            const vereda = row["CORREGIMIENTO O VEREDA"]?.trim();
+            const lat = parseFloat((row["LATITUD DECIMAL"] || "").replace(",", "."));
+            const lon = parseFloat((row["LONGITUD DECIMAL"] || "").replace(",", "."));
+            if (!vereda || isNaN(lat) || isNaN(lon)) return;
+            const key = vereda;
+            if (!puntos[key]) puntos[key] = { vereda, lat, lon, fuentes: [] };
+            puntos[key].fuentes.push({
+              fuente: row["FUENTE"]?.trim(),
+              no_aut: row["NO. AUTORIZACION"]?.trim(),
+              fecha: row["FECHA AUTORIZACION"]?.trim(),
+              anexo: row["ANEXO"]?.trim()
+            });
+          });
+          Object.values(puntos).forEach(p => {
+            const contentVereda = `<div style="font-weight:bold;">${p.vereda.toUpperCase()}</div>` +
+              p.fuentes.map(f => {
+                const tituloFuente = f.fuente?.charAt(0).toUpperCase() + f.fuente?.slice(1).toLowerCase();
+                const json = JSON.stringify(f).replace(/"/g, '&quot;');
+                return `<div style="cursor:pointer;color:cyan;font-weight:bold;" onclick="showFuente(${p.lat}, ${p.lon}, '${json}')">${tituloFuente}</div>`;
+              }).join("");
+            L.marker([p.lat, p.lon]).bindPopup(contentVereda).addTo(markers[year]);
+          });
+        },
+        error: err => console.error("Error CSV:", err)
+      });
+    }
 
-var miniMapLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
-new L.Control.MiniMap(miniMapLayer, { toggleDisplay: true, position: 'bottomleft' }).addTo(map);
+    function showFuente(lat, lon, json) {
+      const f = JSON.parse(json);
+      const content = `<div style="font-weight:bold;">${f.fuente}</div>
+        <div><b>No. autorización:</b> ${f.no_aut.toLowerCase()}</div>
+        <div><b>Fecha autorización:</b> ${f.fecha.toLowerCase()}</div>
+        <div><b>Anexo:</b> <a href="${f.anexo}" target="_blank">ver</a></div>`;
+      L.popup({ maxWidth: 300 }).setLatLng([lat, lon]).setContent(content).openOn(map);
+    }
 
-<!-- Incluye PapaParse -->
-<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    cargarCsv(2023, data2023);
+    cargarCsv(2024, data2024);
 
-<script>
-  function cargarCSVconPapa(url, layerGroup) {
-    Papa.parse(url, {
-      download: true,
-      header: true,
-      skipEmptyLines: true,
-      dynamicTyping: false,
-      complete: function(results) {
-        const puntos = {};
-        results.data.forEach(row => {
-          const municipio = row['MUNICIPIO'] || '';
-          const vereda = row['CORREGIMIENTO O VEREDA'] || '';
-          const fuente = row['FUENTE'] || '';
-          const no_aut = row['NO. AUTORIZACION'] || '';
-          const fecha = row['FECHA AUTORIZACION'] || '';
-          const latRaw = row['LATITUD DECIMAL'] || '';
-          const lonRaw = row['LONGITUD DECIMAL'] || '';
-          const anexo = row['ANEXO'] || '';
+    function mostrarCapa(year) {
+      map.removeLayer(markers[2023]);
+      map.removeLayer(markers[2024]);
+      map.addLayer(markers[year]);
+    }
 
-          const lat = parseFloat(latRaw.toString().replace(',', '.'));
-          const lon = parseFloat(lonRaw.toString().replace(',', '.'));
-          if (!vereda || isNaN(lat) || isNaN(lon)) return;
-
-          const key = municipio + '||' + vereda;
-          if (!puntos[key]) {
-            puntos[key] = { vereda, lat, lon, fuentes: [] };
-          }
-          puntos[key].fuentes.push({ fuente, no_aut, fecha, anexo });
-        });
-
-        Object.values(puntos).forEach(p => {
-          const popupVereda = `<div style="font-weight:bold;">${p.vereda.toUpperCase()}</div>` +
-            p.fuentes.map(f => {
-              const nombreFuente = f.fuente.charAt(0).toUpperCase() + f.fuente.slice(1).toLowerCase();
-              return `<div style="cursor:pointer;color:cyan;font-weight:bold;"
-                        onclick="showFuentePopup(${p.lat}, ${p.lon}, ${
-                          JSON.stringify(f).replace(/"/g, '&quot;')
-                        })">${nombreFuente}</div>`;
-            }).join('');
-          L.marker([p.lat, p.lon]).bindPopup(popupVereda).addTo(layerGroup);
-        });
-      },
-      error: function(err) {
-        console.error('Error leyendo CSV:', err);
-      }
-    });
-  }
-
-  function showFuentePopup(lat, lon, f) {
-    const content = `<div style="font-weight:bold;">${f.fuente}</div>
-      <div><b>No. autorización:</b> ${f.no_aut.toLowerCase()}</div>
-      <div><b>Fecha autorización:</b> ${f.fecha.toLowerCase()}</div>
-      <div><b>Anexo:</b> <a href="${f.anexo}" target="_blank">ver</a></div>`;
-    L.popup({ maxWidth: 300 })
-      .setLatLng([lat, lon])
-      .setContent(content)
-      .openOn(map);
-  }
-
-  // Inicialización:
-  const markers2023 = L.layerGroup().addTo(map);
-  const markers2024 = L.layerGroup();
-  cargarCSVconPapa(data2023, markers2023);
-  cargarCSVconPapa(data2024, markers2024);
-
-  function mostrar(anio) {
-    map.removeLayer(markers2023);
-    map.removeLayer(markers2024);
-    if (anio === 2023) map.addLayer(markers2023);
-    if (anio === 2024) map.addLayer(markers2024);
-  }
-  
-</script>
+    // Mostrar 2023 por defecto
+    mostrarCapa(2023);
+  </script>
 </body>
 </html>
