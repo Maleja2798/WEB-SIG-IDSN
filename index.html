@@ -170,55 +170,81 @@ document.querySelector(".leaflet-control-geocoder-icon").title = "Buscar";
 var miniMapLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
 new L.Control.MiniMap(miniMapLayer, { toggleDisplay: true, position: 'bottomleft' }).addTo(map);
 
-var data2023 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQEIfxPwnfsK29s70MMP_eimRMxEIeTyWye0GIsUAslrRrWalcULyXwWlSiyZenbJ_r4-ww-vBHBnun/pub?output=csv';
-var data2024 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR9MXHFzd2BkQkYDlCp3TS0vLQr6JCzV-prDxyNErrCiXHAnHnKjH95Z1es_jhYbRwnI2C5mZgW0Ccr/pub?output=csv';
+<!-- Incluye PapaParse -->
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
-var markers2023 = L.layerGroup().addTo(map);
-var markers2024 = L.layerGroup();
+<script>
+  function cargarCSVconPapa(url, layerGroup) {
+    Papa.parse(url, {
+      download: true,
+      header: true,
+      skipEmptyLines: true,
+      dynamicTyping: false,
+      complete: function(results) {
+        const puntos = {};
+        results.data.forEach(row => {
+          const municipio = row['MUNICIPIO'] || '';
+          const vereda = row['CORREGIMIENTO O VEREDA'] || '';
+          const fuente = row['FUENTE'] || '';
+          const no_aut = row['NO. AUTORIZACION'] || '';
+          const fecha = row['FECHA AUTORIZACION'] || '';
+          const latRaw = row['LATITUD DECIMAL'] || '';
+          const lonRaw = row['LONGITUD DECIMAL'] || '';
+          const anexo = row['ANEXO'] || '';
 
-function cargarCSV(url, layerGroup) {
-  fetch(url)
-    .then(res => res.text())
-    .then(csv => {
-      const rows = csv.split('\n').slice(1);
-      const puntos = {};
-      rows.forEach(line => {
-        const cols = line.split(';');
-        if (cols.length < 8) return;
-        const [MUNICIPIO, CORREGIMIENTO O VEREDA, FUENTE, NO. AUTORIZACION, FECHA AUTORIZACION, LATITUD DECIMAL, LONGITUD DECIMAL, ANEXO] = cols;
-        if (!lat || !lon) return;
-        const key = `${MUNICIPIO}-${CORREGIMIENTO O VEREDA}`;
-        if (!puntos[key]) {
-          puntos[key] = {
-            municipio,
-            vereda,
-            fuentes: [],
-            lat: parseFloat(lat.replace(',', '.')),
-            lon: parseFloat(lon.replace(',', '.'))
-          };
-        }
-        puntos[key].fuentes.push({ FUENTE, NO. AUTORIZACION, FECHA AUTORIZACION, ANEXO});
-      });
+          const lat = parseFloat(latRaw.toString().replace(',', '.'));
+          const lon = parseFloat(lonRaw.toString().replace(',', '.'));
+          if (!vereda || isNaN(lat) || isNaN(lon)) return;
 
-      Object.values(puntos).forEach(({ CORREGIMIENTO O VEREDA, FUENTE, LATITUD DECIMAL, LONGITUD DECIMAL }) => {
-        let popup = `<div style='font-weight:bold;'>${CORREGIMIENTO O VEREDA.toUpperCase()}</div>`;
-        fuentes.forEach(f => {
-          popup += `<div style='cursor:pointer; color:cyan; font-weight:bold;' onclick=\"L.popup().setLatLng([${LATITUD DECIMAL}, ${LONGITUD DECIMAL}]).setContent('<div style=\\'font-weight:bold;\\'>${f.fuente}</div><div><b>No. autorización:</b> ${f.no_aut.toLowerCase()}<br><b>Fecha autorización:</b> ${f.fecha.toLowerCase()}<br><b>Anexo:</b> <a href=\\'${f.anexo}\\' target=\\'_blank\\'>ver</a></div>').openOn(map)\">${f.fuente.charAt(0).toUpperCase() + f.fuente.slice(1).toLowerCase()}</div>`;
+          const key = municipio + '||' + vereda;
+          if (!puntos[key]) {
+            puntos[key] = { vereda, lat, lon, fuentes: [] };
+          }
+          puntos[key].fuentes.push({ fuente, no_aut, fecha, anexo });
         });
-        L.marker([LATITUD DECIMAL, LONGITUD DECIMAL]).bindPopup(popup).addTo(layerGroup);
-      });
+
+        Object.values(puntos).forEach(p => {
+          const popupVereda = `<div style="font-weight:bold;">${p.vereda.toUpperCase()}</div>` +
+            p.fuentes.map(f => {
+              const nombreFuente = f.fuente.charAt(0).toUpperCase() + f.fuente.slice(1).toLowerCase();
+              return `<div style="cursor:pointer;color:cyan;font-weight:bold;"
+                        onclick="showFuentePopup(${p.lat}, ${p.lon}, ${
+                          JSON.stringify(f).replace(/"/g, '&quot;')
+                        })">${nombreFuente}</div>`;
+            }).join('');
+          L.marker([p.lat, p.lon]).bindPopup(popupVereda).addTo(layerGroup);
+        });
+      },
+      error: function(err) {
+        console.error('Error leyendo CSV:', err);
+      }
     });
-}
+  }
 
-cargarCSV(data2023, markers2023);
-cargarCSV(data2024, markers2024);
+  function showFuentePopup(lat, lon, f) {
+    const content = `<div style="font-weight:bold;">${f.fuente}</div>
+      <div><b>No. autorización:</b> ${f.no_aut.toLowerCase()}</div>
+      <div><b>Fecha autorización:</b> ${f.fecha.toLowerCase()}</div>
+      <div><b>Anexo:</b> <a href="${f.anexo}" target="_blank">ver</a></div>`;
+    L.popup({ maxWidth: 300 })
+      .setLatLng([lat, lon])
+      .setContent(content)
+      .openOn(map);
+  }
 
-function mostrar(anio) {
-  map.removeLayer(markers2023);
-  map.removeLayer(markers2024);
-  if (anio === 2023) map.addLayer(markers2023);
-  else if (anio === 2024) map.addLayer(markers2024);
-}
+  // Inicialización:
+  const markers2023 = L.layerGroup().addTo(map);
+  const markers2024 = L.layerGroup();
+  cargarCSVconPapa(data2023, markers2023);
+  cargarCSVconPapa(data2024, markers2024);
+
+  function mostrar(anio) {
+    map.removeLayer(markers2023);
+    map.removeLayer(markers2024);
+    if (anio === 2023) map.addLayer(markers2023);
+    if (anio === 2024) map.addLayer(markers2024);
+  }
+  
 </script>
 </body>
 </html>
