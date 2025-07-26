@@ -16,92 +16,92 @@
 
 <style>
 body {
-margin: 0;
-font-family: "Arial Narrow", sans-serif;
-background-color: black;
-color: white;
+  margin: 0;
+  font-family: "Arial Narrow", sans-serif;
+  background-color: black;
+  color: white;
 }
 h1 {
-text-align: center;
-background-color: black;
-padding: 10px;
-font-size: 24px;
-font-weight: bold;
+  text-align: center;
+  background-color: black;
+  padding: 10px;
+  font-size: 24px;
+  font-weight: bold;
 }
 #map {
-height: 90vh;
-width: 100%;
+  height: 90vh;
+  width: 100%;
 }
 .north-icon {
-width: 50px;
-position: absolute;
-top: 10px;
-left: 10px;
-z-index: 1000;
+  width: 50px;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
 }
 .leaflet-bar a {
-background: rgba(0, 0, 0, 0.7) !important;
-color: white !important;
-border: none;
-box-shadow: 2px 2px 5px rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.7) !important;
+  color: white !important;
+  border: none;
+  box-shadow: 2px 2px 5px rgba(255, 255, 255, 0.2);
 }
 .leaflet-bar a:hover {
-background: rgba(50, 50, 50, 0.9) !important;
+  background: rgba(50, 50, 50, 0.9) !important;
 }
 .leaflet-control-layers {
-background: rgba(0, 0, 0, 0.7) !important;
-color: white !important;
-border-radius: 5px;
+  background: rgba(0, 0, 0, 0.7) !important;
+  color: white !important;
+  border-radius: 5px;
 }
 .leaflet-control-layers label {
-color: white !important;
+  color: white !important;
 }
 .leaflet-control-geocoder {
-background: rgba(0, 0, 0, 0.7) !important;
-border-radius: 5px;
+  background: rgba(0, 0, 0, 0.7) !important;
+  border-radius: 5px;
 }
 .leaflet-control-geocoder-form input {
-font-family: "Arial Narrow", sans-serif;
-background: transparent;
-color: white !important;
-border: none;
+  font-family: "Arial Narrow", sans-serif;
+  background: transparent;
+  color: white !important;
+  border: none;
 }
 .leaflet-control-geocoder-icon {
-filter: invert(1);
+  filter: invert(1);
 }
 .leaflet-control-geocoder-alternatives {
-background: rgba(0, 0, 0, 0.7) !important;
-font-family: "Arial Narrow", sans-serif;
-color: white !important;
+  background: rgba(0, 0, 0, 0.7) !important;
+  font-family: "Arial Narrow", sans-serif;
+  color: white !important;
 }
 .leaflet-control-geocoder-alternatives a {
-background: transparent !important;
-color: white !important;
+  background: transparent !important;
+  color: white !important;
 }
 .leaflet-control-geocoder-alternatives a:hover {
-background: rgba(255, 255, 255, 0.2) !important;
+  background: rgba(255, 255, 255, 0.2) !important;
 }
 #botones-anio {
-position: absolute;
-bottom: 40px;
-right: 10px;
-z-index: 1000;
-display: flex;
-flex-direction: column;
-gap: 5px;
+  position: absolute;
+  bottom: 40px;
+  right: 10px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
 .boton-anio {
-background: rgba(0,0,0,0.6);
-border: 1px solid white;
-padding: 6px 12px;
-color: white;
-font-family: "Arial Narrow", sans-serif;
-border-radius: 5px;
-cursor: pointer;
-text-align: center;
+  background: rgba(0,0,0,0.6);
+  border: 1px solid white;
+  padding: 6px 12px;
+  color: white;
+  font-family: "Arial Narrow", sans-serif;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
 }
 .boton-anio:hover {
-background: rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.1);
 }
 </style>
 </head>
@@ -109,154 +109,116 @@ background: rgba(255,255,255,0.1);
 <h1>MAPA DE AUTORIZACIONES SANITARIAS DE AGUA EN NARIÑO</h1>
 <div id="map"></div>
 <div id="botones-anio">
-  <div class="boton-anio" onclick="mostrarCapa(2023)">2023</div>
-  <div class="boton-anio" onclick="mostrarCapa(2024)">2024</div>
+  <div class="boton-anio" onclick="mostrar(2023)">2023</div>
+  <div class="boton-anio" onclick="mostrar(2024)">2024</div>
 </div>
 <script>
-var map = L.map('map', {
-zoomControl: false 
-}).setView([1.289, -77.29], 8);
+var map = L.map('map', { zoomControl: false }).setView([1.289, -77.29], 8);
 
 var baseMaps = {
-"Mapa Estándar": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-attribution: '&copy; OpenStreetMap contributors'
-}).addTo(map),
-"Satélite (ESRI)": L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-attribution: 'Tiles &copy; Esri'
-}),
-"Topográfico": L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-attribution: '&copy; OpenTopoMap contributors'
-})
+  "Mapa Estándar": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map),
+  "Satélite (ESRI)": L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    attribution: 'Tiles &copy; Esri'
+  }),
+  "Topográfico": L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenTopoMap contributors'
+  })
 };
 L.control.layers(baseMaps, null, { position: 'topright' }).addTo(map);
 L.control.zoom({ position: 'topright' }).addTo(map);
 
 function getRandomBlueColor() {
-let blueValue = Math.floor(Math.random() * 100) + 150;
-let greenValue = Math.floor(Math.random() * 100) + 100;
-return `rgb(0, ${greenValue}, ${blueValue})`;
+  let blueValue = Math.floor(Math.random() * 100) + 150;
+  let greenValue = Math.floor(Math.random() * 100) + 100;
+  return `rgb(0, ${greenValue}, ${blueValue})`;
 }
+
 fetch('https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/Munip_Nari%C3%B1o.geojson')
-.then(response => response.json())
-.then(data => {
-var geojsonLayer = L.geoJson(data, {
-style: function() {
-return {
-color: 'white',
-weight: 1,
-fillColor: getRandomBlueColor(),
-fillOpacity: 0.7
-};
-},
-onEachFeature: function(feature, layer) {
-var nombreMunicipio = feature.properties.NOMBRE_ENT || "Sin nombre";
-layer.bindPopup("<b>MUNICIPIO:</b> <span style='font-family: Arial Narrow;'>" + nombreMunicipio + "</span>");
-layer.on('click', function() {
-geojsonLayer.resetStyle();
-layer.setStyle({
-color: 'yellow',
-weight: 3,
-fillColor: 'orange',
-fillOpacity: 0.7
-});
-map.fitBounds(layer.getBounds());
-});
-}
-}).addTo(map);
-})
-.catch(error => console.error('Error cargando el GeoJSON:', error));
+  .then(response => response.json())
+  .then(data => {
+    var geojsonLayer = L.geoJson(data, {
+      style: () => ({
+        color: 'white',
+        weight: 1,
+        fillColor: getRandomBlueColor(),
+        fillOpacity: 0.7
+      }),
+      onEachFeature: function(feature, layer) {
+        var nombreMunicipio = feature.properties.NOMBRE_ENT || "Sin nombre";
+        layer.bindPopup("<b>MUNICIPIO:</b> <span style='font-family: Arial Narrow;'>" + nombreMunicipio + "</span>");
+        layer.on('click', function() {
+          geojsonLayer.resetStyle();
+          layer.setStyle({ color: 'yellow', weight: 3, fillColor: 'orange', fillOpacity: 0.7 });
+          map.fitBounds(layer.getBounds());
+        });
+      }
+    }).addTo(map);
+  })
+  .catch(error => console.error('Error cargando el GeoJSON:', error));
 
-var northIcon = L.control({ position: "topleft" });
-northIcon.onAdd = function(map) {
-var div = L.DomUtil.create("div", "north-icon");
-div.innerHTML = '<img src="https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/NORTE.png" width="50px"/>';
-return div;
-};
-northIcon.addTo(map);
+L.control.scale({ position: "bottomright", metric: true, imperial: false }).addTo(map);
 
-L.control.scale({
-position: "bottomright", 
-metric: true,
-imperial: false
-}).addTo(map);
-
-var geocoder = L.Control.geocoder({
-defaultMarkGeocode: true
-}).on('markgeocode', function(e) {
-var latlng = e.geocode.center;
-map.setView(latlng, 12);
-}).addTo(map);
+L.Control.geocoder({ defaultMarkGeocode: true })
+  .on('markgeocode', function(e) {
+    map.setView(e.geocode.center, 12);
+  }).addTo(map);
 
 document.querySelector(".leaflet-control-geocoder-icon").title = "Buscar";
 
 var miniMapLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
-var miniMap = new L.Control.MiniMap(miniMapLayer, { toggleDisplay: true, position: 'bottomleft' }).addTo(map);
+new L.Control.MiniMap(miniMapLayer, { toggleDisplay: true, position: 'bottomleft' }).addTo(map);
 
- let data2023 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQEIfxPwnfsK29s70MMP_eimRMxEIeTyWye0GIsUAslrRrWalcULyXwWlSiyZenbJ_r4-ww-vBHBnun/pub?output=csv';
-    let data2024 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR9MXHFzd2BkQkYDlCp3TS0vLQr6JCzV-prDxyNErrCiXHAnHnKjH95Z1es_jhYbRwnI2C5mZgW0Ccr/pub?output=csv';
+var data2023 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQEIfxPwnfsK29s70MMP_eimRMxEIeTyWye0GIsUAslrRrWalcULyXwWlSiyZenbJ_r4-ww-vBHBnun/pub?output=csv';
+var data2024 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR9MXHFzd2BkQkYDlCp3TS0vLQr6JCzV-prDxyNErrCiXHAnHnKjH95Z1es_jhYbRwnI2C5mZgW0Ccr/pub?output=csv';
 
-    let markers2023 = L.layerGroup();
-    let markers2024 = L.layerGroup();
+var markers2023 = L.layerGroup().addTo(map);
+var markers2024 = L.layerGroup();
 
-    function cargarCSV(url, layerGroup) {
-      fetch(url)
-        .then(res => res.text())
-        .then(csv => {
-          const rows = csv.split('\n').slice(1);
-          const puntos = {};
+function cargarCSV(url, layerGroup) {
+  fetch(url)
+    .then(res => res.text())
+    .then(csv => {
+      const rows = csv.split('\n').slice(1);
+      const puntos = {};
+      rows.forEach(line => {
+        const cols = line.split(';');
+        if (cols.length < 8) return;
+        const [municipio, vereda, fuente, no_aut, fecha, lat, lon, anexo] = cols;
+        if (!lat || !lon) return;
+        const key = `${municipio}-${vereda}`;
+        if (!puntos[key]) {
+          puntos[key] = {
+            municipio,
+            vereda,
+            fuentes: [],
+            lat: parseFloat(lat.replace(',', '.')),
+            lon: parseFloat(lon.replace(',', '.'))
+          };
+        }
+        puntos[key].fuentes.push({ fuente, no_aut, fecha, anexo });
+      });
 
-          rows.forEach(line => {
-            const [municipio, vereda, fuente, no_aut, fecha, lat, lon, anexo] = line.split(';');
-            if (!lat || !lon) return;
-
-            const key = `${municipio}-${vereda}`;
-            if (!puntos[key]) {
-              puntos[key] = {
-                municipio, vereda, fuentes: [], lat: parseFloat(lat.replace(',', '.')), lon: parseFloat(lon.replace(',', '.'))
-              };
-            }
-            puntos[key].fuentes.push({ fuente, no_aut, fecha, anexo });
-          });
-
-          Object.values(puntos).forEach(({ municipio, vereda, fuentes, lat, lon }) => {
-            let popup = `<div class='titulo'>${vereda.toUpperCase()}</div>`;
-            fuentes.forEach((f, i) => {
-              popup += `<div class='subtitulo' style='cursor:pointer; color:cyan;' onclick="L.popup().setLatLng([${lat}, ${lon}]).setContent(` +
-                       "'" + `<div class='titulo'>${f.fuente}</div>` +
-                       `<div class='subtitulo'>No. autorización:</div> ${f.no_aut.toLowerCase()}<br>` +
-                       `<div class='subtitulo'>Fecha autorización:</div> ${f.fecha.toLowerCase()}<br>` +
-                       `<div class='subtitulo'>Anexo:</div> <a href='${f.anexo}' target='_blank'>ver</a>` + "'").openOn(map);">` +
-                       f.fuente.charAt(0).toUpperCase() + f.fuente.slice(1).toLowerCase() + `</div>`;
-            });
-
-            L.marker([lat, lon])
-              .bindPopup(popup)
-              .addTo(layerGroup);
-          });
+      Object.values(puntos).forEach(({ vereda, fuentes, lat, lon }) => {
+        let popup = `<div style='font-weight:bold;'>${vereda.toUpperCase()}</div>`;
+        fuentes.forEach(f => {
+          popup += `<div style='cursor:pointer; color:cyan; font-weight:bold;' onclick=\"L.popup().setLatLng([${lat}, ${lon}]).setContent('<div style=\\'font-weight:bold;\\'>${f.fuente}</div><div><b>No. autorización:</b> ${f.no_aut.toLowerCase()}<br><b>Fecha autorización:</b> ${f.fecha.toLowerCase()}<br><b>Anexo:</b> <a href=\\'${f.anexo}\\' target=\\'_blank\\'>ver</a></div>').openOn(map)\">${f.fuente.charAt(0).toUpperCase() + f.fuente.slice(1).toLowerCase()}</div>`;
         });
-    }
+        L.marker([lat, lon]).bindPopup(popup).addTo(layerGroup);
+      });
+    });
+}
 
-    cargarCSV(data2023, markers2023);
-    cargarCSV(data2024, markers2024);
+cargarCSV(data2023, markers2023);
+cargarCSV(data2024, markers2024);
 
-    const botones = L.control({ position: 'topright' });
-    botones.onAdd = function() {
-      const div = L.DomUtil.create('div', 'leaflet-bar');
-      div.innerHTML = `
-        <button onclick="mostrar(2023)">2023</button>
-        <button onclick="mostrar(2024)">2024</button>
-      `;
-      return div;
-    };
-    botones.addTo(map);
-
-    function mostrar(anio) {
-      map.removeLayer(markers2023);
-      map.removeLayer(markers2024);
-      if (anio === 2023) map.addLayer(markers2023);
-      else map.addLayer(markers2024);
-    }
-
+function mostrar(anio) {
+  map.removeLayer(markers2023);
+  map.removeLayer(markers2024);
+  if (anio === 2023) map.addLayer(markers2023);
+  else if (anio === 2024) map.addLayer(markers2024);
+}
 </script>
 </body>
 </html>
