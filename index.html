@@ -253,49 +253,70 @@ function cargarCsv(year, url) {
     complete: function (results) {
       const data = results.data;
 
-      data.forEach(row => {
-        const lat = parseFloat(row["LATITUD DECIMAL"].replace(",", "."));
-        const lng = parseFloat(row["LONGITUD DECIMAL"].replace(",", "."));
+      const agrupado = {};
 
-        if (!isNaN(lat) && !isNaN(lng)) {
-          <!-- Este bloque reemplaza la generación de popupContent dentro de cargarCsv -->
-const popupContent = `
-  <div style="font-family: 'Arial Narrow', sans-serif; font-size: 13px;">
-    <div style="font-weight: bold; text-transform: uppercase;">${row["MUNICIPIO"]}</div>
-    <div style="margin-top: 4px;">
-      <div style="font-weight: bold; text-transform: uppercase;">Vereda</div>
-      <div style="text-transform: capitalize;">${row["CORREGIMIENTO O VEREDA"]}</div>
-    </div>
-    <div style="margin-top: 6px;">
-      <div style="font-weight: bold; text-transform: uppercase;">Fuentes</div>
-      ${row["FUENTE"].split(';').map((fuente, idx) => {
-        const fuenteNombre = fuente.trim();
-        const fuenteData = {
-          fuente: fuenteNombre.toUpperCase(),
-          no_aut: row["NO. AUTORIZACION"].split(';')[idx]?.trim() || '',
-          fecha: row["FECHA AUTORIZACION"].split(';')[idx]?.trim() || '',
-          anexo: row["ANEXO"].split(';')[idx]?.trim() || ''
-        };
-        return `<a href="#" style="color: #00BFFF; display: block; margin-bottom: 2px;" onclick='showFuente(${lat}, ${lng}, ${JSON.stringify(JSON.stringify(fuenteData))})'>${fuenteNombre}</a>`;
-      }).join('')}
-    </div>
-  </div>
-`;
+data.forEach(row => {
+  const lat = parseFloat(row["LATITUD DECIMAL"].replace(",", "."));
+  const lng = parseFloat(row["LONGITUD DECIMAL"].replace(",", "."));
+  const key = `${lat}_${lng}`;
 
-          const marker = L.circleMarker([lat, lng], {
-  pane: "marcadores", // ✅ Forzar que esté en el pane superior
-  radius: 6,
-  color: "#63C5DA",
-  fillColor: "#63C5DA",
-  fillOpacity: 0.8,
-}).bindPopup(popupContent);
+  if (!isNaN(lat) && !isNaN(lng)) {
+    if (!agrupado[key]) {
+      agrupado[key] = {
+        municipio: row["MUNICIPIO"],
+        vereda: row["CORREGIMIENTO O VEREDA"],
+        lat,
+        lng,
+        fuentes: []
+      };
+    }
 
-          // Agregar al grupo correcto
-         if (markers[year]) {
-  markers[year].addLayer(marker);
-}
-        }
+    const fuentes = row["FUENTE"].split(';');
+    const autorizaciones = row["NO. AUTORIZACION"].split(';');
+    const fechas = row["FECHA AUTORIZACION"].split(';');
+    const anexos = row["ANEXO"].split(';');
+
+    fuentes.forEach((fuente, idx) => {
+      agrupado[key].fuentes.push({
+        fuente: fuente.trim(),
+        no_aut: autorizaciones[idx]?.trim() || '',
+        fecha: fechas[idx]?.trim() || '',
+        anexo: anexos[idx]?.trim() || ''
       });
+    });
+  }
+});
+
+// Crear un marcador por cada grupo
+Object.values(agrupado).forEach(entry => {
+  const popupContent = `
+    <div style="font-family: 'Arial Narrow', sans-serif; font-size: 13px;">
+      <div style="font-weight: bold; text-transform: uppercase;">${entry.municipio}</div>
+      <div style="margin-top: 4px;">
+        <div style="font-weight: bold; text-transform: uppercase;">Vereda</div>
+        <div style="text-transform: capitalize;">${entry.vereda}</div>
+      </div>
+      <div style="margin-top: 6px;">
+        <div style="font-weight: bold; text-transform: uppercase;">Fuentes</div>
+        ${entry.fuentes.map((f) => `
+          <a href="#" style="color: #00BFFF; display: block; margin-bottom: 2px;" onclick='showFuente(${entry.lat}, ${entry.lng}, ${JSON.stringify(JSON.stringify(f))})'>${f.fuente}</a>
+        `).join("")}
+      </div>
+    </div>`;
+
+  const marker = L.circleMarker([entry.lat, entry.lng], {
+    pane: "marcadores",
+    radius: 6,
+    color: "#63C5DA",
+    fillColor: "#63C5DA",
+    fillOpacity: 0.8,
+  }).bindPopup(popupContent);
+
+  if (markers[year]) {
+    markers[year].addLayer(marker);
+  }
+});
+
     },
     error: function (err) {
       console.error("Error al cargar el CSV de " + year, err);
