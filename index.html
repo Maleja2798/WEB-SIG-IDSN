@@ -271,11 +271,9 @@ function cargarCsv(year, url) {
           }).bindPopup(popupContent);
 
           // Agregar al grupo correcto
-          if (year === "2023") {
-            layer2023.addLayer(marker);
-          } else if (year === "2024") {
-            layer2024.addLayer(marker);
-          }
+         if (markers[year]) {
+  markers[year].addLayer(marker);
+}
         }
       });
     },
