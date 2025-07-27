@@ -144,50 +144,75 @@ background: rgba(255, 255, 255, 0.2) !important;
       { toggleDisplay: true, position: "bottomleft" }
     ).addTo(map);
 
-// Definir la función de estilo con colores azul pastel variados
-function estiloMunicipios(feature) {
-    const coloresPastel = [
-        "#cce5ff", "#99ccff", "#b3e0ff", "#66b2ff", "#a3d1ff", 
-        "#cce0ff", "#b3d9ff", "#99c2ff", "#cce6ff", "#b3e6ff"
-    ];
-        let index = Math.floor(Math.random() * coloresPastel.length); // color aleatorio si no hay campo único
-    return {
-        fillColor: coloresPastel[index],
-        weight: 1.5,
-        opacity: 5,
-        color: 'white',
-        fillOpacity: 0.8
-    };
+// Define estilo base
+function estiloBase(feature) {
+  return {
+    color: "white",
+    weight: 1,
+    fillOpacity: 0.4,
+    fillColor: getColor(feature.properties.NOMBRE_ENT) // función de colores
+  };
 }
 
-// Función para formatear el nombre del municipio
-function formatearNombre(nombre) {
-    return nombre.charAt(0).toUpperCase() + nombre.slice(1).toLowerCase();
+// Función para obtener color pastel variado
+function getColor(nombre) {
+  const colores = [
+    "#A0C4FF", "#BDB2FF", "#FFC6FF", "#9BF6FF",
+    "#CAFFBF", "#FDFFB6", "#FFD6A5", "#FFADAD"
+  ];
+  let hash = 0;
+  for (let i = 0; i < nombre.length; i++) {
+    hash = nombre.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const index = Math.abs(hash % colores.length);
+  return colores[index];
 }
 
-// Definir la función para cada municipio
+// Resalta en amarillo
+function highlightFeature(e) {
+  const layer = e.target;
+  layer.setStyle({
+    weight: 3,
+    color: '#FFFF00',  // contorno amarillo
+    fillOpacity: 0.7
+  });
+  layer.bringToFront();
+}
+
+// Vuelve al estilo original
+function resetHighlight(e) {
+  geojsonLayer.resetStyle(e.target);
+}
+
+// Muestra popup
 function onEachFeature(feature, layer) {
-    const nombre = feature.properties.NOMBRE || "Desconocido";
-    const nombreFormateado = formatearNombre(nombre);
-    const popupContent = `
-        <div style="font-family: Arial Narrow; font-size: 14px;">
-            <b style="text-transform: uppercase;">MUNICIPIO</b><br>
-            ${nombreFormateado}
-        </div>
-    `;
-    layer.bindPopup(popupContent);
+  const nombreMunicipio = feature.properties.NOMBRE_ENT;
+  const nombreFormateado = nombreMunicipio
+    ? nombreMunicipio.charAt(0).toUpperCase() + nombreMunicipio.slice(1).toLowerCase()
+    : 'Desconocido';
+
+  layer.bindPopup(`<b>MUNICIPIO</b><br>${nombreFormateado}`);
+
+  layer.on({
+    mouseover: highlightFeature,
+    mouseout: resetHighlight,
+    click: function () {
+      layer.openPopup();
+    }
+  });
 }
 
-// Cargar el GeoJSON de municipios
-fetch('https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/ae9b87555c2eb21da8925a4f9e5e35f4cc7c5420/Munip_Nari%C3%B1o.geojson')
-    .then(res => res.json())
-    .then(data => {
-        L.geoJson(data, {
-            style: estiloMunicipios,
-            onEachFeature: onEachFeature
-        }).addTo(map);
-    });
+// Carga el GeoJSON
+fetch("https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/Municipios_Nari%C3%B1o.geojson")
+  .then(response => response.json())
+  .then(data => {
+    geojsonLayer = L.geoJson(data, {
+      style: estiloBase,
+      onEachFeature: onEachFeature
+    }).addTo(map);
+  });
 
+let geojsonLayer;
 
     // Links CSV públicos
     const data2023 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEIfxPwnfsK29s70MMP_eimRMxEIeTyWye0GIsUAslrRrWalcULyXwWlSiyZenbJ_r4-ww-vBHBnun/pub?output=csv";
