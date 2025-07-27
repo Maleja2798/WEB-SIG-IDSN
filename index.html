@@ -38,6 +38,55 @@
       height: 90vh;
       width: 100%;
     }
+    .north-icon {
+width: 50px;
+position: absolute;
+top: 10px;
+left: 10px;
+z-index: 1000;
+}
+.leaflet-bar a {
+background: rgba(0, 0, 0, 0.7) !important;
+color: white !important;
+border: none;
+box-shadow: 2px 2px 5px rgba(255, 255, 255, 0.2);
+}
+.leaflet-bar a:hover {
+background: rgba(50, 50, 50, 0.9) !important;
+}
+.leaflet-control-layers {
+background: rgba(0, 0, 0, 0.7) !important;
+color: white !important;
+border-radius: 5px;
+}
+.leaflet-control-layers label {
+color: white !important;
+}
+.leaflet-control-geocoder {
+background: rgba(0, 0, 0, 0.7) !important;
+border-radius: 5px;
+}
+.leaflet-control-geocoder-form input {
+font-family: "Arial Narrow", sans-serif;
+background: transparent;
+color: white !important;
+border: none;
+}
+.leaflet-control-geocoder-icon {
+filter: invert(1);
+}
+.leaflet-control-geocoder-alternatives {
+background: rgba(0, 0, 0, 0.7) !important;
+font-family: "Arial Narrow", sans-serif;
+color: white !important;
+}
+.leaflet-control-geocoder-alternatives a {
+background: transparent !important;
+color: white !important;
+}
+.leaflet-control-geocoder-alternatives a:hover {
+background: rgba(255, 255, 255, 0.2) !important;
+}
     #botones-anio {
       position: absolute;
       bottom: 40px;
@@ -159,6 +208,7 @@
 
     // Mostrar 2023 por defecto
     mostrarCapa(2023);
+    mostrarCapa(2024);
   </script>
 </body>
 </html>
