@@ -243,6 +243,7 @@ fetch("https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/Municipios
         download: true,
         header: true,
         skipEmptyLines: true,
+        delimiter: ";",  
         complete: results => {
           const puntos = {};
           results.data.forEach(row => {
