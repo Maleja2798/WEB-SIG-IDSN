@@ -238,41 +238,53 @@ fetch("https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/Municipios
       2024: L.layerGroup()
     };
 
-    function cargarCsv(year, url) {
-      Papa.parse(url, {
-        download: true,
-        header: true,
-        skipEmptyLines: true,
-        delimiter: ",",  
-        complete: results => {
-          const puntos = {};
-          results.data.forEach(row => {
-            const vereda = row["CORREGIMIENTO O VEREDA"]?.trim();
-            const lat = parseFloat((row["LATITUD DECIMAL"] || "").replace(",", "."));
-            const lon = parseFloat((row["LONGITUD DECIMAL"] || "").replace(",", "."));
-            if (!vereda || isNaN(lat) || isNaN(lon)) return;
-            const key = vereda;
-            if (!puntos[key]) puntos[key] = { vereda, lat, lon, fuentes: [] };
-            puntos[key].fuentes.push({
-              fuente: row["FUENTE"]?.trim(),
-              no_aut: row["NO. AUTORIZACION"]?.trim(),
-              fecha: row["FECHA AUTORIZACION"]?.trim(),
-              anexo: row["ANEXO"]?.trim()
-            });
-          });
-          Object.values(puntos).forEach(p => {
-            const contentVereda = `<div style="font-weight:bold;">${p.vereda.toUpperCase()}</div>` +
-              p.fuentes.map(f => {
-                const tituloFuente = f.fuente?.charAt(0).toUpperCase() + f.fuente?.slice(1).toLowerCase();
-                const json = JSON.stringify(f).replace(/"/g, '&quot;');
-                return `<div style="cursor:pointer;color:cyan;font-weight:bold;" onclick="showFuente(${p.lat}, ${p.lon}, '${json}')">${tituloFuente}</div>`;
-              }).join("");
-            L.marker([p.lat, p.lon]).bindPopup(contentVereda).addTo(markers[year]);
-          });
-        },
-        error: err => console.error("Error CSV:", err)
+function cargarCsv(year, url) {
+  Papa.parse(url, {
+    download: true,
+    header: true,
+    skipEmptyLines: true,
+    delimiter: ";",
+    complete: function (results) {
+      const data = results.data;
+
+      data.forEach(row => {
+        const lat = parseFloat(row["LATITUD DECIMAL"].replace(",", "."));
+        const lng = parseFloat(row["LONGITUD DECIMAL"].replace(",", "."));
+
+        if (!isNaN(lat) && !isNaN(lng)) {
+          const popupContent = `
+            <div style="font-family: Arial Narrow; font-size: 13px;">
+              <strong>Municipio:</strong> ${row["MUNICIPIO"]}<br>
+              <strong>Vereda:</strong> ${row["CORREGIMIENTO O VEREDA"]}<br>
+              <strong>Fuente:</strong> ${row["FUENTE"]}<br>
+              <strong>No. Autorización:</strong> ${row["NO. AUTORIZACION"]}<br>
+              <strong>Fecha:</strong> ${row["FECHA AUTORIZACION"]}<br>
+              <a href="${row["ANEXO"]}" target="_blank">Ver Anexo</a>
+            </div>
+          `;
+
+          const marker = L.circleMarker([lat, lng], {
+            radius: 6,
+            color: "#63C5DA",
+            fillColor: "#63C5DA",
+            fillOpacity: 0.8,
+          }).bindPopup(popupContent);
+
+          // Agregar al grupo correcto
+          if (year === "2023") {
+            layer2023.addLayer(marker);
+          } else if (year === "2024") {
+            layer2024.addLayer(marker);
+          }
+        }
       });
+    },
+    error: function (err) {
+      console.error("Error al cargar el CSV de " + year, err);
     }
+  });
+}
+
 
     function showFuente(lat, lon, json) {
       const f = JSON.parse(json);
