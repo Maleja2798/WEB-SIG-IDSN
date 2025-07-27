@@ -158,7 +158,7 @@ fetch('https://github.com/Maleja2798/WEB-SIG-IDSN/blob/main/Municipios_Nari%C3%B
         };
       },
       onEachFeature: function (feature, layer) {
-        const nombre = feature.properties.NOMBRE || feature.properties.NOM_MUN || feature.properties.name;
+        const nombre = feature.properties.Municipios_Nariño || feature.properties.Municipios_Nariño || feature.properties.Municipios_Nariño;
         layer.bindPopup(`<strong>${nombre}</strong>`);
       }
     }).addTo(map);
