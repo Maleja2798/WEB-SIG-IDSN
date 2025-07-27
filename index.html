@@ -306,11 +306,11 @@ data.forEach(row => {
 Object.values(agrupado).forEach(entry => {
 const popupContent = `
   <div id="popup-main-${index}" style="font-family: 'Arial Narrow', sans-serif; font-size: 13px;">
-    <div><b>Municipio:</b> ${entry.MUNICIPIO}</div>
-    <div><b>Vereda:</b> ${entry.VEREDA}</div>
+    <div><b>Municipio:</b> ${entry["MUNICIPIO"]}</div>
+    <div><b>Vereda:</b> ${entry["CORREGIMIENTO O VEREDA"]}</div>
     <div style="margin-top: 6px;"><b>Fuentes:</b><br>
       ${entry.fuentes.map((f, i) => `
-        <a href="#" onclick="showDetalle(${index}, ${i}); return false;" style="color: #00BFFF; display:block; margin-top: 2px;">${f.FUENTE}</a>
+        <a href="#" onclick="showDetalle(${index}, ${i}); return false;" style="color: #00BFFF; display:block; margin-top: 2px;">${f["FUENTE"]}</a>
       `).join("")}
     </div>
   </div>
@@ -318,7 +318,7 @@ const popupContent = `
   <div id="popup-detalle-${index}" style="display: none; font-family: 'Arial Narrow', sans-serif; font-size: 13px;"></div>
 `;
 
-   function showDetalle(markerIndex, fuenteIndex) {
+function showDetalle(markerIndex, fuenteIndex) {
   const markerData = window.popupData[markerIndex];
   const fuente = markerData.fuentes[fuenteIndex];
 
@@ -329,10 +329,10 @@ const popupContent = `
     mainDiv.style.display = "none";
     detalleDiv.style.display = "block";
     detalleDiv.innerHTML = `
-      <div style="font-weight: bold; text-transform: uppercase; margin-bottom: 4px;">${fuente.fuente}</div>
-      <div><b>Número de autorización:</b> ${fuente.NO. AUTORIZACION}</div>
-      <div><b>Fecha de autorización:</b> ${fuente.FECHA AUTORIZACION}</div>
-      <div><b>Anexo:</b> <a href="${fuente.ANEXO}" target="_blank" style="color: #00BFFF;">Ver</a></div>
+      <div style="font-weight: bold; text-transform: uppercase; margin-bottom: 4px;">${fuente["FUENTE"]}</div>
+      <div><b>Número de autorización:</b> ${fuente["NO. AUTORIZACION"]}</div>
+      <div><b>Fecha de autorización:</b> ${fuente["FECHA AUTORIZACION"]}</div>
+      <div><b>Anexo:</b> <a href="${fuente["ANEXO"]}" target="_blank" style="color: #00BFFF;">Ver</a></div>
     `;
   }
 }
