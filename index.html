@@ -144,31 +144,42 @@ background: rgba(255, 255, 255, 0.2) !important;
       { toggleDisplay: true, position: "bottomleft" }
     ).addTo(map);
 
-    // CAPA VECTORIAL DE MUNICIPIOS DE NARIÑO (GEOJSON)
-fetch('https://github.com/Maleja2798/WEB-SIG-IDSN/blob/main/Municipios_Nari%C3%B1o.geojson')
-  .then(response => response.json())
-  .then(data => {
-    const municipiosLayer = L.geoJSON(data, {
-      style: function (feature) {
-        return {
-          color: 'blue',
-          weight: 1,
-          fillColor: getRandomBlue(),
-          fillOpacity: 0.4
-        };
-      },
-      onEachFeature: function (feature, layer) {
-        const nombre = feature.properties.Municipios_Nariño || feature.properties.Municipios_Nariño || feature.properties.Municipios_Nariño;
-        layer.bindPopup(`<strong>${nombre}</strong>`);
-      }
-    }).addTo(map);
-  });
+  // Función para tonos de azul variados
+  function getRandomBlue() {
+    const blues = ['#6699FF', '#3366CC', '#99CCFF', '#3399FF', '#0033CC'];
+    return blues[Math.floor(Math.random() * blues.length)];
+  }
 
-// FUNCION PARA TONOS DE AZUL VARIADOS
-function getRandomBlue() {
-  const blues = ['#6699FF', '#3366CC', '#99CCFF', '#3399FF', '#0033CC'];
-  return blues[Math.floor(Math.random() * blues.length)];
-}
+  // Función para capitalizar la primera letra del nombre
+  function capitalizarNombre(nombre) {
+    return nombre.charAt(0).toUpperCase() + nombre.slice(1).toLowerCase();
+  }
+
+  // Cargar el GeoJSON de los municipios de Nariño desde GitHub RAW
+  fetch('https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/Municipios_Nari%C3%B1o.geojson')
+    .then(response => response.json())
+    .then(data => {
+      const municipiosLayer = L.geoJSON(data, {
+        style: function (feature) {
+          return {
+            color: 'blue',
+            weight: 1,
+            fillColor: getRandomBlue(),
+            fillOpacity: 0.4
+          };
+        },
+        onEachFeature: function (feature, layer) {
+          // Obtener el nombre del municipio
+          const nombreOriginal = feature.properties.NOMBRE || feature.properties.NOM_MUN || feature.properties.name || 'Municipio';
+          const nombreCapitalizado = capitalizarNombre(nombreOriginal);
+
+          // Crear el popup con formato personalizado
+          const popupContent = `<strong>MUNICIPIO</strong><br>${nombreCapitalizado}`;
+          layer.bindPopup(popupContent);
+        }
+      }).addTo(map);
+    })
+    .catch(error => console.error('Error al cargar el GeoJSON:', error));
 
     // Links CSV públicos
     const data2023 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEIfxPwnfsK29s70MMP_eimRMxEIeTyWye0GIsUAslrRrWalcULyXwWlSiyZenbJ_r4-ww-vBHBnun/pub?output=csv";
