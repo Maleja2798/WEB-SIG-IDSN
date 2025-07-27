@@ -148,17 +148,23 @@ background: rgba(255, 255, 255, 0.2) !important;
 function estiloBase(feature) {
   return {
     color: "white",
-    weight: 2,
-    fillOpacity: 0.4,
+    weight: 1.5,
+    fillOpacity: 0.6,
     fillColor: getColor(feature.properties.NOMBRE_ENT) // función de colores
   };
 }
 
-// Función para obtener color pastel variado
+// Función para obtener color pastel más intenso y bonito
 function getColor(nombre) {
   const colores = [
-    "#CDE7F0", "#B0DFFB", "#A9CFF7", "#A1D6EC",
-    "#8AC6D1", "#A3DBF3", "#B3E5FC", "#D0F0FD"
+    "#A2CFFE", // Azul bebé fuerte
+    "#8EC8F0", // Azul cielo saturado
+    "#70B7E0", // Azul cornflower claro
+    "#92BCEA", // Azul denim pastel
+    "#6FB1FC", // Azul cielo vibrante
+    "#80C1FF", // Azul hielo saturado
+    "#67AEDD", // Azul suave oceánico
+    "#7DBFF2"  // Azul pastel fuerte
   ];
   let hash = 0;
   for (let i = 0; i < nombre.length; i++) {
@@ -168,23 +174,24 @@ function getColor(nombre) {
   return colores[index];
 }
 
-// Resalta en amarillo
+// Resalta en amarillo al pasar el mouse
 function highlightFeature(e) {
   const layer = e.target;
   layer.setStyle({
     weight: 3,
-    color: '#FFFF00',  // contorno amarillo
+    color: '#FFFF00',   // contorno amarillo
+    fillColor: '#FFFF00', // también llena en amarillo
     fillOpacity: 0.7
   });
   layer.bringToFront();
 }
 
-// Vuelve al estilo original
+// Restaura estilo base
 function resetHighlight(e) {
   geojsonLayer.resetStyle(e.target);
 }
 
-// Muestra popup
+// Muestra popup con nombre del municipio
 function onEachFeature(feature, layer) {
   const nombreMunicipio = feature.properties.NOMBRE_ENT;
   const nombreFormateado = nombreMunicipio
@@ -202,7 +209,7 @@ function onEachFeature(feature, layer) {
   });
 }
 
-// Carga el GeoJSON
+// Carga el GeoJSON desde GitHub
 fetch("https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/Municipios_Nari%C3%B1o.geojson")
   .then(response => response.json())
   .then(data => {
@@ -213,6 +220,7 @@ fetch("https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/Municipios
   });
 
 let geojsonLayer;
+
 
     // Links CSV públicos
     const data2023 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEIfxPwnfsK29s70MMP_eimRMxEIeTyWye0GIsUAslrRrWalcULyXwWlSiyZenbJ_r4-ww-vBHBnun/pub?output=csv";
