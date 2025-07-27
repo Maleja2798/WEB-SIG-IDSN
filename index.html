@@ -121,6 +121,17 @@ background: rgba(255, 255, 255, 0.2) !important;
   <script>
     // Inicialización básica del mapa
     const map = L.map("map", { zoomControl: false }).setView([1.289, -77.29], 8);
+
+    const norteControl = L.control({ position: 'topleft' });
+
+norteControl.onAdd = function () {
+  const div = L.DomUtil.create('div', 'info norte');
+  div.innerHTML = `<img src="norte.png" alt="Norte" style="width: 50px;">`;
+  return div;
+};
+
+norteControl.addTo(map);
+
     // Crear un pane para marcadores que estará sobre el GeoJSON
 map.createPane("marcadores");
 map.getPane("marcadores").style.zIndex = 650;
@@ -304,13 +315,17 @@ Object.values(agrupado).forEach(entry => {
       </div>
     </div>`;
 
-  const marker = L.circleMarker([entry.lat, entry.lng], {
-    pane: "marcadores",
-    radius: 6,
-    color: "#63C5DA",
-    fillColor: "#63C5DA",
-    fillOpacity: 0.8,
-  }).bindPopup(popupContent);
+  const iconoPersonalizado = L.icon({
+  iconUrl: 'marcador_A.png',
+  iconSize: [30, 30], // Ajusta si tu ícono es muy grande o pequeño
+  iconAnchor: [15, 30], // Punto "activo" del ícono (parte inferior del marcador)
+  popupAnchor: [0, -30] // Donde se abrirá el popup
+});
+
+ const marker = L.marker([entry.lat, entry.lng], {
+  pane: "marcadores",
+  icon: iconoPersonalizado
+}).bindPopup(popupContent);
 
   if (markers[year]) {
     markers[year].addLayer(marker);
