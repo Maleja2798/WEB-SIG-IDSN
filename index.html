@@ -258,16 +258,29 @@ function cargarCsv(year, url) {
         const lng = parseFloat(row["LONGITUD DECIMAL"].replace(",", "."));
 
         if (!isNaN(lat) && !isNaN(lng)) {
-          const popupContent = `
-            <div style="font-family: Arial Narrow; font-size: 13px;">
-              <strong>Municipio:</strong> ${row["MUNICIPIO"]}<br>
-              <strong>Vereda:</strong> ${row["CORREGIMIENTO O VEREDA"]}<br>
-              <strong>Fuente:</strong> ${row["FUENTE"]}<br>
-              <strong>No. Autorización:</strong> ${row["NO. AUTORIZACION"]}<br>
-              <strong>Fecha:</strong> ${row["FECHA AUTORIZACION"]}<br>
-              <a href="${row["ANEXO"]}" target="_blank">Ver Anexo</a>
-            </div>
-          `;
+          <!-- Este bloque reemplaza la generación de popupContent dentro de cargarCsv -->
+const popupContent = `
+  <div style="font-family: 'Arial Narrow', sans-serif; font-size: 13px;">
+    <div style="font-weight: bold; text-transform: uppercase;">${row["MUNICIPIO"]}</div>
+    <div style="margin-top: 4px;">
+      <div style="font-weight: bold; text-transform: uppercase;">Vereda</div>
+      <div style="text-transform: capitalize;">${row["CORREGIMIENTO O VEREDA"]}</div>
+    </div>
+    <div style="margin-top: 6px;">
+      <div style="font-weight: bold; text-transform: uppercase;">Fuentes</div>
+      ${row["FUENTE"].split(';').map((fuente, idx) => {
+        const fuenteNombre = fuente.trim();
+        const fuenteData = {
+          fuente: fuenteNombre.toUpperCase(),
+          no_aut: row["NO. AUTORIZACION"].split(';')[idx]?.trim() || '',
+          fecha: row["FECHA AUTORIZACION"].split(';')[idx]?.trim() || '',
+          anexo: row["ANEXO"].split(';')[idx]?.trim() || ''
+        };
+        return `<a href="#" style="color: #00BFFF; display: block; margin-bottom: 2px;" onclick='showFuente(${lat}, ${lng}, ${JSON.stringify(JSON.stringify(fuenteData))})'>${fuenteNombre}</a>`;
+      }).join('')}
+    </div>
+  </div>
+`;
 
           const marker = L.circleMarker([lat, lng], {
   pane: "marcadores", // ✅ Forzar que esté en el pane superior
