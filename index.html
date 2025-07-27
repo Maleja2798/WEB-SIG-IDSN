@@ -144,42 +144,40 @@ background: rgba(255, 255, 255, 0.2) !important;
       { toggleDisplay: true, position: "bottomleft" }
     ).addTo(map);
 
-  // Función para tonos de azul variados
-  function getRandomBlue() {
-    const blues = ['#6699FF', '#3366CC', '#99CCFF', '#3399FF', '#0033CC'];
-    return blues[Math.floor(Math.random() * blues.length)];
+  // Función para tonos pastel de azul variados
+  function getPastelBlue() {
+    const pastelBlues = ['#B3CDE0', '#A6CEE3', '#D0E1F9', '#ADD8E6', '#C6DBEF'];
+    return pastelBlues[Math.floor(Math.random() * pastelBlues.length)];
   }
 
-  // Función para capitalizar la primera letra del nombre
+  // Función para capitalizar nombre de municipio
   function capitalizarNombre(nombre) {
     return nombre.charAt(0).toUpperCase() + nombre.slice(1).toLowerCase();
   }
 
-  // Cargar el GeoJSON de los municipios de Nariño desde GitHub RAW
-  fetch('https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/Municipios_Nari%C3%B1o.geojson')
+  // Cargar el GeoJSON desde GitHub RAW
+  fetch('https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/refs/heads/main/Narino_Municipios.json')
     .then(response => response.json())
     .then(data => {
       const municipiosLayer = L.geoJSON(data, {
         style: function (feature) {
           return {
-            color: 'blue',
-            weight: 1,
-            fillColor: getRandomBlue(),
+            color: 'white',          // contorno blanco
+            weight: 2,               // grosor del contorno
+            fillColor: getPastelBlue(), // azul pastel aleatorio
             fillOpacity: 0.4
           };
         },
         onEachFeature: function (feature, layer) {
-          // Obtener el nombre del municipio
           const nombreOriginal = feature.properties.NOMBRE || feature.properties.NOM_MUN || feature.properties.name || 'Municipio';
           const nombreCapitalizado = capitalizarNombre(nombreOriginal);
-
-          // Crear el popup con formato personalizado
           const popupContent = `<strong>MUNICIPIO</strong><br>${nombreCapitalizado}`;
           layer.bindPopup(popupContent);
         }
       }).addTo(map);
     })
     .catch(error => console.error('Error al cargar el GeoJSON:', error));
+
 
     // Links CSV públicos
     const data2023 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEIfxPwnfsK29s70MMP_eimRMxEIeTyWye0GIsUAslrRrWalcULyXwWlSiyZenbJ_r4-ww-vBHBnun/pub?output=csv";
