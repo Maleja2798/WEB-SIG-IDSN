@@ -305,19 +305,16 @@ data.forEach(row => {
 // Crear un marcador por cada grupo
 Object.values(agrupado).forEach(entry => {
   const popupContent = `
-    <div style="font-family: 'Arial Narrow', sans-serif; font-size: 13px;">
-      <div style="font-weight: bold; text-transform: uppercase;">${entry.municipio}</div>
-      <div style="margin-top: 4px;">
-        <div style="font-weight: bold; text-transform: uppercase;">Vereda</div>
-        <div style="text-transform: capitalize;">${entry.vereda}</div>
-      </div>
-      <div style="margin-top: 6px;">
-        <div style="font-weight: bold; text-transform: uppercase;">Fuentes</div>
-        ${entry.fuentes.map((f) => `
-          <a href="#" style="color: #00BFFF; display: block; margin-bottom: 2px;" onclick='showFuente(${entry.lat}, ${entry.lng}, ${JSON.stringify(JSON.stringify(f))})'>${f.fuente}</a>
-        `).join("")}
-      </div>
-    </div>`;
+  <div style="font-family: 'Arial Narrow', sans-serif; font-size: 13px;">
+    <div><b>Municipio:</b> ${entry.municipio}</div>
+    <div><b>Vereda:</b> ${entry.vereda}</div>
+    <div style="margin-top: 6px;"><b>Fuentes:</b><br>
+      ${entry.fuentes.map(f => `
+        - <a href="${f.anexo}" target="_blank" style="color: #00BFFF;">${f.fuente}</a>
+      `).join("<br>")}
+    </div>
+  </div>`;
+
 
  // Íconos personalizados
 const icono2023 = L.icon({
