@@ -310,26 +310,32 @@ const popupContent = `
     <div><b>Vereda:</b> ${entry.vereda}</div>
     <div style="margin-top: 6px;"><b>Fuentes:</b><br>
       ${entry.fuentes.map((f, i) => `
-        <a href="#" onclick="showDetalle${index}(${i}); return false;" style="color: #00BFFF; display:block; margin-top: 2px;">${f.fuente}</a>
+        <a href="#" onclick="showDetalle(${index}, ${i}); return false;" style="color: #00BFFF; display:block; margin-top: 2px;">${f.fuente}</a>
       `).join("")}
     </div>
   </div>
 
   <div id="popup-detalle-${index}" style="display: none; font-family: 'Arial Narrow', sans-serif; font-size: 13px;"></div>
+`;
 
-    function showDetalle${index}(i) {
-      const fuentes = ${JSON.stringify(entry.fuentes)};
-      const f = fuentes[i];
-      document.getElementById("popup-main-${index}").style.display = "none";
-      const detalleDiv = document.getElementById("popup-detalle-${index}");
-      detalleDiv.style.display = "block";
-      detalleDiv.innerHTML = \`
-        <div style="font-weight: bold; text-transform: uppercase; margin-bottom: 4px;">\${f.fuente}</div>
-        <div><b>Número de autorización:</b> \${f.no_autorizacion}</div>
-        <div><b>Fecha de autorización:</b> \${f.fecha_autorizacion}</div>
-        <div><b>Anexo:</b> <a href="\${f.anexo}" target="_blank" style="color: #00BFFF;">Ver</a></div>
-      \`;
-    }
+   function showDetalle(markerIndex, fuenteIndex) {
+  const markerData = window.popupData[markerIndex];
+  const fuente = markerData.fuentes[fuenteIndex];
+
+  const mainDiv = document.getElementById(`popup-main-${markerIndex}`);
+  const detalleDiv = document.getElementById(`popup-detalle-${markerIndex}`);
+
+  if (mainDiv && detalleDiv) {
+    mainDiv.style.display = "none";
+    detalleDiv.style.display = "block";
+    detalleDiv.innerHTML = `
+      <div style="font-weight: bold; text-transform: uppercase; margin-bottom: 4px;">${fuente.fuente}</div>
+      <div><b>Número de autorización:</b> ${fuente.no_autorizacion}</div>
+      <div><b>Fecha de autorización:</b> ${fuente.fecha_autorizacion}</div>
+      <div><b>Anexo:</b> <a href="${fuente.anexo}" target="_blank" style="color: #00BFFF;">Ver</a></div>
+    `;
+  }
+}
 
  // Íconos personalizados
 const icono2023 = L.icon({
