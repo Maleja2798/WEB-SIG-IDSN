@@ -304,20 +304,20 @@ data.forEach(row => {
 
 // Crear un marcador por cada grupo
 Object.values(agrupado).forEach(entry => {
-  const popupContent = `
+ const popupContent = `
   <div style="font-family: 'Arial Narrow', sans-serif; font-size: 13px;">
     <!-- Cuadro 1 -->
     <div><b>Municipio:</b> ${entry.municipio}</div>
     <div><b>Vereda:</b> ${entry.vereda}</div>
     <div style="margin-top: 6px;"><b>Fuentes:</b><br>
-      ${entry.fuentes.map(f => `
-        - <a href="${f.anexo}" target="_blank" style="color: #00BFFF;">${f.fuente}</a>
+      ${entry.fuentes.map((f, i) => `
+        - <a href="#" onclick="document.getElementById('detalle${i}').style.display='block'; return false;" style="color: #00BFFF;">${f.fuente}</a>
       `).join("<br>")}
     </div>
 
-    <!-- Cuadro 2 -->
-    ${entry.fuentes.map(f => `
-      <div style="margin-top: 12px; border-top: 1px solid #ccc; padding-top: 6px;">
+    <!-- Cuadro 2 (inicialmente ocultos) -->
+    ${entry.fuentes.map((f, i) => `
+      <div id="detalle${i}" style="display:none; margin-top: 12px; border-top: 1px solid #ccc; padding-top: 6px;">
         <div style="font-weight: bold; text-transform: uppercase;">${f.fuente}</div>
         <div><b>No. Autorización:</b> ${f.no_autorizacion}</div>
         <div><b>Fecha Autorización:</b> ${f.fecha_autorizacion}</div>
