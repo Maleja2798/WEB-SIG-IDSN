@@ -306,6 +306,7 @@ data.forEach(row => {
 Object.values(agrupado).forEach(entry => {
   const popupContent = `
   <div style="font-family: 'Arial Narrow', sans-serif; font-size: 13px;">
+    <!-- Cuadro 1 -->
     <div><b>Municipio:</b> ${entry.municipio}</div>
     <div><b>Vereda:</b> ${entry.vereda}</div>
     <div style="margin-top: 6px;"><b>Fuentes:</b><br>
@@ -313,14 +314,23 @@ Object.values(agrupado).forEach(entry => {
         - <a href="${f.anexo}" target="_blank" style="color: #00BFFF;">${f.fuente}</a>
       `).join("<br>")}
     </div>
-  </div>`;
 
+    <!-- Cuadro 2 -->
+    ${entry.fuentes.map(f => `
+      <div style="margin-top: 12px; border-top: 1px solid #ccc; padding-top: 6px;">
+        <div style="font-weight: bold; text-transform: uppercase;">${f.fuente}</div>
+        <div><b>No. Autorización:</b> ${f.no_autorizacion}</div>
+        <div><b>Fecha Autorización:</b> ${f.fecha_autorizacion}</div>
+        <div><b>Anexo:</b> <a href="${f.anexo}" target="_blank" style="color: #00BFFF;">${f.anexo}</a></div>
+      </div>
+    `).join("")}
+  </div>`;
 
  // Íconos personalizados
 const icono2023 = L.icon({
   iconUrl: 'MARCADOR1.png', // Reemplaza con tu URL o ruta
   iconSize: [25, 41],
-  iconAnchor: [12, 41],
+  iconAnchor: [20, 41],
   popupAnchor: [0, -41]
 });
 
