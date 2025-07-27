@@ -116,6 +116,7 @@ background: rgba(255, 255, 255, 0.2) !important;
   <div id="botones-anio">
     <div class="boton-anio" onclick="mostrarCapa(2023)">2023</div>
     <div class="boton-anio" onclick="mostrarCapa(2024)">2024</div>
+    <div class="boton-anio" onclick="mostrarCapa(2025)">2025</div>
   </div>
 
   <script>
@@ -249,10 +250,13 @@ fetch("https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/Municipios
     // Links CSV públicos
     const data2023 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEIfxPwnfsK29s70MMP_eimRMxEIeTyWye0GIsUAslrRrWalcULyXwWlSiyZenbJ_r4-ww-vBHBnun/pub?output=csv";
     const data2024 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR9MXHFzd2BkQkYDlCp3TS0vLQr6JCzV-prDxyNErrCiXHAnHnKjH95Z1es_jhYbRwnI2C5mZgW0Ccr/pub?output=csv";
+    const data2025 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSQVHH6vOuiLlskTPiwDnwe_CR9NfAKbS3c4X4FKEuPN66rmElBTdYikcyRWJpbjx36iC6fYj75jZp_/pub?output=csv";
+
 
     const markers = {
       2023: L.layerGroup(),
-      2024: L.layerGroup()
+      2024: L.layerGroup(),
+      2025: L.layerGroup()
     };
 
 function cargarCsv(year, url) {
@@ -350,10 +354,12 @@ Object.values(agrupado).forEach(entry => {
 
     cargarCsv(2023, data2023);
     cargarCsv(2024, data2024);
+    cargarCsv(2025, data2025);
 
     function mostrarCapa(year) {
   if (markers[2023]) map.removeLayer(markers[2023]);
   if (markers[2024]) map.removeLayer(markers[2024]);
+  if (markers[2025]) map.removeLayer(markers[2025]);
   if (markers[year]) map.addLayer(markers[year]);
 }
 
