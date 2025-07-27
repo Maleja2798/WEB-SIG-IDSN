@@ -156,7 +156,7 @@ background: rgba(255, 255, 255, 0.2) !important;
   }
 
   // Cargar el GeoJSON desde GitHub RAW
-  fetch('https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/refs/heads/main/Narino_Municipios.json')
+  fetch('https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/ae9b87555c2eb21da8925a4f9e5e35f4cc7c5420/Munip_Nari%C3%B1o.geojson')
     .then(response => response.json())
     .then(data => {
       const municipiosLayer = L.geoJSON(data, {
