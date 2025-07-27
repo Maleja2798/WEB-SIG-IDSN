@@ -121,6 +121,10 @@ background: rgba(255, 255, 255, 0.2) !important;
   <script>
     // Inicialización básica del mapa
     const map = L.map("map", { zoomControl: false }).setView([1.289, -77.29], 8);
+    // Crear un pane para marcadores que estará sobre el GeoJSON
+map.createPane("marcadores");
+map.getPane("marcadores").style.zIndex = 650;
+
     const baseMaps = {
       "Mapa Estándar": L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: "&copy; OpenStreetMap contributors",
@@ -266,11 +270,12 @@ function cargarCsv(year, url) {
           `;
 
           const marker = L.circleMarker([lat, lng], {
-            radius: 6,
-            color: "#63C5DA",
-            fillColor: "#63C5DA",
-            fillOpacity: 0.8,
-          }).bindPopup(popupContent);
+  pane: "marcadores", // ✅ Forzar que esté en el pane superior
+  radius: 6,
+  color: "#63C5DA",
+  fillColor: "#63C5DA",
+  fillOpacity: 0.8,
+}).bindPopup(popupContent);
 
           // Agregar al grupo correcto
          if (markers[year]) {
