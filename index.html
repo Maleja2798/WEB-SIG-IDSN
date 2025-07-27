@@ -144,6 +144,33 @@ background: rgba(255, 255, 255, 0.2) !important;
       { toggleDisplay: true, position: "bottomleft" }
     ).addTo(map);
 
+    // CAPA VECTORIAL DE MUNICIPIOS DE NARIÑO (GEOJSON)
+// CAPA DE MUNICIPIOS DE NARIÑO (GEOJSON LOCAL)
+fetch('Nariño_Municipios.geojson')
+  .then(response => response.json())
+  .then(data => {
+    const municipiosLayer = L.geoJSON(data, {
+      style: function (feature) {
+        return {
+          color: 'blue',
+          weight: 1,
+          fillColor: getRandomBlue(),
+          fillOpacity: 0.4
+        };
+      },
+      onEachFeature: function (feature, layer) {
+        const nombre = feature.properties.NOMBRE || feature.properties.NOM_MUN || feature.properties.name;
+        layer.bindPopup(`<strong>${nombre}</strong>`);
+      }
+    }).addTo(map);
+  });
+
+// FUNCION PARA TONOS DE AZUL VARIADOS
+function getRandomBlue() {
+  const blues = ['#6699FF', '#3366CC', '#99CCFF', '#3399FF', '#0033CC'];
+  return blues[Math.floor(Math.random() * blues.length)];
+}
+
     // Links CSV públicos
     const data2023 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEIfxPwnfsK29s70MMP_eimRMxEIeTyWye0GIsUAslrRrWalcULyXwWlSiyZenbJ_r4-ww-vBHBnun/pub?output=csv";
     const data2024 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR9MXHFzd2BkQkYDlCp3TS0vLQr6JCzV-prDxyNErrCiXHAnHnKjH95Z1es_jhYbRwnI2C5mZgW0Ccr/pub?output=csv";
@@ -201,14 +228,13 @@ background: rgba(255, 255, 255, 0.2) !important;
     cargarCsv(2024, data2024);
 
     function mostrarCapa(year) {
-      map.removeLayer(markers[2023]);
-      map.removeLayer(markers[2024]);
-      map.addLayer(markers[year]);
-    }
+  if (markers[2023]) map.removeLayer(markers[2023]);
+  if (markers[2024]) map.removeLayer(markers[2024]);
+  if (markers[year]) map.addLayer(markers[year]);
+}
 
     // Mostrar 2023 por defecto
     mostrarCapa(2023);
-    mostrarCapa(2024);
   </script>
 </body>
 </html>
