@@ -341,15 +341,9 @@ const icono2025 = L.icon({
   popupAnchor: [0, -41]
 });
 
-let iconoUsado;
-
-if (year === 2023) iconoUsado = icono2023;
-else if (year === 2024) iconoUsado = icono2024;
-else if (year === 2025) iconoUsado = icono2025;
-
-const marker = L.marker([entry.lat, entry.lng], {
+ const marker = L.marker([entry.lat, entry.lng], {
   pane: "marcadores",
-  icon: iconoUsado
+  icon: iconoPersonalizado
 }).bindPopup(popupContent);
 
   if (markers[year]) {
@@ -387,6 +381,4 @@ const marker = L.marker([entry.lat, entry.lng], {
   </script>
 </body>
 </html>
-
-
 
