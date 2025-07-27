@@ -306,11 +306,11 @@ data.forEach(row => {
 Object.values(agrupado).forEach(entry => {
 const popupContent = `
   <div id="popup-main-${index}" style="font-family: 'Arial Narrow', sans-serif; font-size: 13px;">
-    <div><b>Municipio:</b> ${entry.municipio}</div>
-    <div><b>Vereda:</b> ${entry.vereda}</div>
+    <div><b>Municipio:</b> ${entry.MUNICIPIO}</div>
+    <div><b>Vereda:</b> ${entry.VEREDA}</div>
     <div style="margin-top: 6px;"><b>Fuentes:</b><br>
       ${entry.fuentes.map((f, i) => `
-        <a href="#" onclick="showDetalle(${index}, ${i}); return false;" style="color: #00BFFF; display:block; margin-top: 2px;">${f.fuente}</a>
+        <a href="#" onclick="showDetalle(${index}, ${i}); return false;" style="color: #00BFFF; display:block; margin-top: 2px;">${f.FUENTE}</a>
       `).join("")}
     </div>
   </div>
@@ -330,9 +330,9 @@ const popupContent = `
     detalleDiv.style.display = "block";
     detalleDiv.innerHTML = `
       <div style="font-weight: bold; text-transform: uppercase; margin-bottom: 4px;">${fuente.fuente}</div>
-      <div><b>Número de autorización:</b> ${fuente.no_autorizacion}</div>
-      <div><b>Fecha de autorización:</b> ${fuente.fecha_autorizacion}</div>
-      <div><b>Anexo:</b> <a href="${fuente.anexo}" target="_blank" style="color: #00BFFF;">Ver</a></div>
+      <div><b>Número de autorización:</b> ${fuente.NO. AUTORIZACION}</div>
+      <div><b>Fecha de autorización:</b> ${fuente.FECHA AUTORIZACION}</div>
+      <div><b>Anexo:</b> <a href="${fuente.ANEXO}" target="_blank" style="color: #00BFFF;">Ver</a></div>
     `;
   }
 }
