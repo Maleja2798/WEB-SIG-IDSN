@@ -364,14 +364,19 @@ const marker = L.marker([entry.lat, entry.lng], {
   });
 }
 
-    function showFuente(lat, lon, json) {
+   function showFuente(lat, lon, json) {
       const f = JSON.parse(json);
       const content = `
-  <div style="font-weight:bold;">${f.fuente}</div>
-  <div><b>No. autorización:</b> ${f.no_aut.toLowerCase()}</div>
-  <div><b>Fecha autorización:</b> ${f.fecha.toLowerCase()}</div>
-  <div><b>Anexo:</b> <a href="${f.anexo}" target="_blank">ver</a></div>
-`;
+        <div style="font-weight:bold;">${f.fuente}</div>
+        <div><b>No. autorización:</b> ${f.no_aut.toLowerCase()}</div>
+        <div><b>Fecha autorización:</b> ${f.fecha.toLowerCase()}</div>
+        <div><b>Anexo:</b> <a href="${f.anexo}" target="_blank">ver</a></div>
+      `;
+      L.popup()
+        .setLatLng([lat, lon])
+        .setContent(content)
+        .openOn(map);
+    }
     cargarCsv(2023, data2023);
     cargarCsv(2024, data2024);
     cargarCsv(2025, data2025);
