@@ -319,11 +319,26 @@ Object.values(agrupado).forEach(entry => {
       </div>
     </div>`;
 
-  const iconoPersonalizado = L.icon({
-  iconUrl: 'MARCADOR_A.png',
-  iconSize: [30, 30], // Ajusta si tu ícono es muy grande o pequeño
-  iconAnchor: [15, 30], // Punto "activo" del ícono (parte inferior del marcador)
-  popupAnchor: [0, -30] // Donde se abrirá el popup
+ // Íconos personalizados
+const icono2023 = L.icon({
+  iconUrl: 'icono2023.png', // Reemplaza con tu URL o ruta
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [0, -41]
+});
+
+const icono2024 = L.icon({
+  iconUrl: 'icono2024.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [0, -41]
+});
+
+const icono2025 = L.icon({
+  iconUrl: 'icono2025.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [0, -41]
 });
 
  const marker = L.marker([entry.lat, entry.lng], {
