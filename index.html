@@ -305,26 +305,34 @@ data.forEach(row => {
 // Crear un marcador por cada grupo
 Object.values(agrupado).forEach(entry => {
  const popupContent = `
-  <div style="font-family: 'Arial Narrow', sans-serif; font-size: 13px;">
+  <div id="popup-main" style="font-family: 'Arial Narrow', sans-serif; font-size: 13px;">
     <!-- Cuadro 1 -->
     <div><b>Municipio:</b> ${entry.municipio}</div>
     <div><b>Vereda:</b> ${entry.vereda}</div>
     <div style="margin-top: 6px;"><b>Fuentes:</b><br>
       ${entry.fuentes.map((f, i) => `
-        - <a href="#" onclick="document.getElementById('detalle${i}').style.display='block'; return false;" style="color: #00BFFF;">${f.fuente}</a>
+        - <a href="#" onclick="showDetalle(${i}); return false;" style="color: #00BFFF;">Ver</a> ${f.fuente}
       `).join("<br>")}
     </div>
+  </div>
 
-    <!-- Cuadro 2 (inicialmente ocultos) -->
-    ${entry.fuentes.map((f, i) => `
-      <div id="detalle${i}" style="display:none; margin-top: 12px; border-top: 1px solid #ccc; padding-top: 6px;">
+  <div id="popup-detalle" style="display: none; font-family: 'Arial Narrow', sans-serif; font-size: 13px;">
+  </div>
+
+  <script>
+    function showDetalle(index) {
+      const fuentes = ${JSON.stringify(entry.fuentes)};
+      const f = fuentes[index];
+      document.getElementById('popup-main').style.display = 'none';
+      document.getElementById('popup-detalle').style.display = 'block';
+      document.getElementById('popup-detalle').innerHTML = `
         <div style="font-weight: bold; text-transform: uppercase;">${f.fuente}</div>
         <div><b>No. Autorización:</b> ${f.no_autorizacion}</div>
         <div><b>Fecha Autorización:</b> ${f.fecha_autorizacion}</div>
-        <div><b>Anexo:</b> <a href="${f.anexo}" target="_blank" style="color: #00BFFF;">${f.anexo}</a></div>
-      </div>
-    `).join("")}
-  </div>`;
+        <div><b>Anexo:</b> <a href="${f.anexo}" target="_blank" style="color: #00BFFF;">Ver</a></div>
+      `;
+    }
+
 
  // Íconos personalizados
 const icono2023 = L.icon({
