@@ -150,13 +150,13 @@ function estiloMunicipios(feature) {
         "#cce5ff", "#99ccff", "#b3e0ff", "#66b2ff", "#a3d1ff", 
         "#cce0ff", "#b3d9ff", "#99c2ff", "#cce6ff", "#b3e6ff"
     ];
-    const index = feature.properties.CODIGO_DANE % coloresPastel.length;
+        let index = Math.floor(Math.random() * coloresPastel.length); // color aleatorio si no hay campo único
     return {
         fillColor: coloresPastel[index],
         weight: 1.5,
         opacity: 1,
-        color: 'white',  // contorno blanco
-        fillOpacity: 0.8
+        color: 'white',
+        fillOpacity: 0.5
     };
 }
 
