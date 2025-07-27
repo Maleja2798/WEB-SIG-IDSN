@@ -127,7 +127,7 @@ background: rgba(255, 255, 255, 0.2) !important;
 
 norteControl.onAdd = function () {
   const div = L.DomUtil.create('div', 'info norte');
-  div.innerHTML = <img src="NORTE.png" alt="Norte" style="width: 50px;">;
+  div.innerHTML = '<img src="NORTE.png" alt="Norte" style="width: 50px;">';
   return div;
 };
 
@@ -212,7 +212,7 @@ function onEachFeature(feature, layer) {
     ? nombreMunicipio.charAt(0).toUpperCase() + nombreMunicipio.slice(1).toLowerCase()
     : 'Desconocido';
 
-  layer.bindPopup(<b>MUNICIPIO</b><br>${nombreFormateado});
+  layer.bindPopup(`<b>MUNICIPIO</b><br>${nombreFormateado}`);
 
   layer.on({
     mouseover: highlightFeature,
@@ -273,7 +273,7 @@ function cargarCsv(year, url) {
 data.forEach(row => {
   const lat = parseFloat(row["LATITUD DECIMAL"].replace(",", "."));
   const lng = parseFloat(row["LONGITUD DECIMAL"].replace(",", "."));
-  const key = ${lat}_${lng};
+  const key = `${lat}_${lng}`;
 
   if (!isNaN(lat) && !isNaN(lng)) {
     if (!agrupado[key]) {
@@ -304,7 +304,7 @@ data.forEach(row => {
 
 // Crear un marcador por cada grupo
 Object.values(agrupado).forEach(entry => {
-  const popupContent = 
+  const popupContent = `
     <div style="font-family: 'Arial Narrow', sans-serif; font-size: 13px;">
       <div style="font-weight: bold; text-transform: uppercase;">${entry.municipio}</div>
       <div style="margin-top: 4px;">
@@ -317,7 +317,7 @@ Object.values(agrupado).forEach(entry => {
           <a href="#" style="color: #00BFFF; display: block; margin-bottom: 2px;" onclick='showFuente(${entry.lat}, ${entry.lng}, ${JSON.stringify(JSON.stringify(f))})'>${f.fuente}</a>
         ).join("")}
       </div>
-    </div>;
+    </div>`;
 
  // Íconos personalizados
 const icono2023 = L.icon({
@@ -366,13 +366,12 @@ const marker = L.marker([entry.lat, entry.lng], {
 
     function showFuente(lat, lon, json) {
       const f = JSON.parse(json);
-      const content = <div style="font-weight:bold;">${f.fuente}</div>
-        <div><b>No. autorización:</b> ${f.no_aut.toLowerCase()}</div>
-        <div><b>Fecha autorización:</b> ${f.fecha.toLowerCase()}</div>
-        <div><b>Anexo:</b> <a href="${f.anexo}" target="_blank">ver</a></div>;
-      L.popup({ maxWidth: 300 }).setLatLng([lat, lon]).setContent(content).openOn(map);
-    }
-
+      const content = `
+  <div style="font-weight:bold;">${f.fuente}</div>
+  <div><b>No. autorización:</b> ${f.no_aut.toLowerCase()}</div>
+  <div><b>Fecha autorización:</b> ${f.fecha.toLowerCase()}</div>
+  <div><b>Anexo:</b> <a href="${f.anexo}" target="_blank">ver</a></div>
+`;
     cargarCsv(2023, data2023);
     cargarCsv(2024, data2024);
     cargarCsv(2025, data2025);
