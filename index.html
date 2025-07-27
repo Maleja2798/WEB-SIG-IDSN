@@ -216,6 +216,8 @@ fetch("https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/Municipios
       style: estiloBase,
       onEachFeature: onEachFeature
     }).addTo(map);
+    
+    geojsonLayer.bringToBack();
 
     // Añadir control de búsqueda después de cargar datos
     const controlSearch = new L.Control.Search({
