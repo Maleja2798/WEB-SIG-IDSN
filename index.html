@@ -125,8 +125,8 @@ background: rgba(255, 255, 255, 0.2) !important;
     const norteControl = L.control({ position: 'topleft' });
 
 norteControl.onAdd = function () {
-  const div = L.DomUtil.create('div', 'NORTE.PNG');
-  div.innerHTML = `<img src="norte.png" alt="Norte" style="width: 50px;">`;
+  const div = L.DomUtil.create('div', 'info norte');
+  div.innerHTML = `<img src="NORTE.png" alt="Norte" style="width: 50px;">`;
   return div;
 };
 
@@ -316,7 +316,7 @@ Object.values(agrupado).forEach(entry => {
     </div>`;
 
   const iconoPersonalizado = L.icon({
-  iconUrl: 'marcador_A.png',
+  iconUrl: 'MARCADOR_A.png',
   iconSize: [30, 30], // Ajusta si tu ícono es muy grande o pequeño
   iconAnchor: [15, 30], // Punto "activo" del ícono (parte inferior del marcador)
   popupAnchor: [0, -30] // Donde se abrirá el popup
