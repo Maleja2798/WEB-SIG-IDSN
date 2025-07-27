@@ -145,8 +145,7 @@ background: rgba(255, 255, 255, 0.2) !important;
     ).addTo(map);
 
     // CAPA VECTORIAL DE MUNICIPIOS DE NARIÑO (GEOJSON)
-// CAPA DE MUNICIPIOS DE NARIÑO (GEOJSON LOCAL)
-fetch('Nariño_Municipios.geojson')
+fetch('https://github.com/Maleja2798/WEB-SIG-IDSN/blob/main/Municipios_Nari%C3%B1o.geojson')
   .then(response => response.json())
   .then(data => {
     const municipiosLayer = L.geoJSON(data, {
