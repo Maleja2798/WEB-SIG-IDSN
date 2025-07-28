@@ -304,20 +304,22 @@ data.forEach(row => {
 
 // Crear un marcador por cada grupo
 Object.values(agrupado).forEach((entry, index) => {
-    window.popupData[index] = entry;
+window.popupData[index] = entry;
 const popupContent = `
-   <div id="popup-main-${index}" style="font-family: 'Arial Narrow', sans-serif; font-size: 13px;">
-      <div><b>Municipio:</b> ${entry.municipio}</div>
-      <div><b>Vereda:</b> ${entry.vereda}</div>
-      <div style="margin-top: 6px;"><b>Fuentes:</b><br>
-        ${entry.fuentes.map((f, i) => `
-          <a href="#" onclick="showDetalle(${index}, ${i}); return false;" style="color: #00BFFF; display:block; margin-top: 2px;">${f.fuente}</a>
-        `).join("")}
-      </div>
+  <div id="popup-main-${index}" style="font-family: 'Arial Narrow', sans-serif; font-size: 13px;">
+    <div><b>MUNICIPIO:</b><br>${entry.municipio}</div>
+    <div style="margin-top: 6px;"><b>CORREGIMIENTO O VEREDA:</b><br>${entry.vereda}</div>
+    <div style="margin-top: 6px;"><b>FUENTES:</b><br>
+      ${entry.fuentes.map((f, i) => `
+        <a href="#" onclick="showDetalle(${index}, ${i}); return false;" style="color: #00BFFF; display:block; margin-top: 2px;">${f.fuente}</a>
+      `).join("")}
     </div>
+  </div>
 
-    <div id="popup-detalle-${index}" style="display: none; font-family: 'Arial Narrow', sans-serif; font-size: 13px;"></div>
-  `;
+  <div id="popup-detalle-${index}" style="display: none; font-family: 'Arial Narrow', sans-serif; font-size: 13px;">
+    <!-- Este cuadro se llenará al hacer clic -->
+  </div>
+`;
 
   let iconoUsado;
 
@@ -333,8 +335,9 @@ else if (year === 2025) iconoUsado = icono2025;
   if (markers[year]) {
     markers[year].addLayer(marker);
   }
+  window.popupData = [];
 });
-window.popupData = [];
+
 function showDetalle(markerIndex, fuenteIndex) {
   const markerData = window.popupData[markerIndex];
   const fuente = markerData.fuentes[fuenteIndex];
@@ -346,13 +349,17 @@ function showDetalle(markerIndex, fuenteIndex) {
     mainDiv.style.display = "none";
     detalleDiv.style.display = "block";
     detalleDiv.innerHTML = `
-      <div style="font-weight: bold; text-transform: uppercase; margin-bottom: 4px;">${fuente.fuente}</div>
-      <div><b>Número de autorización:</b> ${fuente.no_aut}</div>
-      <div><b>Fecha de autorización:</b> ${fuente.fecha}</div>
-      <div><b>Anexo:</b> <a href="${fuente.anexo}" target="_blank" style="color: #00BFFF;">Ver</a></div>
+      <div style="font-weight: bold; text-transform: uppercase; margin-bottom: 6px;">${fuente.fuente}</div>
+      <div><b>No. AUTORIZACION:</b><br>${fuente.no_aut}</div>
+      <div style="margin-top: 6px;"><b>FECHA AUTORIZACION:</b><br>${fuente.fecha}</div>
+      <div style="margin-top: 6px;"><b>ANEXO:</b><br><a href="${fuente.anexo}" target="_blank" style="color: #00BFFF;">VER</a></div>
+      <div style="margin-top: 10px;">
+        <a href="#" onclick="volverCuadro1(${markerIndex}); return false;" style="color: #00BFFF;">⬅ Volver</a>
+      </div>
     `;
   }
 }
+
 
  // Íconos personalizados
 const icono2023 = L.icon({
