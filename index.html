@@ -112,6 +112,29 @@
     ).addTo(map);
 let geojsonLayer;
 
+    
+//ICONOS
+const iconosPersonalizados = {
+  2023: L.icon({
+    iconUrl: 'MARCADOR1.png',
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -32]
+  }),
+  2024: L.icon({
+    iconUrl: 'MARCADOR2.png',
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -32]
+  }),
+  2025: L.icon({
+    iconUrl: 'MARCADOR3.png',
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -32]
+  })
+};
+    
 // Paleta de azules más bonitos y pasteles (ligeramente más fuertes)
 const colores = [
   "#63C5DA", "#52B2BF", "#82EEFD", "#0492C2", "#00BFFF", "#1877F2",
@@ -244,7 +267,9 @@ fetch("https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/Municipios
         }).join("")}
       </div>
     </div>`;
-  L.marker([p.lat, p.lon]).bindPopup(contentVereda).addTo(markers[year]);
+  L.marker([p.lat, p.lon], { icon: iconosPersonalizados[year] })
+  .bindPopup(contentVereda)
+  .addTo(markers[year]);
 });
         },
         error: err => console.error("Error CSV:", err)
