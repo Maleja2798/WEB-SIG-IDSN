@@ -4,27 +4,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mapa de Autorizaciones Sanitarias de Agua en Nariño</title>
-
-  <!-- Leaflet CSS y JS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet/dist/leaflet.css"
+  />
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
-  <!-- Geocoder -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css"
+  />
   <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-
-  <!-- MiniMap -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet-minimap/dist/Control.MiniMap.min.css" />
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet-minimap/dist/Control.MiniMap.min.css"
+  />
   <script src="https://unpkg.com/leaflet-minimap/dist/Control.MiniMap.min.js"></script>
-
-  <!-- PapaParse -->
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-
-  <!-- Leaflet Search -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet-search/dist/leaflet-search.min.css"/>
-  <script src="https://unpkg.com/leaflet-search/dist/leaflet-search.min.js"></script>
-
-  <!-- ✅ CSS Corregido -->
   <style>
     body {
       margin: 0;
@@ -32,7 +27,6 @@
       background-color: black;
       color: white;
     }
-
     h1 {
       text-align: center;
       background-color: black;
@@ -40,58 +34,59 @@
       font-size: 24px;
       font-weight: bold;
     }
-
     #map {
       height: 90vh;
       width: 100%;
     }
-
     .north-icon {
-      width: 50px;
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      z-index: 1000;
-    }
-
-    .leaflet-bar a {
-      background: rgba(0, 0, 0, 0.7) !important;
-      color: white !important;
-      border: none;
-      box-shadow: 2px 2px 5px rgba(255, 255, 255, 0.2);
-    }
-
-    .leaflet-bar a:hover {
-      background: rgba(50, 50, 50, 0.9) !important;
-    }
-
-    .leaflet-control-layers,
-    .leaflet-control-geocoder {
-      background: rgba(0, 0, 0, 0.7) !important;
-      color: white !important;
-      border-radius: 5px;
-    }
-
-    .leaflet-control-layers label,
-    .leaflet-control-geocoder-form input,
-    .leaflet-control-geocoder-alternatives,
-    .leaflet-control-geocoder-alternatives a {
-      color: white !important;
-    }
-
-    .leaflet-control-geocoder-form input {
-      background: transparent;
-      border: none;
-    }
-
-    .leaflet-control-geocoder-icon {
-      filter: invert(1);
-    }
-
-    .leaflet-control-geocoder-alternatives a:hover {
-      background: rgba(255, 255, 255, 0.2) !important;
-    }
-
+width: 50px;
+position: absolute;
+top: 10px;
+left: 10px;
+z-index: 1000;
+}
+.leaflet-bar a {
+background: rgba(0, 0, 0, 0.7) !important;
+color: white !important;
+border: none;
+box-shadow: 2px 2px 5px rgba(255, 255, 255, 0.2);
+}
+.leaflet-bar a:hover {
+background: rgba(50, 50, 50, 0.9) !important;
+}
+.leaflet-control-layers {
+background: rgba(0, 0, 0, 0.7) !important;
+color: white !important;
+border-radius: 5px;
+}
+.leaflet-control-layers label {
+color: white !important;
+}
+.leaflet-control-geocoder {
+background: rgba(0, 0, 0, 0.7) !important;
+border-radius: 5px;
+}
+.leaflet-control-geocoder-form input {
+font-family: "Arial Narrow", sans-serif;
+background: transparent;
+color: white !important;
+border: none;
+}
+.leaflet-control-geocoder-icon {
+filter: invert(1);
+}
+.leaflet-control-geocoder-alternatives {
+background: rgba(0, 0, 0, 0.7) !important;
+font-family: "Arial Narrow", sans-serif;
+color: white !important;
+}
+.leaflet-control-geocoder-alternatives a {
+background: transparent !important;
+color: white !important;
+}
+.leaflet-control-geocoder-alternatives a:hover {
+background: rgba(255, 255, 255, 0.2) !important;
+}
     #botones-anio {
       position: absolute;
       bottom: 40px;
@@ -101,7 +96,6 @@
       flex-direction: column;
       gap: 5px;
     }
-
     .boton-anio {
       background: rgba(0, 0, 0, 0.6);
       border: 1px solid white;
@@ -111,11 +105,12 @@
       cursor: pointer;
       text-align: center;
     }
-
     .boton-anio:hover {
       background: rgba(255, 255, 255, 0.1);
     }
- 
+  </style>
+</head>
+<body>
   <h1>MAPA DE AUTORIZACIONES SANITARIAS DE AGUA EN NARIÑO</h1>
   <div id="map"></div>
   <div id="botones-anio">
@@ -132,7 +127,7 @@
 
 norteControl.onAdd = function () {
   const div = L.DomUtil.create('div', 'info norte');
-  div.innerHTML = '<img src="NORTE.png" alt="Norte" style="width: 50px;">';
+  div.innerHTML = `<img src="NORTE.png" alt="Norte" style="width: 50px;">`;
   return div;
 };
 
@@ -308,27 +303,55 @@ data.forEach(row => {
 });
 
 // Crear un marcador por cada grupo
-Object.values(agrupado).forEach(entry => {
-  const popupContent = `
-    <div style="font-family: 'Arial Narrow', sans-serif; font-size: 13px;">
-      <div style="font-weight: bold; text-transform: uppercase;">${entry.municipio}</div>
-      <div style="margin-top: 4px;">
-        <div style="font-weight: bold; text-transform: uppercase;">Vereda</div>
-        <div style="text-transform: capitalize;">${entry.vereda}</div>
+Object.values(agrupado).forEach((entry, index) => {
+    window.popupData[index] = entry;
+const popupContent = `
+   <div id="popup-main-${index}" style="font-family: 'Arial Narrow', sans-serif; font-size: 13px;">
+      <div><b>Municipio:</b> ${entry.municipio}</div>
+      <div><b>Vereda:</b> ${entry.vereda}</div>
+      <div style="margin-top: 6px;"><b>Fuentes:</b><br>
+        ${entry.fuentes.map((f, i) => `
+          <a href="#" onclick="showDetalle(${index}, ${i}); return false;" style="color: #00BFFF; display:block; margin-top: 2px;">${f.fuente}</a>
+        `).join("")}
       </div>
-      <div style="margin-top: 6px;">
-        <div style="font-weight: bold; text-transform: uppercase;">Fuentes</div>
-        ${entry.fuentes.map((f) => 
-          <a href="#" style="color: #00BFFF; display: block; margin-bottom: 2px;" onclick='showFuente(${entry.lat}, ${entry.lng}, ${JSON.stringify(JSON.stringify(f))})'>${f.fuente}</a>
-        ).join("")}
-      </div>
-    </div>`;
+    </div>
+
+    <div id="popup-detalle-${index}" style="display: none; font-family: 'Arial Narrow', sans-serif; font-size: 13px;"></div>
+  `;
+   const marker = L.marker([entry.lat, entry.lng], {
+    pane: "marcadores",
+    icon: iconoUsado
+  }).bindPopup(popupContent);
+
+  if (markers[year]) {
+    markers[year].addLayer(marker);
+  }
+});
+window.popupData = [];
+function showDetalle(markerIndex, fuenteIndex) {
+  const markerData = window.popupData[markerIndex];
+  const fuente = markerData.fuentes[fuenteIndex];
+
+  const mainDiv = document.getElementById(`popup-main-${markerIndex}`);
+  const detalleDiv = document.getElementById(`popup-detalle-${markerIndex}`);
+
+  if (mainDiv && detalleDiv) {
+    mainDiv.style.display = "none";
+    detalleDiv.style.display = "block";
+    detalleDiv.innerHTML = `
+      <div style="font-weight: bold; text-transform: uppercase; margin-bottom: 4px;">${fuente.fuente}</div>
+      <div><b>Número de autorización:</b> ${fuente.no_aut}</div>
+      <div><b>Fecha de autorización:</b> ${fuente.fecha}</div>
+      <div><b>Anexo:</b> <a href="${fuente.anexo}" target="_blank" style="color: #00BFFF;">Ver</a></div>
+    `;
+  }
+}
 
  // Íconos personalizados
 const icono2023 = L.icon({
   iconUrl: 'MARCADOR1.png', // Reemplaza con tu URL o ruta
   iconSize: [25, 41],
-  iconAnchor: [12, 41],
+  iconAnchor: [20, 41],
   popupAnchor: [0, -41]
 });
 
@@ -369,19 +392,15 @@ const marker = L.marker([entry.lat, entry.lng], {
   });
 }
 
-   function showFuente(lat, lon, json) {
+    function showFuente(lat, lon, json) {
       const f = JSON.parse(json);
-      const content = `
-        <div style="font-weight:bold;">${f.fuente}</div>
+      const content = `<div style="font-weight:bold;">${f.fuente}</div>
         <div><b>No. autorización:</b> ${f.no_aut.toLowerCase()}</div>
         <div><b>Fecha autorización:</b> ${f.fecha.toLowerCase()}</div>
-        <div><b>Anexo:</b> <a href="${f.anexo}" target="_blank">ver</a></div>
-      `;
-      L.popup()
-        .setLatLng([lat, lon])
-        .setContent(content)
-        .openOn(map);
+        <div><b>Anexo:</b> <a href="${f.anexo}" target="_blank">ver</a></div>`;
+      L.popup({ maxWidth: 300 }).setLatLng([lat, lon]).setContent(content).openOn(map);
     }
+
     cargarCsv(2023, data2023);
     cargarCsv(2024, data2024);
     cargarCsv(2025, data2025);
