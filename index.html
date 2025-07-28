@@ -229,15 +229,22 @@ fetch("https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/Municipios
               anexo: row["ANEXO"]?.trim()
             });
           });
-          Object.values(puntos).forEach(p => {
-            const contentVereda = `<div style="font-weight:bold;">${p.vereda.toUpperCase()}</div>` +
-              p.fuentes.map(f => {
-                const tituloFuente = f.fuente?.charAt(0).toUpperCase() + f.fuente?.slice(1).toLowerCase();
-                const json = JSON.stringify(f).replace(/"/g, '&quot;');
-                return `<div style="cursor:pointer;color:cyan;font-weight:bold;" onclick="showFuente(${p.lat}, ${p.lon}, '${json}')">${tituloFuente}</div>`;
-              }).join("");
-            L.marker([p.lat, p.lon]).bindPopup(contentVereda).addTo(markers[year]);
-          });
+         Object.values(puntos).forEach(p => {
+  const municipio = p.fuentes[0]?.municipio || "Desconocido";
+  const contentVereda = `
+    <div style="font-family: Arial Narrow, sans-serif; font-size: 13px;">
+      <div><b>Municipio:</b> ${municipio}</div>
+      <div style="margin-top: 6px;"><b>Vereda:</b> ${p.vereda}</div>
+      <div style="margin-top: 6px;"><b>La Fuente:</b><br>
+        ${p.fuentes.map(f => {
+          const tituloFuente = f.fuente?.charAt(0).toUpperCase() + f.fuente?.slice(1).toLowerCase();
+          const json = JSON.stringify(f).replace(/"/g, '&quot;');
+          return `<a href="#" onclick="showFuente(${p.lat}, ${p.lon}, '${json}'); return false;" style="color: #00BFFF; display:block; margin-top: 2px;">${tituloFuente}</a>`;
+        }).join("")}
+      </div>
+    </div>`;
+  L.marker([p.lat, p.lon]).bindPopup(contentVereda).addTo(markers[year]);
+});
         },
         error: err => console.error("Error CSV:", err)
       });
