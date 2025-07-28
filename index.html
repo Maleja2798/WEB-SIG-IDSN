@@ -270,7 +270,7 @@ function cargarCsv(year, url) {
             const lon = parseFloat((row["LONGITUD DECIMAL"] || "").replace(",", "."));
             if (!vereda || isNaN(lat) || isNaN(lon)) return;
             const key = vereda;
-            if (!puntos[key]) puntos[key] = { vereda, lat, lon, fuentes: [] };
+          if (!puntos[key]) puntos[key] = { municipio: row["MUNICIPIO"]?.trim(), vereda, lat, lon, fuentes: [] };
             puntos[key].fuentes.push({
               fuente: row["FUENTE"]?.trim(),
               no_aut: row["NO. AUTORIZACION"]?.trim(),
@@ -304,7 +304,7 @@ if (year === 2023) iconoUsado = icono2023;
 else if (year === 2024) iconoUsado = icono2024;
 else if (year === 2025) iconoUsado = icono2025;
   
-   const marker = L.marker([entry.lat, entry.lng], {
+   const marker = L.marker([entry.lat, entry.lon], {
     pane: "marcadores",
     icon: iconoUsado
   }).bindPopup(popupContent);
