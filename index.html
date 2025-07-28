@@ -378,11 +378,11 @@ const icono2025 = L.icon({
     cargarCsv(2025, data2025);
 
     function mostrarCapa(year) {
-      map.removeLayer(markers[2023]);
-      map.removeLayer(markers[2024]);
-      map.removeLayer(markers[2025]);
-      map.addLayer(markers[year]);
-    }
+  if (markers[2023]) map.removeLayer(markers[2023]);
+  if (markers[2024]) map.removeLayer(markers[2024]);
+  if (markers[2025]) map.removeLayer(markers[2025]);
+  if (markers[year]) map.addLayer(markers[year]);
+}
 
   </script>
 </body>
