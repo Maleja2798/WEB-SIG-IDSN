@@ -226,7 +226,8 @@ fetch("https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/Municipios
               fuente: row["FUENTE"]?.trim(),
               no_aut: row["NO. AUTORIZACION"]?.trim(),
               fecha: row["FECHA AUTORIZACION"]?.trim(),
-              anexo: row["ANEXO"]?.trim()
+              anexo: row["ANEXO"]?.trim(),
+              municipio: row["MUNICIPIO"]?.trim()
             });
           });
          Object.values(puntos).forEach(p => {
