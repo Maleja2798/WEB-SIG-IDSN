@@ -253,7 +253,8 @@ fetch("https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/Municipios
 
     function showFuente(lat, lon, json) {
       const f = JSON.parse(json);
-      const content = `<div style="font-weight:bold;">${f.fuente}</div>
+      const content = ` <div style="font-family: 'Arial Narrow', sans-serif; font-size: 13px;">
+      <div style="font-weight: bold;">${f.fuente}</div>
         <div><b>No. autorización:</b> ${f.no_aut.toLowerCase()}</div>
         <div><b>Fecha autorización:</b> ${f.fecha.toLowerCase()}</div>
         <div><b>Anexo:</b> <a href="${f.anexo}" target="_blank">ver</a></div>`;
