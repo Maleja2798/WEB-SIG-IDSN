@@ -279,33 +279,33 @@ function cargarCsv(year, url) {
             });
           });
         // Crear un marcador por cada grupo
-window.popupData = [];
-          
+window.popupData = []; // ✅ Declarar una vez afuera del bucle
+
 Object.values(puntos).forEach((entry, index) => {
   window.popupData[index] = entry;
-const popupContent = `
-  <div id="popup-main-${index}" style="font-family: 'Arial Narrow', sans-serif; font-size: 13px;">
-    <div><b>MUNICIPIO:</b><br>${entry.municipio}</div>
-    <div style="margin-top: 6px;"><b>CORREGIMIENTO O VEREDA:</b><br>${entry.vereda}</div>
-    <div style="margin-top: 6px;"><b>FUENTES:</b><br>
-      ${entry.fuentes.map((f, i) => `
-        <a href="#" onclick="showDetalle(${index}, ${i}); return false;" style="color: #00BFFF; display:block; margin-top: 2px;">${f.fuente}</a>
-      `).join("")}
-    </div>
-  </div>
 
-  <div id="popup-detalle-${index}" style="display: none; font-family: 'Arial Narrow', sans-serif; font-size: 13px;">
-    <!-- Este cuadro se llenará al hacer clic -->
-  </div>
-`;
+  const popupContent = `
+    <div id="popup-main-${index}" style="font-family: 'Arial Narrow', sans-serif; font-size: 13px;">
+      <div><b>MUNICIPIO:</b><br>${entry.municipio}</div>
+      <div style="margin-top: 6px;"><b>CORREGIMIENTO O VEREDA:</b><br>${entry.vereda}</div>
+      <div style="margin-top: 6px;"><b>FUENTES:</b><br>
+        ${entry.fuentes.map((f, i) => `
+          <a href="#" onclick="showDetalle(${index}, ${i}); return false;" style="color: #00BFFF; display:block; margin-top: 2px;">${f.fuente}</a>
+        `).join("")}
+      </div>
+    </div>
+
+    <div id="popup-detalle-${index}" style="display: none; font-family: 'Arial Narrow', sans-serif; font-size: 13px;">
+      <!-- Este cuadro se llenará al hacer clic -->
+    </div>
+  `;
 
   let iconoUsado;
+  if (year === 2023) iconoUsado = icono2023;
+  else if (year === 2024) iconoUsado = icono2024;
+  else if (year === 2025) iconoUsado = icono2025;
 
-if (year === 2023) iconoUsado = icono2023;
-else if (year === 2024) iconoUsado = icono2024;
-else if (year === 2025) iconoUsado = icono2025;
-  
-   const marker = L.marker([entry.lat, entry.lon], {
+  const marker = L.marker([entry.lat, entry.lon], {
     pane: "marcadores",
     icon: iconoUsado
   }).bindPopup(popupContent);
@@ -313,8 +313,8 @@ else if (year === 2025) iconoUsado = icono2025;
   if (markers[year]) {
     markers[year].addLayer(marker);
   }
-  window.popupData = [];
 });
+
 
 function showDetalle(markerIndex, fuenteIndex) {
   const markerData = window.popupData[markerIndex];
