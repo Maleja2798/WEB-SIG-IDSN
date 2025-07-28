@@ -279,8 +279,9 @@ function cargarCsv(year, url) {
             });
           });
         // Crear un marcador por cada grupo
-Object.values(agrupado).forEach((entry, index) => {
-window.popupData[index] = entry;
+window.popupData = [];
+Object.values(puntos).forEach((entry, index) => {
+  window.popupData[index] = entry;
 const popupContent = `
   <div id="popup-main-${index}" style="font-family: 'Arial Narrow', sans-serif; font-size: 13px;">
     <div><b>MUNICIPIO:</b><br>${entry.municipio}</div>
