@@ -4,39 +4,60 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mapa de Autorizaciones Sanitarias de Agua en Nariño</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet/dist/leaflet.css"
+  />
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css"
+  />
+  <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet-minimap/dist/Control.MiniMap.min.css"
+  />
+  <script src="https://unpkg.com/leaflet-minimap/dist/Control.MiniMap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
   <style>
+    body {
+      margin: 0;
+      font-family: "Arial Narrow", sans-serif;
+      background-color: black;
+      color: white;
+    }
+    h1 {
+      text-align: center;
+      background-color: black;
+      padding: 10px;
+      font-size: 24px;
+      font-weight: bold;
+    }
     #map {
       height: 90vh;
       width: 100%;
     }
-    body {
-      margin: 0;
-      font-family: 'Arial Narrow', sans-serif;
-    }
-    h1 {
-      text-align: center;
-      background-color: #0074D9;
-      color: white;
-      padding: 10px;
-    }
     #botones-anio {
-      text-align: center;
-      margin: 10px;
+      position: absolute;
+      bottom: 40px;
+      right: 10px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
     }
     .boton-anio {
-      display: inline-block;
-      margin: 0 10px;
-      padding: 10px 20px;
-      background-color: #00BFFF;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid white;
+      padding: 6px 12px;
       color: white;
-      cursor: pointer;
       border-radius: 5px;
+      cursor: pointer;
+      text-align: center;
     }
     .boton-anio:hover {
-      background-color: #009ACD;
+      background: rgba(255, 255, 255, 0.1);
     }
   </style>
 </head>
@@ -46,128 +67,201 @@
   <div id="botones-anio">
     <div class="boton-anio" onclick="mostrarCapa(2023)">2023</div>
     <div class="boton-anio" onclick="mostrarCapa(2024)">2024</div>
-    <div class="boton-anio" onclick="mostrarCapa(2025)">2025</div>
+     <div class="boton-anio" onclick="mostrarCapa(2025)">2025</div>
   </div>
 
-<script>
-const map = L.map("map").setView([1.289, -77.29], 8);
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  maxZoom: 19,
-  attribution: '&copy; <a href="https://openstreetmap.org">OpenStreetMap</a>'
-}).addTo(map);
+  <script>
+    // Inicialización básica del mapa
+    const map = L.map("map", { zoomControl: false }).setView([1.289, -77.29], 8);
+    
+    const norteControl = L.control({ position: 'topleft' });
 
-const markers = {
-  2023: L.layerGroup().addTo(map),
-  2024: L.layerGroup(),
-  2025: L.layerGroup()
-};
+  norteControl.onAdd = function () {
+  const div = L.DomUtil.create('div', 'info norte');
+  div.innerHTML = `<img src="NORTE.png" alt="Norte" style="width: 50px;">`;
+  return div;
+  };
 
-const icono2023 = L.icon({
-  iconUrl: 'MARCADOR1.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [0, -41]
-});
-const icono2024 = L.icon({
-  iconUrl: 'MARCADOR2.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [0, -41]
-});
-const icono2025 = L.icon({
-  iconUrl: 'MARCADOR3.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [0, -41]
-});
+  norteControl.addTo(map);
 
-const data2023 = 'URL_DEL_CSV_2023';
-const data2024 = 'URL_DEL_CSV_2024';
-const data2025 = 'URL_DEL_CSV_2025';
+    // Crear un pane para marcadores que estará sobre el GeoJSON
+  map.createPane("marcadores");
+  map.getPane("marcadores").style.zIndex = 650;
 
-function cargarCsv(year, url) {
-  Papa.parse(url, {
-    download: true,
-    header: true,
-    skipEmptyLines: true,
-    complete: results => {
-      const puntos = {};
-      window.popupData = [];
-      results.data.forEach(row => {
-        const vereda = row["CORREGIMIENTO O VEREDA"]?.trim();
-        const lat = parseFloat((row["LATITUD DECIMAL"] || "").replace(",", "."));
-        const lon = parseFloat((row["LONGITUD DECIMAL"] || "").replace(",", "."));
-        if (!vereda || isNaN(lat) || isNaN(lon)) return;
-        const key = vereda;
-        if (!puntos[key]) puntos[key] = {
-          municipio: row["MUNICIPIO"]?.trim(),
-          vereda, lat, lon, fuentes: []
-        };
-        puntos[key].fuentes.push({
-          fuente: row["FUENTE"]?.trim(),
-          no_aut: row["NO. AUTORIZACION"]?.trim(),
-          fecha: row["FECHA AUTORIZACION"]?.trim(),
-          anexo: row["ANEXO"]?.trim()
-        });
-      });
+    const baseMaps = {
+      "Mapa Estándar": L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "&copy; OpenStreetMap contributors",
+      }).addTo(map),
+      "Satélite (ESRI)": L.tileLayer("https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
+        attribution: "Tiles &copy; Esri",
+      }),
+      "Topográfico": L.tileLayer("https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", {
+        attribution: "&copy; OpenTopoMap contributors",
+      }),
+    };
+    L.control.layers(baseMaps, null, { position: "topright" }).addTo(map);
+    L.control.zoom({ position: "topright" }).addTo(map);
+    L.control.scale({ position: "bottomright", metric: true, imperial: false }).addTo(map);
+    L.Control.geocoder({ defaultMarkGeocode: true }).on("markgeocode", e => {
+      map.setView(e.geocode.center, 12);
+    }).addTo(map);
+    document.querySelector(".leaflet-control-geocoder-icon").title = "Buscar";
+    new L.Control.MiniMap(
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"),
+      { toggleDisplay: true, position: "bottomleft" }
+    ).addTo(map);
+let geojsonLayer;
 
-      Object.values(puntos).forEach((entry, index) => {
-        window.popupData[index] = entry;
-        const popupMain = `
-          <div id="popup-main-${index}" style="font-family:'Arial Narrow';font-size:13px;">
-            <div><b>MUNICIPIO:</b><br>${entry.municipio}</div>
-            <div style="margin-top:6px;"><b>CORREGIMIENTO O VEREDA:</b><br>${entry.vereda}</div>
-            <div style="margin-top:6px;"><b>FUENTES:</b><br>
-              ${entry.fuentes.map((f,i)=>`<a href="#" onclick="showDetalle(${index},${i});return false;" style="color:#00BFFF;display:block;margin-top:2px;">${f.fuente}</a>`).join("")}
-            </div>
-          </div>
-          <div id="popup-detalle-${index}" style="display:none;font-family:'Arial Narrow';font-size:13px;"></div>
-        `;
-        const icono = year===2023 ? icono2023 : year===2024 ? icono2024 : icono2025;
-        const marker = L.marker([entry.lat, entry.lon], {icon: icono}).bindPopup(popupMain);
-        markers[year].addLayer(marker);
-      });
-    },
-    error: err => console.error("Error al cargar CSV", err)
+// Paleta de azules más bonitos y pasteles (ligeramente más fuertes)
+const colores = [
+  "#63C5DA", "#52B2BF", "#82EEFD", "#0492C2", "#00BFFF", "#1877F2",
+"#B2FFFF", "#AFEEEE", "#ADD8E6", "#7DF9FF", "#89CFF0", "#A1CAF1",
+"#4682B4", "#73C2FB", "#6495ED", "#AFDBF5", "#15F4EE" 
+];
+
+// Asignar color a cada municipio basado en su nombre
+function getColor(nombre) {
+  let hash = 0;
+  for (let i = 0; i < nombre.length; i++) {
+    hash = nombre.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const index = Math.abs(hash % colores.length);
+  return colores[index];
+}
+
+// Estilo base de los municipios
+function estiloBase(feature) {
+  return {
+    color: "white",
+    weight: 2,
+    fillOpacity: 0.6,
+    fillColor: getColor(feature.properties.NOMBRE_ENT)
+  };
+}
+
+// Resaltar municipio al pasar el mouse
+function highlightFeature(e) {
+  const layer = e.target;
+  layer.setStyle({
+    weight: 3,
+    color: '#FFFF00',
+    fillOpacity: 0.7
+  });
+  layer.bringToFront();
+}
+
+// Restaurar estilo al salir del mouse
+function resetHighlight(e) {
+  geojsonLayer.resetStyle(e.target);
+}
+
+// Mostrar popup y hacer zoom al municipio
+function onEachFeature(feature, layer) {
+  const nombreMunicipio = feature.properties.NOMBRE_ENT;
+  const nombreFormateado = nombreMunicipio
+    ? nombreMunicipio.charAt(0).toUpperCase() + nombreMunicipio.slice(1).toLowerCase()
+    : 'Desconocido';
+
+  layer.bindPopup(`<b>MUNICIPIO</b><br>${nombreFormateado}`);
+
+  layer.on({
+    mouseover: highlightFeature,
+    mouseout: resetHighlight,
+    click: function (e) {
+      layer.openPopup();
+      map.fitBounds(layer.getBounds());
+    }
   });
 }
 
-function showDetalle(index, i) {
-  const data = window.popupData[index].fuentes[i];
-  const main = document.getElementById(`popup-main-${index}`);
-  const det = document.getElementById(`popup-detalle-${index}`);
-  if (main && det) {
-    main.style.display = "none";
-    det.style.display = "block";
-    det.innerHTML = `
-      <div style="font-weight:bold;text-transform:uppercase;margin-bottom:6px;">${data.fuente}</div>
-      <div><b>No. AUTORIZACION:</b><br>${data.no_aut}</div>
-      <div style="margin-top:6px;"><b>FECHA AUTORIZACION:</b><br>${data.fecha}</div>
-      <div style="margin-top:6px;"><b>ANEXO:</b><br><a href="${data.anexo}" target="_blank" style="color:#00BFFF;">VER</a></div>
-      <div style="margin-top:10px;"><a href="#" onclick="volverCuadro1(${index});return false;" style="color:#00BFFF;">⬅ Volver</a></div>
-    `;
-  }
-}
+// Cargar el GeoJSON desde GitHub
+fetch("https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/Municipios_Nari%C3%B1o.geojson")
+  .then(response => response.json())
+  .then(data => {
+    geojsonLayer = L.geoJson(data, {
+      style: estiloBase,
+      onEachFeature: onEachFeature
+    }).addTo(map);
+    
+    geojsonLayer.bringToBack();
 
-function volverCuadro1(i) {
-  const main = document.getElementById(`popup-main-${i}`);
-  const det = document.getElementById(`popup-detalle-${i}`);
-  if (main && det) {
-    main.style.display = "block";
-    det.style.display = "none";
-  }
-}
+    // Añadir control de búsqueda después de cargar datos
+    const controlSearch = new L.Control.Search({
+      layer: geojsonLayer,
+      propertyName: 'NOMBRE_ENT',
+      initial: false,
+      zoom: 10,
+      marker: false
+    });
 
-function mostrarCapa(year) {
-  [2023, 2024, 2025].forEach(y => map.removeLayer(markers[y]));
-  map.addLayer(markers[year]);
-}
+    map.addControl(controlSearch);
+  });
 
-// Cargar datos CSV
-cargarCsv(2023, data2023);
-cargarCsv(2024, data2024);
-cargarCsv(2025, data2025);
-</script>
+    // Links CSV públicos
+    const data2023 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEIfxPwnfsK29s70MMP_eimRMxEIeTyWye0GIsUAslrRrWalcULyXwWlSiyZenbJ_r4-ww-vBHBnun/pub?output=csv";
+    const data2024 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR9MXHFzd2BkQkYDlCp3TS0vLQr6JCzV-prDxyNErrCiXHAnHnKjH95Z1es_jhYbRwnI2C5mZgW0Ccr/pub?output=csv";
+    const data2025 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSQVHH6vOuiLlskTPiwDnwe_CR9NfAKbS3c4X4FKEuPN66rmElBTdYikcyRWJpbjx36iC6fYj75jZp_/pub?output=csv";
+    
+    const markers = {
+      2023: L.layerGroup(),
+      2024: L.layerGroup(),
+      2025: L.layerGroup()
+    };
+
+    function cargarCsv(year, url) {
+      Papa.parse(url, {
+        download: true,
+        header: true,
+        skipEmptyLines: true,
+        complete: results => {
+          const puntos = {};
+          results.data.forEach(row => {
+            const vereda = row["CORREGIMIENTO O VEREDA"]?.trim();
+            const lat = parseFloat((row["LATITUD DECIMAL"] || "").replace(",", "."));
+            const lon = parseFloat((row["LONGITUD DECIMAL"] || "").replace(",", "."));
+            if (!vereda || isNaN(lat) || isNaN(lon)) return;
+            const key = vereda;
+            if (!puntos[key]) puntos[key] = { vereda, lat, lon, fuentes: [] };
+            puntos[key].fuentes.push({
+              fuente: row["FUENTE"]?.trim(),
+              no_aut: row["NO. AUTORIZACION"]?.trim(),
+              fecha: row["FECHA AUTORIZACION"]?.trim(),
+              anexo: row["ANEXO"]?.trim()
+            });
+          });
+          Object.values(puntos).forEach(p => {
+            const contentVereda = `<div style="font-weight:bold;">${p.vereda.toUpperCase()}</div>` +
+              p.fuentes.map(f => {
+                const tituloFuente = f.fuente?.charAt(0).toUpperCase() + f.fuente?.slice(1).toLowerCase();
+                const json = JSON.stringify(f).replace(/"/g, '&quot;');
+                return `<div style="cursor:pointer;color:cyan;font-weight:bold;" onclick="showFuente(${p.lat}, ${p.lon}, '${json}')">${tituloFuente}</div>`;
+              }).join("");
+            L.marker([p.lat, p.lon]).bindPopup(contentVereda).addTo(markers[year]);
+          });
+        },
+        error: err => console.error("Error CSV:", err)
+      });
+    }
+
+    function showFuente(lat, lon, json) {
+      const f = JSON.parse(json);
+      const content = `<div style="font-weight:bold;">${f.fuente}</div>
+        <div><b>No. autorización:</b> ${f.no_aut.toLowerCase()}</div>
+        <div><b>Fecha autorización:</b> ${f.fecha.toLowerCase()}</div>
+        <div><b>Anexo:</b> <a href="${f.anexo}" target="_blank">ver</a></div>`;
+      L.popup({ maxWidth: 300 }).setLatLng([lat, lon]).setContent(content).openOn(map);
+    }
+
+    cargarCsv(2023, data2023);
+    cargarCsv(2024, data2024);
+
+    function mostrarCapa(year) {
+      map.removeLayer(markers[2023]);
+      map.removeLayer(markers[2024]);
+      map.removeLayer(markers[2025]);
+      map.addLayer(markers[year]);
+    }
+
+  </script>
 </body>
 </html>
-
