@@ -360,10 +360,15 @@ const icono2025 = L.icon({
   popupAnchor: [0, -41]
 });
     },
+
     error: function (err) {
       console.error("Error al cargar el CSV de " + year, err);
     }
   });
+
+   cargarCsv(2023, data2023);
+    cargarCsv(2024, data2024);
+    cargarCsv(2025, data2025);
 }
 
     function showFuente(lat, lon, json) {
@@ -375,9 +380,6 @@ const icono2025 = L.icon({
       L.popup({ maxWidth: 300 }).setLatLng([lat, lon]).setContent(content).openOn(map);
     }
 
-    cargarCsv(2023, data2023);
-    cargarCsv(2024, data2024);
-    cargarCsv(2025, data2025);
 
     function mostrarCapa(year) {
   if (markers[2023]) map.removeLayer(markers[2023]);
