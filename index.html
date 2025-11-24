@@ -4,32 +4,39 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mapa de Autorizaciones Sanitarias de Agua en Nariño</title>
-
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet/dist/leaflet.css"
+  />
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
-  <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css"
+  />
   <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-
-  <link rel="stylesheet" href="https://unpkg.com/leaflet-minimap/dist/Control.MiniMap.min.css" />
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet-minimap/dist/Control.MiniMap.min.css"
+  />
   <script src="https://unpkg.com/leaflet-minimap/dist/Control.MiniMap.min.js"></script>
-
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-
   <style>
     body {
       margin: 0;
       font-family: "Arial Narrow", sans-serif;
       background-color: black;
+      color: black;
     }
     h1 {
-      text-align: center;
-      background-color: rgba(0, 0, 0, 0.4);
-      padding: 7px;
-      font-size: 24px;
-      font-weight: bold;
-      color: white;
-    }
+  text-align: center;
+  background-color: rgba(0.1, 0.5, 0.5, 0.4); /* Transparencia del fondo negro */
+  padding: 7px;
+  font-size: 24px;
+  font-weight: bold;
+  font-family: "Arial Narrow", sans-serif;
+  color: white;
+  backdrop-filter: blur(3px); /* Opcional para un efecto más moderno */
+}
     #map {
       height: 90vh;
       width: 100%;
@@ -50,148 +57,248 @@
       color: white;
       border-radius: 5px;
       cursor: pointer;
+      text-align: center;
     }
     .boton-anio:hover {
-      background: rgba(255,255,255,0.15);
+      background: rgba(255, 255, 255, 0.1);
     }
   </style>
 </head>
-
 <body>
+  <h1>MAPA DE AUTORIZACIONES SANITARIAS DE AGUA EN NARIÑO</h1>
+  <div id="map"></div>
+  <div id="botones-anio">
+    <div class="boton-anio" onclick="mostrarCapa(2023)">2023</div>
+    <div class="boton-anio" onclick="mostrarCapa(2024)">2024</div>
+     <div class="boton-anio" onclick="mostrarCapa(2025)">2025</div>
+  </div>
 
-<h1>MAPA DE AUTORIZACIONES SANITARIAS DE AGUA EN NARIÑO</h1>
-<div id="map"></div>
-<div id="botones-anio"></div>
+  <script>
+    // Inicialización básica del mapa
+    const map = L.map("map", { zoomControl: false }).setView([1.289, -77.29], 8);
+    
+    const norteControl = L.control({ position: 'topleft' });
 
-<script>
-/*-------------------------------------------------------
-  MAPA BASE
---------------------------------------------------------*/
-const map = L.map("map", { zoomControl: false }).setView([1.289, -77.29], 8);
+  norteControl.onAdd = function () {
+  const div = L.DomUtil.create('div', 'info norte');
+  div.innerHTML = `<img src="NORTE.png" alt="Norte" style="width: 50px;">`;
+  return div;
+  };
 
-L.control.zoom({ position: "topright" }).addTo(map);
-L.control.scale({ position: "bottomright" }).addTo(map);
+  norteControl.addTo(map);
 
-L.control.layers(
-  {
-    "Estándar": L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map),
-    "Satélite": L.tileLayer("https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}")
-  },
-  null,
-  { position: "topright" }
-).addTo(map);
+    // Crear un pane para marcadores que estará sobre el GeoJSON
+  map.createPane("marcadores");
+  map.getPane("marcadores").style.zIndex = 650;
 
-// ICONOS POR AÑO
-const iconos = {};
-function iconoPara(year){
-  if(!iconos[year]) {
-    const idx = Object.keys(iconos).length + 1;
-    iconos[year] = L.icon({
-      iconUrl: `MARCADOR${idx}.png`,
-      iconSize: [32, 32],
-      iconAnchor: [16, 32],
-      popupAnchor: [0, -32]
-    });
+    const baseMaps = {
+      "Mapa Estándar": L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "&copy; OpenStreetMap contributors",
+      }).addTo(map),
+      "Satélite (ESRI)": L.tileLayer("https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
+        attribution: "Tiles &copy; Esri",
+      }),
+      "Topográfico": L.tileLayer("https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", {
+        attribution: "&copy; OpenTopoMap contributors",
+      }),
+    };
+    L.control.layers(baseMaps, null, { position: "topright" }).addTo(map);
+    L.control.zoom({ position: "topright" }).addTo(map);
+    L.control.scale({ position: "bottomright", metric: true, imperial: false }).addTo(map);
+    L.Control.geocoder({ defaultMarkGeocode: true }).on("markgeocode", e => {
+      map.setView(e.geocode.center, 12);
+    }).addTo(map);
+    document.querySelector(".leaflet-control-geocoder-icon").title = "Buscar";
+    new L.Control.MiniMap(
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"),
+      { toggleDisplay: true, position: "bottomleft" }
+    ).addTo(map);
+let geojsonLayer;
+
+    
+//ICONOS
+const iconosPersonalizados = {
+  2023: L.icon({
+    iconUrl: 'MARCADOR1.png',
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -32]
+  }),
+  2024: L.icon({
+    iconUrl: 'MARCADOR2.png',
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -32]
+  }),
+  2025: L.icon({
+    iconUrl: 'MARCADOR3.png',
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -32]
+  })
+};
+    
+// Paleta de azules más bonitos y pasteles (ligeramente más fuertes)
+const colores = [
+  "#63C5DA", "#52B2BF", "#82EEFD", "#0492C2", "#00BFFF", "#1877F2",
+"#B2FFFF", "#AFEEEE", "#ADD8E6", "#7DF9FF", "#89CFF0", "#A1CAF1",
+"#4682B4", "#73C2FB", "#6495ED", "#AFDBF5", "#15F4EE" 
+];
+
+// Asignar color a cada municipio basado en su nombre
+function getColor(nombre) {
+  let hash = 0;
+  for (let i = 0; i < nombre.length; i++) {
+    hash = nombre.charCodeAt(i) + ((hash << 5) - hash);
   }
-  return iconos[year];
+  const index = Math.abs(hash % colores.length);
+  return colores[index];
 }
 
-// CSV ÚNICO
-const urlCSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSKeiBBKiYlwHasbQMehxNAL7d4gbjb57bHVnVc4Ui5NWr5XetoTGtMGdd4KRoMWAkXDyuCcRbx0oj8/pub?output=csv";
+// Estilo base de los municipios
+function estiloBase(feature) {
+  return {
+    color: "white",
+    weight: 2,
+    fillOpacity: 0.6,
+    fillColor: getColor(feature.properties.NOMBRE_ENT)
+  };
+}
 
-let datosPorAnio = {};
-let markersPorAnio = {};
-let listaMunicipios = {};
-let listaFuentes = {};
+// Resaltar municipio al pasar el mouse
+function highlightFeature(e) {
+  const layer = e.target;
+  layer.setStyle({
+    weight: 3,
+    color: '#FFFF00',
+    fillOpacity: 0.7
+  });
+  layer.bringToFront();
+}
 
-let capaActiva = null;
+// Restaurar estilo al salir del mouse
+function resetHighlight(e) {
+  geojsonLayer.resetStyle(e.target);
+}
 
-/*-------------------------------------------------------
-  CARGAR CSV ÚNICO
---------------------------------------------------------*/
-Papa.parse(urlCSV, {
-  download: true,
-  header: true,
-  skipEmptyLines: true,
-  complete: (r) => procesarCSV(r.data)
+// Mostrar popup y hacer zoom al municipio
+function onEachFeature(feature, layer) {
+  const nombreMunicipio = feature.properties.NOMBRE_ENT;
+  const nombreFormateado = nombreMunicipio
+    ? nombreMunicipio.charAt(0).toUpperCase() + nombreMunicipio.slice(1).toLowerCase()
+    : 'Desconocido';
+
+  layer.bindPopup(`<b>MUNICIPIO</b><br>${nombreFormateado}`);
+
+  layer.on({
+    mouseover: highlightFeature,
+    mouseout: resetHighlight,
+    click: function (e) {
+      layer.openPopup();
+      map.fitBounds(layer.getBounds());
+    }
+  });
+}
+
+// Cargar el GeoJSON desde GitHub
+fetch("https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/Municipios_Nari%C3%B1o.geojson")
+  .then(response => response.json())
+  .then(data => {
+    geojsonLayer = L.geoJson(data, {
+      style: estiloBase,
+      onEachFeature: onEachFeature
+    }).addTo(map);
+    
+    geojsonLayer.bringToBack();
+
+    // Añadir control de búsqueda después de cargar datos
+    const controlSearch = new L.Control.Search({
+      layer: geojsonLayer,
+      propertyName: 'NOMBRE_ENT',
+      initial: false,
+      zoom: 10,
+      marker: false
+    });
+
+    map.addControl(controlSearch);
+  });
+
+    // Links CSV públicos
+    const data2023 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEIfxPwnfsK29s70MMP_eimRMxEIeTyWye0GIsUAslrRrWalcULyXwWlSiyZenbJ_r4-ww-vBHBnun/pub?output=csv";
+    const data2024 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR9MXHFzd2BkQkYDlCp3TS0vLQr6JCzV-prDxyNErrCiXHAnHnKjH95Z1es_jhYbRwnI2C5mZgW0Ccr/pub?output=csv";
+    const data2025 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSQVHH6vOuiLlskTPiwDnwe_CR9NfAKbS3c4X4FKEuPN66rmElBTdYikcyRWJpbjx36iC6fYj75jZp_/pub?output=csv";
+    
+    const markers = {
+      2023: L.layerGroup(),
+      2024: L.layerGroup(),
+      2025: L.layerGroup()
+    };
+
+    function cargarCsv(year, url) {
+      Papa.parse(url, {
+        download: true,
+        header: true,
+        skipEmptyLines: true,
+        complete: results => {
+          const puntos = {};
+          results.data.forEach(row => {
+            const vereda = row["CORREGIMIENTO O VEREDA"]?.trim();
+            const lat = parseFloat((row["LATITUD DECIMAL"] || "").replace(",", "."));
+            const lon = parseFloat((row["LONGITUD DECIMAL"] || "").replace(",", "."));
+            if (!vereda || isNaN(lat) || isNaN(lon)) return;
+            const key = vereda;
+            if (!puntos[key]) puntos[key] = { vereda, lat, lon, fuentes: [] };
+            puntos[key].fuentes.push({
+              fuente: row["FUENTE"]?.trim(),
+              no_aut: row["NO. AUTORIZACION"]?.trim(),
+              fecha: row["FECHA AUTORIZACION"]?.trim(),
+              anexo: row["ANEXO"]?.trim(),
+              municipio: row["MUNICIPIO"]?.trim()
+            });
+          });
+         Object.values(puntos).forEach(p => {
+  const municipio = p.fuentes[0]?.municipio || "Desconocido";
+  const contentVereda = `
+    <div style="font-family: Arial Narrow, sans-serif; font-size: 13px;">
+      <div><b>Municipio:</b> ${municipio}</div>
+      <div style="margin-top: 6px;"><b>Vereda:</b> ${p.vereda}</div>
+      <div style="margin-top: 6px;"><b>La Fuente:</b><br>
+        ${p.fuentes.map(f => {
+          const tituloFuente = f.fuente?.charAt(0).toUpperCase() + f.fuente?.slice(1).toLowerCase();
+          const json = JSON.stringify(f).replace(/"/g, '&quot;');
+          return `<a href="#" onclick="showFuente(${p.lat}, ${p.lon}, '${json}'); return false;" style="color: #00BFFF; display:block; margin-top: 2px;">${tituloFuente}</a>`;
+        }).join("")}
+      </div>
+    </div>`;
+  L.marker([p.lat, p.lon], { icon: iconosPersonalizados[year] })
+  .bindPopup(contentVereda)
+  .addTo(markers[year]);
 });
-
-function procesarCSV(rows){
-  rows.forEach(row => {
-    const year = parseInt(row["AÑO"]);
-    if(isNaN(year)) return;
-
-    if(!datosPorAnio[year]) {
-      datosPorAnio[year] = [];
-      listaMunicipios[year] = new Set();
-      listaFuentes[year] = new Set();
+        },
+        error: err => console.error("Error CSV:", err)
+      });
     }
 
-    datosPorAnio[year].push(row);
-    listaMunicipios[year].add(row["MUNICIPIO"]);
-    listaFuentes[year].add(row["FUENTE"]);
-  });
+    function showFuente(lat, lon, json) {
+      const f = JSON.parse(json);
+      const content = ` <div style="font-family: 'Arial Narrow', sans-serif; font-size: 13px;">
+      <div style="font-weight: bold;">${f.fuente}</div>
+        <div><b>No. autorización:</b> ${f.no_aut.toLowerCase()}</div>
+        <div><b>Fecha autorización:</b> ${f.fecha.toLowerCase()}</div>
+        <div><b>Anexo:</b> <a href="${f.anexo}" target="_blank">ver</a></div>`;
+      L.popup({ maxWidth: 300 }).setLatLng([lat, lon]).setContent(content).openOn(map);
+    }
 
-  crearBotonesAnios();
-  crearCapasAnios();
-}
+    cargarCsv(2023, data2023);
+    cargarCsv(2024, data2024);
 
-/*-------------------------------------------------------
-  BOTONES AUTOMÁTICOS
---------------------------------------------------------*/
-function crearBotonesAnios(){
-  const cont = document.getElementById("botones-anio");
-  cont.innerHTML = "";
+    function mostrarCapa(year) {
+      map.removeLayer(markers[2023]);
+      map.removeLayer(markers[2024]);
+      map.removeLayer(markers[2025]);
+      map.addLayer(markers[year]);
+    }
 
-  Object.keys(datosPorAnio).sort().forEach(year => {
-    const btn = document.createElement("div");
-    btn.className = "boton-anio";
-    btn.textContent = year;
-    btn.onclick = () => activarAnio(year);
-
-    cont.appendChild(btn);
-  });
-}
-
-/*-------------------------------------------------------
-  CREAR CAPAS POR AÑO
---------------------------------------------------------*/
-function crearCapasAnios(){
-  Object.keys(datosPorAnio).forEach(year => {
-    const capa = L.layerGroup();
-
-    datosPorAnio[year].forEach(r => {
-      const lat = parseFloat((r["LATITUD DECIMAL"] || "").replace(",", "."));
-      const lon = parseFloat((r["LONGITUD DECIMAL"] || "").replace(",", "."));
-      if(isNaN(lat) || isNaN(lon)) return;
-
-      const popup = `
-        <b>MUNICIPIO:</b> ${r["MUNICIPIO"]}<br>
-        <b>VEREDA:</b> ${r["CORREGIMIENTO O VEREDA"]}<br><br>
-        <b>FUENTE:</b> ${r["FUENTE"]}<br>
-        <b>No. AUTORIZACIÓN:</b> ${r["NO. AUTORIZACIÓN"]}<br>
-        <b>FECHA:</b> ${r["FECHA AUTORIZACIÓN"]}<br>
-        <b>ANEXO:</b> <a href="${r["ANEXO"]}" target="_blank">Ver</a>
-      `;
-
-      L.marker([lat, lon], { icon: iconoPara(year) }).bindPopup(popup).addTo(capa);
-    });
-
-    markersPorAnio[year] = capa;
-  });
-}
-
-/*-------------------------------------------------------
-  ACTIVAR AÑO
---------------------------------------------------------*/
-function activarAnio(year){
-  if(capaActiva) map.removeLayer(capaActiva);
-  capaActiva = markersPorAnio[year];
-  map.addLayer(capaActiva);
-
-  alert(`Año ${year} activado. Búsqueda por municipio y fuente funcionando para este año.`);
-}
-
-</script>
+  </script>
 </body>
 </html>
