@@ -1,166 +1,197 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>SIG – Autorizaciones Sanitarias</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mapa de Autorizaciones Sanitarias de Agua en Nariño</title>
 
-<!-- Leaflet -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-<style>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+  <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-minimap/dist/Control.MiniMap.min.css" />
+  <script src="https://unpkg.com/leaflet-minimap/dist/Control.MiniMap.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
+  <style>
     body {
-        margin: 0;
-        font-family: Arial, sans-serif;
+      margin: 0;
+      font-family: "Arial Narrow", sans-serif;
+      background-color: black;
     }
-
-    #year-buttons {
-        padding: 10px;
-        background: #003366;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
+    h1 {
+      text-align: center;
+      background-color: rgba(0, 0, 0, 0.4);
+      padding: 7px;
+      font-size: 24px;
+      font-weight: bold;
+      color: white;
     }
-
-    .year-btn {
-        background: white;
-        border: none;
-        padding: 8px 15px;
-        border-radius: 5px;
-        cursor: pointer;
-        font-weight: bold;
-        transition: 0.3s;
-    }
-
-    .year-btn:hover {
-        background: #4da3ff;
-        color: white;
-    }
-
-    .year-btn.active {
-        background: #2288ff;
-        color: white;
-    }
-
     #map {
-        width: 100%;
-        height: calc(100vh - 70px);
+      height: 90vh;
+      width: 100%;
     }
-</style>
+    #botones-anio {
+      position: absolute;
+      bottom: 40px;
+      right: 10px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .boton-anio {
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid white;
+      padding: 6px 12px;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .boton-anio:hover {
+      background: rgba(255,255,255,0.15);
+    }
+  </style>
 </head>
 
 <body>
 
-<!-- BOTONES DINÁMICOS DE AÑOS -->
-<div id="year-buttons"></div>
-
-<!-- MAPA -->
+<h1>MAPA DE AUTORIZACIONES SANITARIAS DE AGUA EN NARIÑO</h1>
 <div id="map"></div>
+<div id="botones-anio"></div>
 
 <script>
-// -------------------------------
-// CONFIGURACIÓN
-// -------------------------------
-const CSV_URL =
-"https://api.allorigins.win/get?url=" +
-encodeURIComponent("https://docs.google.com/spreadsheets/d/e/2PACX-1vSKeiBBKiYlwHasbQMehxNAL7d4gbjb57bHVnVc4Ui5NWr5XetoTGtMGdd4KRoMWAkXDyuCcRbx0oj8/pub?output=csv");
+/*-------------------------------------------------------
+  MAPA BASE
+--------------------------------------------------------*/
+const map = L.map("map", { zoomControl: false }).setView([1.289, -77.29], 8);
 
-// MAPA
-let map = L.map('map').setView([1.553, -75.564], 8);
+L.control.zoom({ position: "topright" }).addTo(map);
+L.control.scale({ position: "bottomright" }).addTo(map);
 
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 18
-}).addTo(map);
+L.control.layers(
+  {
+    "Estándar": L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map),
+    "Satélite": L.tileLayer("https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}")
+  },
+  null,
+  { position: "topright" }
+).addTo(map);
 
-let markerLayer = L.layerGroup().addTo(map);
-
-// -------------------------------
-// 1. DESCARGAR CSV
-// -------------------------------
-async function loadCSV() {
-    const response = await fetch(CSV_URL);
-    const data = await response.json();  
-    const csv = data.contents;          
-
-    return parseCSV(csv);
-}
-
-// -------------------------------
-// 2. PARSEAR CSV
-// -------------------------------
-function parseCSV(text) {
-    const lines = text.split("\n").map(l => l.trim());
-    const headers = lines[0].split(",");
-
-    return lines.slice(1).map(row => {
-        const cols = row.split(",");
-        let obj = {};
-        headers.forEach((h, i) => {
-            obj[h.trim()] = cols[i] ? cols[i].trim() : "";
-        });
-        return obj;
+// ICONOS POR AÑO
+const iconos = {};
+function iconoPara(year){
+  if(!iconos[year]) {
+    const idx = Object.keys(iconos).length + 1;
+    iconos[year] = L.icon({
+      iconUrl: `MARCADOR${idx}.png`,
+      iconSize: [32, 32],
+      iconAnchor: [16, 32],
+      popupAnchor: [0, -32]
     });
+  }
+  return iconos[year];
 }
 
-// -------------------------------
-// 3. CREAR BOTONES DE AÑOS
-// -------------------------------
-function createYearButtons(data) {
-    const years = [...new Set(data.map(d => d.AÑO))].sort();
+// CSV ÚNICO
+const urlCSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSKeiBBKiYlwHasbQMehxNAL7d4gbjb57bHVnVc4Ui5NWr5XetoTGtMGdd4KRoMWAkXDyuCcRbx0oj8/pub?output=csv";
 
-    const container = document.getElementById("year-buttons");
-    container.innerHTML = "";
+let datosPorAnio = {};
+let markersPorAnio = {};
+let listaMunicipios = {};
+let listaFuentes = {};
 
-    years.forEach(year => {
-        let btn = document.createElement("button");
-        btn.innerText = year;
-        btn.classList.add("year-btn");
-        btn.onclick = () => {
-            document.querySelectorAll(".year-btn").forEach(b => b.classList.remove("active"));
-            btn.classList.add("active");
-            loadYearData(year, data);
-        };
-        container.appendChild(btn);
-    });
-}
+let capaActiva = null;
 
-// -------------------------------
-// 4. CARGAR DATOS DE UN AÑO
-// -------------------------------
-function loadYearData(year, data) {
-    markerLayer.clearLayers();
-
-    const filtered = data.filter(d => d.AÑO == year);
-
-    filtered.forEach(item => {
-        if (!item.Latitud || !item.Longitud) return;
-
-        let marker = L.marker([parseFloat(item.Latitud), parseFloat(item.Longitud)]);
-
-        let html = `
-            <b>${item.Municipio}</b><br>
-            <b>Prestador:</b> ${item.Prestador}<br>
-            <b>Dirección:</b> ${item.Dirección}<br>
-            <b>NIT:</b> ${item.NIT}<br>
-            <b>Estado:</b> ${item.Estado}<br>
-            <b>Servicio:</b> ${item.Servicio}<br>
-            <b>Año:</b> ${item.AÑO}
-        `;
-
-        marker.bindPopup(html);
-        markerLayer.addLayer(marker);
-    });
-
-    map.setView([1.553, -75.564], 8);
-}
-
-// -------------------------------
-// INICIAR SISTEMA
-// -------------------------------
-loadCSV().then(data => {
-    createYearButtons(data);
+/*-------------------------------------------------------
+  CARGAR CSV ÚNICO
+--------------------------------------------------------*/
+Papa.parse(urlCSV, {
+  download: true,
+  header: true,
+  skipEmptyLines: true,
+  complete: (r) => procesarCSV(r.data)
 });
+
+function procesarCSV(rows){
+  rows.forEach(row => {
+    const year = parseInt(row["AÑO"]);
+    if(isNaN(year)) return;
+
+    if(!datosPorAnio[year]) {
+      datosPorAnio[year] = [];
+      listaMunicipios[year] = new Set();
+      listaFuentes[year] = new Set();
+    }
+
+    datosPorAnio[year].push(row);
+    listaMunicipios[year].add(row["MUNICIPIO"]);
+    listaFuentes[year].add(row["FUENTE"]);
+  });
+
+  crearBotonesAnios();
+  crearCapasAnios();
+}
+
+/*-------------------------------------------------------
+  BOTONES AUTOMÁTICOS
+--------------------------------------------------------*/
+function crearBotonesAnios(){
+  const cont = document.getElementById("botones-anio");
+  cont.innerHTML = "";
+
+  Object.keys(datosPorAnio).sort().forEach(year => {
+    const btn = document.createElement("div");
+    btn.className = "boton-anio";
+    btn.textContent = year;
+    btn.onclick = () => activarAnio(year);
+
+    cont.appendChild(btn);
+  });
+}
+
+/*-------------------------------------------------------
+  CREAR CAPAS POR AÑO
+--------------------------------------------------------*/
+function crearCapasAnios(){
+  Object.keys(datosPorAnio).forEach(year => {
+    const capa = L.layerGroup();
+
+    datosPorAnio[year].forEach(r => {
+      const lat = parseFloat((r["LATITUD DECIMAL"] || "").replace(",", "."));
+      const lon = parseFloat((r["LONGITUD DECIMAL"] || "").replace(",", "."));
+      if(isNaN(lat) || isNaN(lon)) return;
+
+      const popup = `
+        <b>MUNICIPIO:</b> ${r["MUNICIPIO"]}<br>
+        <b>VEREDA:</b> ${r["CORREGIMIENTO O VEREDA"]}<br><br>
+        <b>FUENTE:</b> ${r["FUENTE"]}<br>
+        <b>No. AUTORIZACIÓN:</b> ${r["NO. AUTORIZACIÓN"]}<br>
+        <b>FECHA:</b> ${r["FECHA AUTORIZACIÓN"]}<br>
+        <b>ANEXO:</b> <a href="${r["ANEXO"]}" target="_blank">Ver</a>
+      `;
+
+      L.marker([lat, lon], { icon: iconoPara(year) }).bindPopup(popup).addTo(capa);
+    });
+
+    markersPorAnio[year] = capa;
+  });
+}
+
+/*-------------------------------------------------------
+  ACTIVAR AÑO
+--------------------------------------------------------*/
+function activarAnio(year){
+  if(capaActiva) map.removeLayer(capaActiva);
+  capaActiva = markersPorAnio[year];
+  map.addLayer(capaActiva);
+
+  alert(`Año ${year} activado. Búsqueda por municipio y fuente funcionando para este año.`);
+}
+
 </script>
 </body>
 </html>
