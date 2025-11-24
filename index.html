@@ -4,22 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mapa de Autorizaciones Sanitarias de Agua en Nariño</title>
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet/dist/leaflet.css"
-  />
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css"
-  />
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
   <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet-minimap/dist/Control.MiniMap.min.css"
-  />
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-minimap/dist/Control.MiniMap.min.css" />
   <script src="https://unpkg.com/leaflet-minimap/dist/Control.MiniMap.min.js"></script>
+
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
   <style>
     body {
       margin: 0;
@@ -28,18 +24,46 @@
       color: black;
     }
     h1 {
-  text-align: center;
-  background-color: rgba(0.1, 0.5, 0.5, 0.4); /* Transparencia del fondo negro */
-  padding: 7px;
-  font-size: 24px;
-  font-weight: bold;
-  font-family: "Arial Narrow", sans-serif;
-  color: white;
-  backdrop-filter: blur(3px); /* Opcional para un efecto más moderno */
-}
+      text-align: center;
+      background-color: rgba(0.1, 0.5, 0.5, 0.4);
+      padding: 7px;
+      font-size: 24px;
+      font-weight: bold;
+      font-family: "Arial Narrow", sans-serif;
+      color: white;
+      backdrop-filter: blur(3px);
+    }
     #map {
-      height: 90vh;
+      height: 85vh;
       width: 100%;
+    }
+    #controls-top {
+      position: absolute;
+      top: 70px;
+      right: 10px;
+      z-index: 1100;
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+    #buscador {
+      background: rgba(0,0,0,0.6);
+      border: 1px solid white;
+      padding: 6px;
+      color: white;
+      border-radius: 5px;
+      display:flex;
+      gap:6px;
+      align-items:center;
+      font-family: "Arial Narrow", sans-serif;
+    }
+    #buscador input {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: white;
+      width: 160px;
+      font-size: 13px;
     }
     #botones-anio {
       position: absolute;
@@ -58,38 +82,55 @@
       border-radius: 5px;
       cursor: pointer;
       text-align: center;
+      white-space: nowrap;
+    }
+    .boton-anio.activo {
+      background: rgba(0, 180, 255, 0.15);
+      border-color: #00BFFF;
     }
     .boton-anio:hover {
       background: rgba(255, 255, 255, 0.1);
+    }
+    .small-note {
+      font-size: 12px;
+      color: #ddd;
+      margin-left:6px;
     }
   </style>
 </head>
 <body>
   <h1>MAPA DE AUTORIZACIONES SANITARIAS DE AGUA EN NARIÑO</h1>
+
   <div id="map"></div>
+
+  <!-- Controles superiores: buscador por año activo -->
+  <div id="controls-top">
+    <div id="buscador" title="Buscar por municipio o fuente en el año activo">
+      <input id="input-buscar" placeholder="Buscar municipio o fuente..." />
+      <button id="btn-buscar" style="background:transparent;border:1px solid #00BFFF;color:#00BFFF;padding:4px 8px;border-radius:4px;cursor:pointer;">Buscar</button>
+      <button id="btn-reset" style="background:transparent;border:1px solid #fff;color:#fff;padding:4px 8px;border-radius:4px;cursor:pointer;">Reset</button>
+    </div>
+    <div class="small-note" id="nota-ano">Año activo: —</div>
+  </div>
+
   <div id="botones-anio">
-    <div class="boton-anio" onclick="mostrarCapa(2023)">2023</div>
-    <div class="boton-anio" onclick="mostrarCapa(2024)">2024</div>
-     <div class="boton-anio" onclick="mostrarCapa(2025)">2025</div>
+    <!-- Botones generados automáticamente -->
   </div>
 
   <script>
-    // Inicialización básica del mapa
+    // ---------- Inicialización Mapa (sin cambios importantes) ----------
     const map = L.map("map", { zoomControl: false }).setView([1.289, -77.29], 8);
-    
+
     const norteControl = L.control({ position: 'topleft' });
+    norteControl.onAdd = function () {
+      const div = L.DomUtil.create('div', 'info norte');
+      div.innerHTML = `<img src="NORTE.png" alt="Norte" style="width: 50px;">`;
+      return div;
+    };
+    norteControl.addTo(map);
 
-  norteControl.onAdd = function () {
-  const div = L.DomUtil.create('div', 'info norte');
-  div.innerHTML = `<img src="NORTE.png" alt="Norte" style="width: 50px;">`;
-  return div;
-  };
-
-  norteControl.addTo(map);
-
-    // Crear un pane para marcadores que estará sobre el GeoJSON
-  map.createPane("marcadores");
-  map.getPane("marcadores").style.zIndex = 650;
+    map.createPane("marcadores");
+    map.getPane("marcadores").style.zIndex = 650;
 
     const baseMaps = {
       "Mapa Estándar": L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -108,196 +149,266 @@
     L.Control.geocoder({ defaultMarkGeocode: true }).on("markgeocode", e => {
       map.setView(e.geocode.center, 12);
     }).addTo(map);
-    document.querySelector(".leaflet-control-geocoder-icon").title = "Buscar";
+    // evitar error si no existe aún el icono
+    if (document.querySelector(".leaflet-control-geocoder-icon")) {
+      document.querySelector(".leaflet-control-geocoder-icon").title = "Buscar";
+    }
     new L.Control.MiniMap(
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"),
       { toggleDisplay: true, position: "bottomleft" }
     ).addTo(map);
-let geojsonLayer;
 
-    
-//ICONOS
-const iconosPersonalizados = {
-  2023: L.icon({
-    iconUrl: 'MARCADOR1.png',
-    iconSize: [32, 32],
-    iconAnchor: [16, 32],
-    popupAnchor: [0, -32]
-  }),
-  2024: L.icon({
-    iconUrl: 'MARCADOR2.png',
-    iconSize: [32, 32],
-    iconAnchor: [16, 32],
-    popupAnchor: [0, -32]
-  }),
-  2025: L.icon({
-    iconUrl: 'MARCADOR3.png',
-    iconSize: [32, 32],
-    iconAnchor: [16, 32],
-    popupAnchor: [0, -32]
-  })
-};
-    
-// Paleta de azules más bonitos y pasteles (ligeramente más fuertes)
-const colores = [
-  "#63C5DA", "#52B2BF", "#82EEFD", "#0492C2", "#00BFFF", "#1877F2",
-"#B2FFFF", "#AFEEEE", "#ADD8E6", "#7DF9FF", "#89CFF0", "#A1CAF1",
-"#4682B4", "#73C2FB", "#6495ED", "#AFDBF5", "#15F4EE" 
-];
+    let geojsonLayer;
 
-// Asignar color a cada municipio basado en su nombre
-function getColor(nombre) {
-  let hash = 0;
-  for (let i = 0; i < nombre.length; i++) {
-    hash = nombre.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  const index = Math.abs(hash % colores.length);
-  return colores[index];
-}
+    // ---------- Iconos por año (mantener nombres existentes) ----------
+    const iconosPersonalizados = {
+      "2023": L.icon({ iconUrl: 'MARCADOR1.png', iconSize: [32, 32], iconAnchor: [16,32], popupAnchor:[0,-32]}),
+      "2024": L.icon({ iconUrl: 'MARCADOR2.png', iconSize: [32, 32], iconAnchor: [16,32], popupAnchor:[0,-32]}),
+      "2025": L.icon({ iconUrl: 'MARCADOR3.png', iconSize: [32, 32], iconAnchor: [16,32], popupAnchor:[0,-32]})
+    };
+    const iconDefault = L.icon({ iconUrl: 'MARCADOR1.png', iconSize:[32,32], iconAnchor:[16,32], popupAnchor:[0,-32] });
 
-// Estilo base de los municipios
-function estiloBase(feature) {
-  return {
-    color: "white",
-    weight: 2,
-    fillOpacity: 0.6,
-    fillColor: getColor(feature.properties.NOMBRE_ENT)
-  };
-}
+    // ---------- Variables de gestión ----------
+    const CSV_URL = "/mnt/data/AUTORIZACIONES SANITARIAS - BASE DATOS.csv"; // <--- ruta local que indicaste
+    const datosPorAnio = {};        // { "2023": [row, ...], "2024": [...] }
+    const markersPorAnio = {};      // { "2023": L.layerGroup(), ... }
+    const municipiosPorAnio = {};   // { "2023": Set(...), ... }
+    const fuentesPorAnio = {};      // { "2023": Set(...), ... }
+    let anioActivo = null;
 
-// Resaltar municipio al pasar el mouse
-function highlightFeature(e) {
-  const layer = e.target;
-  layer.setStyle({
-    weight: 3,
-    color: '#FFFF00',
-    fillOpacity: 0.7
-  });
-  layer.bringToFront();
-}
+    // ---------- Leer CSV único y agrupar por AÑO ----------
+    Papa.parse(CSV_URL, {
+      download: true,
+      header: true,
+      skipEmptyLines: true,
+      complete: results => {
+        const rows = results.data;
+        rows.forEach(r => {
+          // Normalizar clave año desde columna 'AÑO' (puede venir como 'AÑO' o 'AÑO ' según CSV)
+          const keyAnio = (r["AÑO"] || r["AÑO "] || r["Año"] || r["YEAR"] || "").toString().trim();
+          if (!keyAnio) return;
+          const anio = keyAnio;
+          if (!datosPorAnio[anio]) {
+            datosPorAnio[anio] = [];
+            municipiosPorAnio[anio] = new Set();
+            fuentesPorAnio[anio] = new Set();
+          }
+          datosPorAnio[anio].push(r);
+          if (r["MUNICIPIO"]) municipiosPorAnio[anio].add(r["MUNICIPIO"].trim());
+          if (r["FUENTE"]) fuentesPorAnio[anio].add(r["FUENTE"].trim());
+        });
 
-// Restaurar estilo al salir del mouse
-function resetHighlight(e) {
-  geojsonLayer.resetStyle(e.target);
-}
-
-// Mostrar popup y hacer zoom al municipio
-function onEachFeature(feature, layer) {
-  const nombreMunicipio = feature.properties.NOMBRE_ENT;
-  const nombreFormateado = nombreMunicipio
-    ? nombreMunicipio.charAt(0).toUpperCase() + nombreMunicipio.slice(1).toLowerCase()
-    : 'Desconocido';
-
-  layer.bindPopup(`<b>MUNICIPIO</b><br>${nombreFormateado}`);
-
-  layer.on({
-    mouseover: highlightFeature,
-    mouseout: resetHighlight,
-    click: function (e) {
-      layer.openPopup();
-      map.fitBounds(layer.getBounds());
-    }
-  });
-}
-
-// Cargar el GeoJSON desde GitHub
-fetch("https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/Municipios_Nari%C3%B1o.geojson")
-  .then(response => response.json())
-  .then(data => {
-    geojsonLayer = L.geoJson(data, {
-      style: estiloBase,
-      onEachFeature: onEachFeature
-    }).addTo(map);
-    
-    geojsonLayer.bringToBack();
-
-    // Añadir control de búsqueda después de cargar datos
-    const controlSearch = new L.Control.Search({
-      layer: geojsonLayer,
-      propertyName: 'NOMBRE_ENT',
-      initial: false,
-      zoom: 10,
-      marker: false
+        crearBotonesAnios();
+        crearCapasPorAnio();
+        // activar primer año disponible automáticamente
+        const primeros = Object.keys(datosPorAnio).sort();
+        if (primeros.length) activarAnio(primeros[0]);
+      },
+      error: err => {
+        console.error("Error cargando CSV:", err);
+        alert("No se pudo cargar el CSV. Verifica la ruta/permiso del archivo.");
+      }
     });
 
-    map.addControl(controlSearch);
-  });
-
-    // Links CSV públicos
-    const data2023 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQEIfxPwnfsK29s70MMP_eimRMxEIeTyWye0GIsUAslrRrWalcULyXwWlSiyZenbJ_r4-ww-vBHBnun/pub?output=csv";
-    const data2024 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR9MXHFzd2BkQkYDlCp3TS0vLQr6JCzV-prDxyNErrCiXHAnHnKjH95Z1es_jhYbRwnI2C5mZgW0Ccr/pub?output=csv";
-    const data2025 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSQVHH6vOuiLlskTPiwDnwe_CR9NfAKbS3c4X4FKEuPN66rmElBTdYikcyRWJpbjx36iC6fYj75jZp_/pub?output=csv";
-    
-    const markers = {
-      2023: L.layerGroup(),
-      2024: L.layerGroup(),
-      2025: L.layerGroup()
-    };
-
-    function cargarCsv(year, url) {
-      Papa.parse(url, {
-        download: true,
-        header: true,
-        skipEmptyLines: true,
-        complete: results => {
-          const puntos = {};
-          results.data.forEach(row => {
-            const vereda = row["CORREGIMIENTO O VEREDA"]?.trim();
-            const lat = parseFloat((row["LATITUD DECIMAL"] || "").replace(",", "."));
-            const lon = parseFloat((row["LONGITUD DECIMAL"] || "").replace(",", "."));
-            if (!vereda || isNaN(lat) || isNaN(lon)) return;
-            const key = vereda;
-            if (!puntos[key]) puntos[key] = { vereda, lat, lon, fuentes: [] };
-            puntos[key].fuentes.push({
-              fuente: row["FUENTE"]?.trim(),
-              no_aut: row["NO. AUTORIZACION"]?.trim(),
-              fecha: row["FECHA AUTORIZACION"]?.trim(),
-              anexo: row["ANEXO"]?.trim(),
-              municipio: row["MUNICIPIO"]?.trim()
-            });
-          });
-         Object.values(puntos).forEach(p => {
-  const municipio = p.fuentes[0]?.municipio || "Desconocido";
-  const contentVereda = `
-    <div style="font-family: Arial Narrow, sans-serif; font-size: 13px;">
-      <div><b>Municipio:</b> ${municipio}</div>
-      <div style="margin-top: 6px;"><b>Vereda:</b> ${p.vereda}</div>
-      <div style="margin-top: 6px;"><b>La Fuente:</b><br>
-        ${p.fuentes.map(f => {
-          const tituloFuente = f.fuente?.charAt(0).toUpperCase() + f.fuente?.slice(1).toLowerCase();
-          const json = JSON.stringify(f).replace(/"/g, '&quot;');
-          return `<a href="#" onclick="showFuente(${p.lat}, ${p.lon}, '${json}'); return false;" style="color: #00BFFF; display:block; margin-top: 2px;">${tituloFuente}</a>`;
-        }).join("")}
-      </div>
-    </div>`;
-  L.marker([p.lat, p.lon], { icon: iconosPersonalizados[year] })
-  .bindPopup(contentVereda)
-  .addTo(markers[year]);
-});
-        },
-        error: err => console.error("Error CSV:", err)
+    // ---------- Crear botones dinámicos por año ----------
+    function crearBotonesAnios() {
+      const cont = document.getElementById("botones-anio");
+      cont.innerHTML = "";
+      const anos = Object.keys(datosPorAnio).sort();
+      anos.forEach(a => {
+        const btn = document.createElement("div");
+        btn.className = "boton-anio";
+        btn.textContent = a;
+        btn.onclick = () => activarAnio(a);
+        btn.id = `boton-anio-${a}`;
+        cont.appendChild(btn);
       });
     }
 
-    function showFuente(lat, lon, json) {
-      const f = JSON.parse(json);
-      const content = ` <div style="font-family: 'Arial Narrow', sans-serif; font-size: 13px;">
-      <div style="font-weight: bold;">${f.fuente}</div>
-        <div><b>No. autorización:</b> ${f.no_aut.toLowerCase()}</div>
-        <div><b>Fecha autorización:</b> ${f.fecha.toLowerCase()}</div>
-        <div><b>Anexo:</b> <a href="${f.anexo}" target="_blank">ver</a></div>`;
-      L.popup({ maxWidth: 300 }).setLatLng([lat, lon]).setContent(content).openOn(map);
+    // ---------- Crear capas (markers) por año (mantiene popups parecidos) ----------
+    function crearCapasPorAnio() {
+      Object.keys(datosPorAnio).forEach(anio => {
+        const layer = L.layerGroup();
+        const grouped = {}; // agrupar por vereda+coord para mostrar una sola marca por vereda
+        datosPorAnio[anio].forEach(row => {
+          const vereda = (row["CORREGIMIENTO O VEREDA"] || row["CORREGIMIENTO O VEREDA "] || row["CORREGIMIENTO O VEREDA"]).trim();
+          const lat = parseFloat((row["LATITUD DECIMAL"] || row["LATITUD DECIMAL "] || "").toString().replace(",", "."));
+          const lon = parseFloat((row["LONGITUD DECIMAL"] || row["LONGITUD DECIMAL "] || "").toString().replace(",", "."));
+          if (!vereda || isNaN(lat) || isNaN(lon)) return;
+          const key = vereda + "|" + lat + "|" + lon;
+          if (!grouped[key]) grouped[key] = { vereda, lat, lon, filas: [] };
+          grouped[key].filas.push(row);
+        });
+
+        Object.values(grouped).forEach(g => {
+          // Formato del contenido del primer cuadro (como pediste):
+          // Municipio: (negrita) etc. Las fuentes aparecen como link (azul) que llama a showFuenteEncoded.
+          const municipio = (g.filas[0]["MUNICIPIO"] || "").toString().trim() || "Desconocido";
+
+          const contentVereda = `
+            <div style="font-family: Arial Narrow, sans-serif; font-size: 13px; color: white;">
+              <div><b>Municipio:</b> ${municipio}</div>
+              <div style="margin-top:6px;"><b>Vereda:</b> ${g.vereda}</div>
+              <div style="margin-top:6px;"><b>La Fuente:</b><br>
+                ${g.filas.map(f => {
+                  const nombreFuente = (f["FUENTE"] || "").toString().trim();
+                  const jsonEnc = encodeURIComponent(JSON.stringify({
+                    fuente: nombreFuente,
+                    no_aut: f["NO. AUTORIZACIÓN"] || f["NO. AUTORIZACION"] || f["NO. AUTORIZACIÓN "] || "",
+                    fecha: f["FECHA AUTORIZACIÓN"] || f["FECHA AUTORIZACION"] || f["FECHA AUTORIZACIÓN "] || "",
+                    anexo: f["ANEXO"] || f["ANEXO "] || "",
+                    autorizacion: f["AUTORIZACION SANITARIA"] || f["AUTORIZACION SANITARIA "] || ""
+                  }));
+                  return `<a href="#" onclick="showFuenteEncoded(${g.lat}, ${g.lon}, '${jsonEnc}'); return false;" style="color: #00BFFF; display:block; margin-top: 2px;">${nombreFuente}</a>`;
+                }).join("")}
+              </div>
+            </div>
+          `;
+
+          // elegir icono
+          const icono = iconosPersonalizados[anio] || iconDefault;
+          const marker = L.marker([g.lat, g.lon], { icon: icono, pane: "marcadores" }).bindPopup(contentVereda);
+          layer.addLayer(marker);
+        });
+
+        markersPorAnio[anio] = layer;
+      });
     }
 
-    cargarCsv(2023, data2023);
-    cargarCsv(2024, data2024);
-
-    function mostrarCapa(year) {
-      map.removeLayer(markers[2023]);
-      map.removeLayer(markers[2024]);
-      map.removeLayer(markers[2025]);
-      map.addLayer(markers[year]);
+    // ---------- showFuenteEncoded: abre cuadro 2 con info detallada ----------
+    function showFuenteEncoded(lat, lon, jsonEnc) {
+      try {
+        const f = JSON.parse(decodeURIComponent(jsonEnc));
+        // Cuadro 2: nombre de la quebrada (FUENTE) EN MAYÚSCULAS, No. autorización, Fecha, Anexo, Autorización Sanitaria (VER)
+        const content = `
+          <div style="font-family:'Arial Narrow', sans-serif; font-size:13px; color: white;">
+            <div style="font-weight:bold; text-transform: uppercase; margin-bottom:6px;">${f.fuente || ''}</div>
+            <div><b>No. autorización:</b><br>${f.no_aut || ''}</div>
+            <div style="margin-top:6px;"><b>Fecha autorización:</b><br>${f.fecha || ''}</div>
+            <div style="margin-top:6px;"><b>Anexo:</b><br><a href="${f.anexo || '#'}" target="_blank" style="color:#00BFFF;">VER</a></div>
+            <div style="margin-top:6px;"><b>Autorización sanitaria:</b><br><a href="${f.autorizacion || f.anexo || '#'}" target="_blank" style="color:#00BFFF;">VER</a></div>
+          </div>
+        `;
+        L.popup({ maxWidth: 350 }).setLatLng([lat, lon]).setContent(content).openOn(map);
+      } catch (e) {
+        console.error("Error al mostrar fuente:", e);
+      }
     }
+    // Exponer para onclick en HTML generado
+    window.showFuenteEncoded = showFuenteEncoded;
+
+    // ---------- Activar / cambiar año (muestra capa, actualiza UI de búsqueda) ----------
+    function activarAnio(anio) {
+      // remover capa anterior
+      if (anioActivo && markersPorAnio[anioActivo] && map.hasLayer(markersPorAnio[anioActivo])) {
+        map.removeLayer(markersPorAnio[anioActivo]);
+      }
+      anioActivo = anio;
+      const capa = markersPorAnio[anio];
+      if (capa) map.addLayer(capa);
+
+      // marcar botón activo visualmente
+      document.querySelectorAll('.boton-anio').forEach(b => b.classList.remove('activo'));
+      const boton = document.getElementById(`boton-anio-${anio}`);
+      if (boton) boton.classList.add('activo');
+
+      // actualizar nota año activo
+      document.getElementById('nota-ano').textContent = `Año activo: ${anio}`;
+
+      // centrar mapa en la primera marca de ese año (si existe)
+      const firstLayer = capa && capa.getLayers && capa.getLayers()[0];
+      if (firstLayer) {
+        const latlng = firstLayer.getLatLng();
+        map.setView(latlng, 10);
+      }
+
+      // resetear buscador
+      document.getElementById('input-buscar').value = "";
+    }
+
+    // ---------- Búsqueda filtrada por año activo ----------
+    document.getElementById('btn-buscar').addEventListener('click', () => {
+      const q = document.getElementById('input-buscar').value.trim().toLowerCase();
+      if (!q) return alert("Escribe un municipio o fuente a buscar.");
+      if (!anioActivo) return alert("Activa primero un año (clic en su botón).");
+
+      // buscar en datosPorAnio[anioActivo]
+      const filas = datosPorAnio[anioActivo] || [];
+      // buscar por Municipio o FUENTE (coincidencia parcial)
+      const coincidencias = filas.filter(r => {
+        const muni = (r["MUNICIPIO"] || "").toString().toLowerCase();
+        const fuente = (r["FUENTE"] || "").toString().toLowerCase();
+        return muni.includes(q) || fuente.includes(q);
+      });
+
+      if (coincidencias.length === 0) {
+        alert("No se encontraron resultados para la búsqueda en el año activo.");
+        return;
+      }
+
+      // Tomar la primera coincidencia y centrar en su coordenada (si tiene lat/lon válidos)
+      const r = coincidencias[0];
+      const lat = parseFloat((r["LATITUD DECIMAL"] || r["LATITUD DECIMAL "] || "").toString().replace(",", "."));
+      const lon = parseFloat((r["LONGITUD DECIMAL"] || r["LONGITUD DECIMAL "] || "").toString().replace(",", "."));
+      if (!isNaN(lat) && !isNaN(lon)) {
+        map.setView([lat, lon], 13);
+        // Abrir popup del marcador más cercano en la capa activa
+        const capa = markersPorAnio[anioActivo];
+        if (capa) {
+          let closest = null;
+          let minDist = Infinity;
+          capa.eachLayer(mk => {
+            const d = mk.getLatLng().distanceTo(L.latLng(lat, lon));
+            if (d < minDist) { minDist = d; closest = mk; }
+          });
+          if (closest) closest.openPopup();
+        }
+      } else {
+        alert("La primera coincidencia no tiene coordenadas válidas para centrar.");
+      }
+    });
+
+    // Reset buscador: quita zoom y muestra capa (no cambia año)
+    document.getElementById('btn-reset').addEventListener('click', () => {
+      document.getElementById('input-buscar').value = "";
+      if (anioActivo && markersPorAnio[anioActivo]) {
+        // quitar cualquier popup y ajustar vista al primer marker
+        const capa = markersPorAnio[anioActivo];
+        const first = capa && capa.getLayers && capa.getLayers()[0];
+        if (first) map.setView(first.getLatLng(), 10);
+      }
+    });
+
+    // Exponer mostrarCapa por compatibilidad con tu código anterior
+    window.mostrarCapa = function(year) {
+      if (typeof year === "number") year = year.toString();
+      if (datosPorAnio[year]) activarAnio(year);
+      else alert("No hay datos para el año " + year);
+    };
+
+    // ---------- Cargar GeoJSON (sin cambiar) ----------
+    fetch("https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/Municipios_Nari%C3%B1o.geojson")
+      .then(response => response.json())
+      .then(data => {
+        geojsonLayer = L.geoJson(data, {
+          style: function(feature) {
+            // color aleatorio en base al nombre (mantener tu lógica)
+            const nombre = feature.properties.NOMBRE_ENT || "";
+            let hash = 0; for (let i=0;i<nombre.length;i++) hash = nombre.charCodeAt(i)+((hash<<5)-hash);
+            const colores = ["#63C5DA","#52B2BF","#82EEFD","#0492C2","#00BFFF","#1877F2","#B2FFFF","#AFEEEE","#ADD8E6","#7DF9FF","#89CFF0","#A1CAF1","#4682B4","#73C2FB","#6495ED","#AFDBF5","#15F4EE"];
+            const color = colores[Math.abs(hash) % colores.length];
+            return { color: "white", weight: 2, fillOpacity: 0.6, fillColor: color };
+          },
+          onEachFeature: function(feature, layer) {
+            const nombreMunicipio = feature.properties.NOMBRE_ENT;
+            const nombreFormateado = nombreMunicipio ? nombreMunicipio.charAt(0).toUpperCase() + nombreMunicipio.slice(1).toLowerCase() : 'Desconocido';
+            layer.bindPopup(`<b>MUNICIPIO</b><br>${nombreFormateado}`);
+            layer.on({ mouseover: function(e){ e.target.setStyle({ weight:3, color:'#FFFF00', fillOpacity:0.7}); e.target.bringToFront(); }, mouseout: function(e){ geojsonLayer.resetStyle(e.target); }, click: function(e){ layer.openPopup(); map.fitBounds(layer.getBounds()); } });
+          }
+        }).addTo(map);
+        geojsonLayer.bringToBack();
+      })
+      .catch(err => console.error("Error cargando GeoJSON:", err));
 
   </script>
 </body>
