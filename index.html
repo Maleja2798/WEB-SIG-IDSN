@@ -86,14 +86,12 @@
       backdrop-filter: blur(3px);
     }
 
-    #map{
-
-height:calc(100vh - 78px);
-
-margin-top:78px;
-
-width:100%;
-
+ #map{
+    position:absolute;
+    top:78px;
+    left:0;
+    right:0;
+    bottom:0;
 }
        #controls-top {
   position: absolute;
@@ -200,6 +198,16 @@ width:100%;
   <script>
     // ---------- Inicialización Mapa (sin cambios importantes) ----------
     const map = L.map("map", { zoomControl: false }).setView([1.289, -77.29], 8);
+
+    window.addEventListener("load", () => {
+    setTimeout(() => {
+        map.invalidateSize();
+    }, 300);
+});
+
+    window.addEventListener("resize", () => {
+    map.invalidateSize();
+});
 
     const norteControl = L.control({ position: 'topleft' });
     norteControl.onAdd = function () {
