@@ -75,6 +75,17 @@
      font-weight:400;
 
 }
+        h1 {
+      text-align: center;
+      background-color: rgba(0.1, 0.5, 0.5, 0.4);
+      padding: 7px;
+      font-size: 24px;
+      font-weight: bold;
+      font-family: "Arial Narrow", sans-serif;
+      color: white;
+      backdrop-filter: blur(3px);
+    }
+
     #map{
 
 height:calc(100vh - 78px);
@@ -84,6 +95,67 @@ margin-top:78px;
 width:100%;
 
 }
+       #controls-top {
+  position: absolute;
+  top: 20px;
+  right: 10px;
+  z-index: 1100;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-end;
+}
+    #buscador {
+      background: rgba(0,0,0,0.6);
+      border: 1px solid white;
+      padding: 6px;
+      color: white;
+      border-radius: 5px;
+      display:flex;
+      gap:6px;
+      align-items:center;
+      font-family: "Arial Narrow", sans-serif;
+    }
+    #buscador input {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: white;
+      width: 160px;
+      font-size: 13px;
+    }
+    #botones-anio {
+      position: absolute;
+      bottom: 40px;
+      right: 10px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .boton-anio {
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid white;
+      padding: 6px 12px;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .boton-anio.activo {
+      background: rgba(0, 180, 255, 0.15);
+      border-color: #00BFFF;
+    }
+    .boton-anio:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    .small-note {
+      font-size: 12px;
+      color: #ddd;
+      margin-left:6px;
+    }
+
   </style>
 </head>
 <body>
