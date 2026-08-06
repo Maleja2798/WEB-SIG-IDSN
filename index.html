@@ -445,27 +445,39 @@ width:380px;
 
 height:calc(100vh - 135px);
 
-background:rgba(8,18,35,.96);
+background:rgba(18,42,72,.72);
 
 border-radius:18px;
 
-box-shadow:0 20px 40px rgba(0,0,0,.35);
+box-shadow:
+0 20px 45px rgba(0,0,0,.35),
+0 0 0 1px rgba(255,255,255,.03);
 
-border:1px solid rgba(255,255,255,.05);
+border:1px solid rgba(255,255,255,.14);
 
-backdrop-filter:blur(12px);
+backdrop-filter:blur(18px);
+
+-webkit-backdrop-filter:blur(18px);
 
 z-index:1400;
 
 overflow:hidden;
 
-transform:translateX(-120%);
+opacity:0;
 
-transition:.45s;
+visibility:hidden;
+
+transform:translateX(-25px);
+
+transition:.35s ease;
 
 }
 
 #panel-content.show{
+
+opacity:1;
+
+visibility:visible;
 
 transform:translateX(0);
 
