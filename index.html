@@ -310,7 +310,8 @@ font-size:14px;
 color:#9DB6D8;
 
 }
-    .search-header{
+    
+.search-header{
 
 display:flex;
 
@@ -371,12 +372,13 @@ color:#7F98B8;
     right:0;
     bottom:0;
 }
-       #controls-top{
+    
+#controls-top{
 
 display:none;
 
 }
-    #buscador {
+#buscador {
       background: rgba(0,0,0,0.6);
       border: 1px solid white;
       padding: 6px;
@@ -387,7 +389,7 @@ display:none;
       align-items:center;
       font-family: "Arial Narrow", sans-serif;
     }
-    #buscador input {
+#buscador input {
       background: transparent;
       border: none;
       outline: none;
@@ -395,7 +397,7 @@ display:none;
       width: 160px;
       font-size: 13px;
     }
-    #botones-anio {
+#botones-anio {
       position: absolute;
       bottom: 40px;
       right: 10px;
@@ -404,7 +406,7 @@ display:none;
       flex-direction: column;
       gap: 5px;
     }
-    .boton-anio {
+.boton-anio {
       background: rgba(0, 0, 0, 0.6);
       border: 1px solid white;
       padding: 6px 12px;
@@ -414,19 +416,122 @@ display:none;
       text-align: center;
       white-space: nowrap;
     }
-    .boton-anio.activo {
+.boton-anio.activo {
       background: rgba(0, 180, 255, 0.15);
       border-color: #00BFFF;
     }
-    .boton-anio:hover {
+.boton-anio:hover {
       background: rgba(255, 255, 255, 0.1);
     }
-    .small-note {
+.small-note {
       font-size: 12px;
       color: #ddd;
       margin-left:6px;
     }
 
+/*======================================
+ PANEL DINÁMICO
+=======================================*/
+
+#panel-content{
+
+position:absolute;
+
+left:280px;
+
+top:105px;
+
+width:380px;
+
+height:calc(100vh - 135px);
+
+background:rgba(8,18,35,.96);
+
+border-radius:18px;
+
+box-shadow:0 20px 40px rgba(0,0,0,.35);
+
+border:1px solid rgba(255,255,255,.05);
+
+backdrop-filter:blur(12px);
+
+z-index:1400;
+
+overflow:hidden;
+
+transform:translateX(-120%);
+
+transition:.45s;
+
+}
+
+#panel-content.show{
+
+transform:translateX(0);
+
+}
+
+.panel-header{
+
+height:65px;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+padding:0 25px;
+
+border-bottom:1px solid rgba(255,255,255,.06);
+
+}
+
+.panel-header h2{
+
+color:white;
+
+font-size:20px;
+
+font-weight:600;
+
+}
+
+#cerrar-panel{
+
+font-size:24px;
+
+cursor:pointer;
+
+color:#8FB3D9;
+
+transition:.3s;
+
+}
+
+#cerrar-panel:hover{
+
+color:white;
+
+transform:rotate(90deg);
+
+}
+
+#panel-body{
+
+padding:25px;
+
+color:#C6D6EA;
+
+font-size:15px;
+
+line-height:28px;
+
+overflow:auto;
+
+height:calc(100% - 65px);
+
+}
   </style>
 </head>
 <body>
@@ -508,7 +613,15 @@ Autorizaciones Sanitarias
 
 </div>
 
-<div class="menu-item">
+<div class="menu-item"
+
+onclick="abrirPanel(
+
+'Dashboard',
+
+'<h3 style=&quot;color:white&quot;>Panel estadístico</h3><br>Muy pronto aquí aparecerán las estadísticas del SIG.'
+
+)">
 
 <i data-lucide="layout-dashboard"></i>
 
@@ -545,6 +658,36 @@ Autorizaciones Sanitarias
 <div class="sidebar-footer">
 
 Versión 1.0
+
+</div>
+
+</div>
+
+  <!-- ===========================
+     PANEL LATERAL DINÁMICO
+=========================== -->
+
+<div id="panel-content">
+
+<div class="panel-header">
+
+<h2 id="panel-title">
+
+Inicio
+
+</h2>
+
+<div id="cerrar-panel">
+
+✕
+
+</div>
+
+</div>
+
+<div id="panel-body">
+
+Bienvenido al Sistema de Información Geográfica de Autorizaciones Sanitarias del Departamento de Nariño.
 
 </div>
 
@@ -868,6 +1011,34 @@ Versión 1.0
         geojsonLayer.bringToBack();
       })
       .catch(err => console.error("Error cargando GeoJSON:", err));
+
+    //====================================
+// PANEL MANAGER
+//====================================
+
+const panel=document.getElementById("panel-content");
+
+const panelTitle=document.getElementById("panel-title");
+
+const panelBody=document.getElementById("panel-body");
+
+const cerrar=document.getElementById("cerrar-panel");
+
+cerrar.onclick=()=>{
+
+panel.classList.remove("show");
+
+}
+
+function abrirPanel(titulo,contenido){
+
+panelTitle.innerHTML=titulo;
+
+panelBody.innerHTML=contenido;
+
+panel.classList.add("show");
+
+}
     
     lucide.createIcons();
 
