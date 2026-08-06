@@ -441,7 +441,7 @@ left:280px;
 
 top:105px;
 
-width:440px;
+width:500px;
 
 height:calc(100vh - 135px);
 
@@ -531,17 +531,13 @@ transform:rotate(90deg);
 
 #panel-body{
 
-padding:25px;
+padding:22px;
 
-color:#C6D6EA;
-
-font-size:15px;
-
-line-height:28px;
-
-overflow:auto;
+overflow-y:auto;
 
 height:calc(100% - 65px);
+
+color:white;
 
 }
 
@@ -606,6 +602,84 @@ margin-top:8px;
 color:#D9E7F5;
 
 font-size:15px;
+
+}
+
+/*=========================================
+CENTRO DE CONTROL
+=========================================*/
+
+.dashboard-header{
+
+margin-bottom:20px;
+
+}
+
+.dashboard-title{
+
+font-size:24px;
+
+font-weight:700;
+
+color:white;
+
+}
+
+.dashboard-subtitle{
+
+margin-top:4px;
+
+font-size:14px;
+
+color:#8FB3D9;
+
+}
+
+.dashboard-filtros{
+
+display:flex;
+
+gap:12px;
+
+margin-top:20px;
+
+margin-bottom:25px;
+
+}
+
+.dashboard-select{
+
+flex:1;
+
+padding:12px;
+
+background:rgba(255,255,255,.06);
+
+border:1px solid rgba(255,255,255,.08);
+
+border-radius:12px;
+
+color:white;
+
+font-family:Poppins;
+
+font-size:14px;
+
+outline:none;
+
+cursor:pointer;
+
+}
+
+.dashboard-grid{
+
+display:grid;
+
+grid-template-columns:1fr 1fr;
+
+gap:15px;
+
+margin-bottom:25px;
 
 }
     
@@ -1129,59 +1203,45 @@ municipiosPorAnio[anioActivo]
 
 abrirPanel(
 
-"Dashboard",
+"Centro de Control",
 
 `
 
-<div class="dashboard">
+<div class="dashboard-header">
 
-<div class="card">
+<div class="dashboard-title">
 
-<div class="numero">
-
-${totalFuentes}
+Centro de Control
 
 </div>
 
-<div class="texto">
+<div class="dashboard-subtitle">
 
-Fuentes
-
-</div>
-
-</div>
-
-<div class="card">
-
-<div class="numero">
-
-${totalMunicipios}
-
-</div>
-
-<div class="texto">
-
-Municipios
+Sistema de Información Geográfica
 
 </div>
 
 </div>
 
-<div class="card">
+<div class="dashboard-filtros">
 
-<div class="numero">
+<select class="dashboard-select">
 
-${anioActivo}
+<option>${anioActivo}</option>
+
+</select>
+
+<select class="dashboard-select">
+
+<option>Departamento</option>
+
+</select>
 
 </div>
 
-<div class="texto">
+<div class="dashboard-grid">
 
-Año Activo
-
-</div>
-
-</div>
+AQUÍ IRÁN LAS TARJETAS
 
 </div>
 
