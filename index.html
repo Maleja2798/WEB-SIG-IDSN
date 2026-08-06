@@ -27,22 +27,41 @@
      overflow:hidden;
 
 }
-   .topbar{
+  .topbar{
 
-     position:absolute;
-     top:0;
-     left:0;
-     right:0;
-     height:78px;
-     display:flex;
-     justify-content:space-between;
-     align-items:center;
-     padding:0 30px;
-     background:linear-gradient(90deg,#07111F 0%,#0A1728 40%,#10233D 100%);
-     backdrop-filter:blur(12px);
-     box-shadow:0 15px 35px rgba(0,0,0,.55);
-     border-bottom:1px solid rgba(255,255,255,.08);
-     z-index:1500;
+position:absolute;
+
+top:0;
+
+left:15px;
+
+right:15px;
+
+height:85px;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+padding:0 25px;
+
+background:linear-gradient(
+90deg,
+#06101D,
+#0A1728,
+#10233D);
+
+border-radius:0 0 20px 20px;
+
+box-shadow:0 12px 30px rgba(0,0,0,.45);
+
+border:1px solid rgba(255,255,255,.05);
+
+backdrop-filter:blur(12px);
+
+z-index:1500;
 
 }
     #sidebar{
@@ -225,34 +244,121 @@ color:white;
 
   .logo-area{
 
-    display:flex;
-    align-items:center;
-    gap:15px;
+display:flex;
+
+align-items:center;
+
+gap:18px;
 
 }
 
-  .logo-sig{
+    .logo-circle{
 
-    width:46px;
-    height:46px;
+width:55px;
+
+height:55px;
+
+border-radius:50%;
+
+background:linear-gradient(
+145deg,
+#163D6A,
+#0D2747);
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+box-shadow:0 8px 20px rgba(0,0,0,.35);
+
+color:#4DB8FF;
+
+}
+
+.logo-circle svg{
+
+width:30px;
+
+height:30px;
+
+stroke-width:2;
 
 }
 
 .titulo-sig{
 
-    color:#FFFFFF;
-    font-size:28px;
-    font-weight:700;
-    letter-spacing:.5px;
+color:white;
+
+font-size:26px;
+
+font-weight:700;
+
+letter-spacing:.6px;
 
 }
 
 .subtitulo-sig{
 
-     color:#B8C7DA;
-     font-size:15px;
-     margin-top:4px;
-     font-weight:400;
+margin-top:3px;
+
+font-size:14px;
+
+color:#9DB6D8;
+
+}
+    .search-header{
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+
+background:#0C1D34;
+
+padding:12px 18px;
+
+border-radius:30px;
+
+border:1px solid rgba(255,255,255,.08);
+
+width:340px;
+
+}
+
+.search-header svg{
+
+width:18px;
+
+height:18px;
+
+color:#79C2FF;
+
+}
+
+.search-header input{
+
+background:transparent;
+
+border:none;
+
+outline:none;
+
+width:100%;
+
+color:white;
+
+font-size:14px;
+
+font-family:Poppins,sans-serif;
+
+}
+
+.search-header input::placeholder{
+
+color:#7F98B8;
 
 }
         h1 {
@@ -275,14 +381,7 @@ color:white;
 }
        #controls-top{
 
-position:absolute;
-top:95px;
-right:15px;
-z-index:1100;
-display:flex;
-flex-direction:column;
-gap:10px;
-align-items:flex-end;
+display:none;
 
 }
     #buscador {
@@ -343,19 +442,33 @@ align-items:flex-end;
 
     <div class="logo-area">
 
-        <img src="NORTE.png" class="logo-sig">
+        <div class="logo-circle">
+
+            <i data-lucide="droplets"></i>
+
+        </div>
 
         <div>
 
             <div class="titulo-sig">
-                Autorizaciones Sanitarias
+                SIG - IDSN
             </div>
 
             <div class="subtitulo-sig">
-                Departamento de Nariño
+                Sistema de Información Geográfica
             </div>
 
         </div>
+
+    </div>
+
+    <div class="search-header">
+
+        <i data-lucide="search"></i>
+
+        <input
+        id="input-buscar"
+        placeholder="Buscar municipio o fuente...">
 
     </div>
 
