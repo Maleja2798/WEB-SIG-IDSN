@@ -544,6 +544,71 @@ overflow:auto;
 height:calc(100% - 65px);
 
 }
+
+/*========================================
+DASHBOARD
+========================================*/
+
+.dashboard{
+
+display:flex;
+
+flex-direction:column;
+
+gap:18px;
+
+}
+
+.card{
+
+background:rgba(255,255,255,.05);
+
+border:1px solid rgba(255,255,255,.08);
+
+border-radius:18px;
+
+padding:22px;
+
+text-align:center;
+
+transition:.35s;
+
+cursor:default;
+
+backdrop-filter:blur(10px);
+
+}
+
+.card:hover{
+
+transform:translateY(-4px);
+
+background:rgba(255,255,255,.08);
+
+box-shadow:0 12px 25px rgba(0,0,0,.25);
+
+}
+
+.numero{
+
+font-size:42px;
+
+font-weight:700;
+
+color:#56B8FF;
+
+}
+
+.texto{
+
+margin-top:8px;
+
+color:#D9E7F5;
+
+font-size:15px;
+
+}
+    
   </style>
 </head>
 <body>
@@ -627,13 +692,7 @@ Autorizaciones Sanitarias
 
 <div class="menu-item"
 
-onclick="abrirPanel(
-
-'Dashboard',
-
-'<h3 style=&quot;color:white&quot;>Panel estadístico</h3><br>Muy pronto aquí aparecerán las estadísticas del SIG.'
-
-)">
+onclick="mostrarDashboard()">
 
 <i data-lucide="layout-dashboard"></i>
 
@@ -1049,6 +1108,86 @@ panelTitle.innerHTML=titulo;
 panelBody.innerHTML=contenido;
 
 panel.classList.add("show");
+
+}
+
+  //=====================================
+// DASHBOARD
+//=====================================
+
+function mostrarDashboard(){
+
+const totalFuentes =
+datosPorAnio[anioActivo]
+? datosPorAnio[anioActivo].length
+:0;
+
+const totalMunicipios =
+municipiosPorAnio[anioActivo]
+? municipiosPorAnio[anioActivo].size
+:0;
+
+abrirPanel(
+
+"Dashboard",
+
+`
+
+<div class="dashboard">
+
+<div class="card">
+
+<div class="numero">
+
+${totalFuentes}
+
+</div>
+
+<div class="texto">
+
+Fuentes
+
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="numero">
+
+${totalMunicipios}
+
+</div>
+
+<div class="texto">
+
+Municipios
+
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="numero">
+
+${anioActivo}
+
+</div>
+
+<div class="texto">
+
+Año Activo
+
+</div>
+
+</div>
+
+</div>
+
+`
+
+);
 
 }
     
