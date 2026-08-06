@@ -70,6 +70,86 @@ z-index:1200;
 
 }
 
+    .sidebar-header{
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+
+padding:20px;
+
+border-bottom:1px solid rgba(255,255,255,.08);
+
+}
+
+.sidebar-logo{
+
+width:42px;
+
+height:42px;
+
+}
+
+.sidebar-title{
+
+color:white;
+
+font-size:18px;
+
+font-weight:600;
+
+}
+
+.sidebar-subtitle{
+
+color:#9FB3C8;
+
+font-size:12px;
+
+margin-top:3px;
+
+}
+
+.menu{
+
+padding:15px 0;
+
+}
+
+.menu-item{
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+
+padding:14px 22px;
+
+color:#D8E5F4;
+
+font-size:15px;
+
+cursor:pointer;
+
+transition:.25s;
+
+}
+
+.menu-item:hover{
+
+background:rgba(255,255,255,.08);
+
+border-left:4px solid #3FA9F5;
+
+padding-left:18px;
+
+color:white;
+
+}
+
   .logo-area{
 
     display:flex;
@@ -209,6 +289,48 @@ align-items:flex-end;
 </header>
 
 <div id="sidebar">
+
+    <div class="sidebar-header">
+
+        <img src="img/NORTE.png" class="sidebar-logo">
+
+        <div>
+
+            <div class="sidebar-title">
+                SIG - IDSN
+            </div>
+
+            <div class="sidebar-subtitle">
+                Autorizaciones Sanitarias
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="menu">
+
+        <div class="menu-item">
+            🗺️ <span>Inicio</span>
+        </div>
+
+        <div class="menu-item">
+            📍 <span>Autorizaciones</span>
+        </div>
+
+        <div class="menu-item">
+            🗓️ <span>Años</span>
+        </div>
+
+        <div class="menu-item">
+            📄 <span>Reportes</span>
+        </div>
+
+        <div class="menu-item">
+            🚨 <span>Alertas</span>
+        </div>
+
+    </div>
 
 </div>
 
