@@ -16,6 +16,7 @@
   <script src="https://unpkg.com/leaflet-minimap/dist/Control.MiniMap.min.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
 
   <style>
     body {
@@ -70,25 +71,49 @@ z-index:1200;
 
 }
 
-    .sidebar-header{
+    .logo-circle{
+
+width:54px;
+
+height:54px;
+
+border-radius:50%;
+
+background:linear-gradient(145deg,#163D6A,#0D2747);
 
 display:flex;
 
 align-items:center;
 
-gap:12px;
+justify-content:center;
 
-padding:20px;
+color:white;
 
-border-bottom:1px solid rgba(255,255,255,.08);
+box-shadow:0 8px 20px rgba(0,0,0,.35);
 
 }
 
-.sidebar-logo{
+.logo-circle svg{
 
-width:42px;
+width:28px;
 
-height:42px;
+height:28px;
+
+stroke-width:2;
+
+}
+
+.sidebar-header{
+
+display:flex;
+
+align-items:center;
+
+gap:16px;
+
+padding:22px;
+
+border-bottom:1px solid rgba(255,255,255,.08);
 
 }
 
@@ -104,17 +129,17 @@ font-weight:600;
 
 .sidebar-subtitle{
 
-color:#9FB3C8;
+color:#9CB4D3;
 
-font-size:12px;
+font-size:13px;
 
-margin-top:3px;
+margin-top:4px;
 
 }
 
 .menu{
 
-padding:15px 0;
+margin-top:20px;
 
 }
 
@@ -124,17 +149,65 @@ display:flex;
 
 align-items:center;
 
-gap:12px;
+gap:15px;
 
-padding:14px 22px;
+padding:15px 22px;
 
-color:#D8E5F4;
-
-font-size:15px;
+color:#C9D8EA;
 
 cursor:pointer;
 
 transition:.25s;
+
+font-size:15px;
+
+}
+
+.menu-item svg{
+
+width:21px;
+
+height:21px;
+
+stroke-width:2;
+
+}
+
+.menu-item:hover{
+
+background:rgba(255,255,255,.05);
+
+border-left:4px solid #3FA9F5;
+
+padding-left:18px;
+
+color:white;
+
+}
+
+.menu-item.active{
+
+background:rgba(63,169,245,.12);
+
+border-left:4px solid #3FA9F5;
+
+color:white;
+
+padding-left:18px;
+
+}
+
+.sidebar-footer{
+
+position:absolute;
+
+bottom:20px;
+
+left:25px;
+
+color:#7087A4;
+
+font-size:12px;
 
 }
 
@@ -290,51 +363,87 @@ align-items:flex-end;
 
 <div id="sidebar">
 
-    <div class="sidebar-header">
+<div class="sidebar-header">
 
-        <img src="img/NORTE.png" class="sidebar-logo">
+<div class="logo-circle">
 
-        <div>
+<i data-lucide="droplets"></i>
 
-            <div class="sidebar-title">
-                SIG - IDSN
-            </div>
+</div>
 
-            <div class="sidebar-subtitle">
-                Autorizaciones Sanitarias
-            </div>
+<div>
 
-        </div>
+<div class="sidebar-title">
+SIG - IDSN
+</div>
 
-    </div>
+<div class="sidebar-subtitle">
+Autorizaciones Sanitarias
+</div>
 
-    <div class="menu">
+</div>
 
-        <div class="menu-item">
-            🗺️ <span>Inicio</span>
-        </div>
+</div>
 
-        <div class="menu-item">
-            📍 <span>Autorizaciones</span>
-        </div>
+<div class="menu">
 
-        <div class="menu-item">
-            📊 <span>Dashboard</span>
-        </div>
+<div class="menu-item active">
 
-        <div class="menu-item">
-            🗓️ <span>Años</span>
-        </div>
+<i data-lucide="house"></i>
 
-        <div class="menu-item">
-            📄 <span>Reportes</span>
-        </div>
+<span>Inicio</span>
 
-        <div class="menu-item">
-            🚨 <span>Alertas</span>
-        </div>
+</div>
 
-    </div>
+<div class="menu-item">
+
+<i data-lucide="map-pinned"></i>
+
+<span>Autorizaciones</span>
+
+</div>
+
+<div class="menu-item">
+
+<i data-lucide="layout-dashboard"></i>
+
+<span>Dashboard</span>
+
+</div>
+
+<div class="menu-item">
+
+<i data-lucide="calendar-days"></i>
+
+<span>Años</span>
+
+</div>
+
+<div class="menu-item">
+
+<i data-lucide="file-text"></i>
+
+<span>Reportes</span>
+
+</div>
+
+<div class="menu-item">
+
+<i data-lucide="triangle-alert"></i>
+
+<span>Alertas</span>
+
+</div>
+
+</div>
+
+<div class="sidebar-footer">
+
+Versión 1.0
+
+</div>
+
+</div>
 
 </div>
 
@@ -656,6 +765,8 @@ align-items:flex-end;
         geojsonLayer.bringToBack();
       })
       .catch(err => console.error("Error cargando GeoJSON:", err));
+    
+    lucide.createIcons();
 
   </script>
 </body>
