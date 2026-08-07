@@ -1093,77 +1093,91 @@ Bienvenido al Sistema de Información Geográfica de Autorizaciones Sanitarias d
       document.getElementById('input-buscar').value = "";
     }
 
-    const btnBuscar=document.getElementById("btn-buscar");
+    //====================================
+// BUSCADOR
+//====================================
+
+const btnBuscar = document.getElementById("btn-buscar");
 
 if(btnBuscar){
 
-btnBuscar.addEventListener("click",()=>{
+btnBuscar.addEventListener("click",function(){
 
-    // ---------- Búsqueda filtrada por año activo ----------
-    document.getElementById('btn-buscar').addEventListener('click', () => {
-      const q = document.getElementById('input-buscar').value.trim().toLowerCase();
-      if (!q) return alert("Escribe un municipio o fuente a buscar.");
-      if (!anioActivo) return alert("Activa primero un año (clic en su botón).");
+const q=document.getElementById("input-buscar").value.trim().toLowerCase();
+
+if(!q){
+
+alert("Escribe un municipio o una fuente.");
+
+return;
+
+}
+
+if(!anioActivo){
+
+return;
+
+}
+
+const filas=datosPorAnio[anioActivo] || [];
+
+const coincidencias=filas.filter(r=>{
+
+const muni=(r["MUNICIPIO"]||"").toLowerCase();
+
+const fuente=(r["FUENTE"]||"").toLowerCase();
+
+return muni.includes(q)||fuente.includes(q);
+
+});
+
+if(!coincidencias.length){
+
+alert("No se encontraron resultados.");
+
+return;
+
+}
+
+const r=coincidencias[0];
+
+const lat=parseFloat((r["LATITUD DECIMAL"]||"").replace(",","."));
+
+const lon=parseFloat((r["LONGITUD DECIMAL"]||"").replace(",","."));
+
+if(!isNaN(lat)&&!isNaN(lon)){
+
+map.setView([lat,lon],13);
+
+}
+
 });
 
 }
-      // buscar en datosPorAnio[anioActivo]
-      const filas = datosPorAnio[anioActivo] || [];
-      // buscar por Municipio o FUENTE (coincidencia parcial)
-      const coincidencias = filas.filter(r => {
-        const muni = (r["MUNICIPIO"] || "").toString().toLowerCase();
-        const fuente = (r["FUENTE"] || "").toString().toLowerCase();
-        return muni.includes(q) || fuente.includes(q);
-      });
 
-      if (coincidencias.length === 0) {
-        alert("No se encontraron resultados para la búsqueda en el año activo.");
-        return;
-      }
 
-      // Tomar la primera coincidencia y centrar en su coordenada (si tiene lat/lon válidos)
-      const r = coincidencias[0];
-      const lat = parseFloat((r["LATITUD DECIMAL"] || r["LATITUD DECIMAL "] || "").toString().replace(",", "."));
-      const lon = parseFloat((r["LONGITUD DECIMAL"] || r["LONGITUD DECIMAL "] || "").toString().replace(",", "."));
-      if (!isNaN(lat) && !isNaN(lon)) {
-        map.setView([lat, lon], 13);
-        // Abrir popup del marcador más cercano en la capa activa
-        const capa = markersPorAnio[anioActivo];
-        if (capa) {
-          let closest = null;
-          let minDist = Infinity;
-          capa.eachLayer(mk => {
-            const d = mk.getLatLng().distanceTo(L.latLng(lat, lon));
-            if (d < minDist) { minDist = d; closest = mk; }
-          });
-          if (closest) closest.openPopup();
-        }
-      } else {
-        alert("La primera coincidencia no tiene coordenadas válidas para centrar.");
-      }
-    });
 
-  const btnReset=document.getElementById("btn-reset");
+//====================================
+// RESET
+//====================================
+
+const btnReset=document.getElementById("btn-reset");
 
 if(btnReset){
 
-btnReset.addEventListener("click",()=>{
+btnReset.addEventListener("click",function(){
 
-   // Reset buscador: quita zoom y muestra capa (no cambia año)
-    document.getElementById('btn-reset').addEventListener('click', () => {
-      document.getElementById('input-buscar').value = "";
-      if (anioActivo && markersPorAnio[anioActivo]) {
-        // quitar cualquier popup y ajustar vista al primer marker
-        const capa = markersPorAnio[anioActivo];
-        const first = capa && capa.getLayers && capa.getLayers()[0];
-        if (first) map.setView(first.getLatLng(), 10);
-      }
-    });
+document.getElementById("input-buscar").value="";
+
+if(anioActivo){
+
+activarAnio(anioActivo);
+
+}
 
 });
 
 }
-
     // Exponer mostrarCapa por compatibilidad con tu código anterior
     window.mostrarCapa = function(year) {
       if (typeof year === "number") year = year.toString();
