@@ -1318,7 +1318,71 @@ activarAnio(anioActivo);
       if (datosPorAnio[year]) activarAnio(year);
       else alert("No hay datos para el año " + year);
     };
+/*=========================================
+BUSCADOR INTELIGENTE DE MUNICIPIOS
+=========================================*/
 
+function iniciarBuscadorMunicipios(){
+
+const input=document.getElementById("buscarMunicipio");
+
+const lista=document.getElementById("listaMunicipios");
+
+if(!input || !lista) return;
+
+input.addEventListener("input",function(){
+
+const texto=this.value.toLowerCase().trim();
+
+lista.innerHTML="";
+
+if(texto===""){
+
+lista.style.display="none";
+
+return;
+
+}
+
+const municipios=[...municipiosPorAnio[anioActivo]].sort();
+
+const encontrados=municipios.filter(m=>m.toLowerCase().includes(texto));
+
+encontrados.forEach(m=>{
+
+const item=document.createElement("div");
+
+item.className="item-municipio";
+
+item.textContent=m;
+
+item.onclick=function(){
+
+input.value=m;
+
+lista.style.display="none";
+
+};
+
+lista.appendChild(item);
+
+});
+
+lista.style.display=encontrados.length?"block":"none";
+
+});
+
+document.addEventListener("click",function(e){
+
+if(!e.target.closest(".dashboard-search")){
+
+lista.style.display="none";
+
+}
+
+});
+
+}
     // ---------- Cargar GeoJSON (sin cambiar) ----------
     fetch("https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/Municipios_Nari%C3%B1o.geojson")
       .then(response => response.json())
@@ -1532,7 +1596,9 @@ Sistema actualizado
 
 }
     
-    lucide.createIcons();
+   lucide.createIcons();
+
+iniciarBuscadorMunicipios();
 
   </script>
 </body>
