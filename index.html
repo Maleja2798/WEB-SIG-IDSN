@@ -793,7 +793,60 @@ color:white;
 color:#89A7C5;
 
 }
-    
+
+/*=============================
+LISTA DE MUNICIPIOS
+=============================*/
+
+.dashboard-search{
+    position:relative;
+}
+
+#listaMunicipios{
+
+position:absolute;
+
+top:105%;
+
+left:0;
+
+right:0;
+
+background:#132A45;
+
+border-radius:12px;
+
+box-shadow:0 12px 25px rgba(0,0,0,.35);
+
+display:none;
+
+max-height:220px;
+
+overflow-y:auto;
+
+z-index:9999;
+
+border:1px solid rgba(255,255,255,.08);
+
+}
+
+.item-municipio{
+
+padding:12px 15px;
+
+cursor:pointer;
+
+color:white;
+
+transition:.2s;
+
+}
+
+.item-municipio:hover{
+
+background:#1B3C62;
+
+}    
   </style>
 </head>
 <body>
@@ -1388,12 +1441,14 @@ Información actualizada automáticamente desde la base institucional
 
 <div class="dashboard-search">
 
-<i data-lucide="search"></i>
+    <i data-lucide="search"></i>
 
-<input
-type="text"
-id="buscarMunicipio"
-placeholder="Buscar municipio...">
+    <input
+        type="text"
+        id="buscarMunicipio"
+        placeholder="Buscar municipio...">
+
+    <div id="listaMunicipios"></div>
 
 </div>
 
