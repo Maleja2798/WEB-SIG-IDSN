@@ -846,7 +846,44 @@ transition:.2s;
 
 background:#1B3C62;
 
-}    
+}   
+
+/*=========================================
+ROSA DE LOS VIENTOS
+=========================================*/
+
+.rosa-norte{
+
+width:65px;
+
+height:65px;
+
+background:rgba(8,20,36,.82);
+
+border-radius:16px;
+
+backdrop-filter:blur(12px);
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+box-shadow:0 10px 25px rgba(0,0,0,.30);
+
+border:1px solid rgba(255,255,255,.08);
+
+}
+
+.rosa-norte svg{
+
+width:52px;
+
+height:52px;
+
+}
+    
   </style>
 </head>
 <body>
@@ -1022,13 +1059,67 @@ Bienvenido al Sistema de Información Geográfica de Autorizaciones Sanitarias d
     map.invalidateSize();
 });
 
-    const norteControl = L.control({ position: 'topleft' });
-    norteControl.onAdd = function () {
-      const div = L.DomUtil.create('div', 'info norte');
-      div.innerHTML = `<img src="NORTE.png" alt="Norte" style="width: 50px;">`;
-      return div;
-    };
-    norteControl.addTo(map);
+   /*=========================================
+ROSA DE LOS VIENTOS SVG
+=========================================*/
+
+const norteControl = L.control({ position:'topleft' });
+
+norteControl.onAdd = function(){
+
+const div = L.DomUtil.create('div');
+
+div.innerHTML=`
+
+<div class="rosa-norte">
+
+<svg viewBox="0 0 100 100">
+
+<polygon
+points="50,5 62,42 50,34 38,42"
+fill="#4FB7FF"/>
+
+<polygon
+points="50,95 38,58 50,66 62,58"
+fill="#0A3156"/>
+
+<polygon
+points="5,50 42,38 34,50 42,62"
+fill="#163D6A"/>
+
+<polygon
+points="95,50 58,62 66,50 58,38"
+fill="#163D6A"/>
+
+<circle
+cx="50"
+cy="50"
+r="6"
+fill="#FFFFFF"/>
+
+<text
+x="50"
+y="18"
+text-anchor="middle"
+font-size="18"
+font-weight="bold"
+fill="white">
+
+N
+
+</text>
+
+</svg>
+
+</div>
+
+`;
+
+return div;
+
+};
+
+norteControl.addTo(map);
 
     map.createPane("marcadores");
     map.getPane("marcadores").style.zIndex = 650;
