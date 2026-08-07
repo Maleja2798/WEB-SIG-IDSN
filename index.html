@@ -887,6 +887,190 @@ width:52px;
 height:52px;
 
 }
+
+/*==================================================
+MARCADORES SVG - SIG IDSN
+==================================================*/
+
+.marker-idsn{
+
+position:relative;
+
+width:22px;
+
+height:22px;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+cursor:pointer;
+
+transition:.25s;
+
+}
+
+.marker-glow{
+
+position:absolute;
+
+width:18px;
+
+height:18px;
+
+border-radius:50%;
+
+opacity:.55;
+
+filter:blur(8px);
+
+transition:.30s;
+
+}
+
+.marker-drop{
+
+position:absolute;
+
+width:18px;
+
+height:18px;
+
+transform:rotate(45deg);
+
+border-radius:50% 50% 50% 0;
+
+border:2px solid rgba(255,255,255,.95);
+
+box-shadow:
+
+0 0 10px rgba(255,255,255,.15),
+
+0 6px 10px rgba(0,0,0,.25);
+
+}
+
+.marker-center{
+
+position:absolute;
+
+width:5px;
+
+height:5px;
+
+background:white;
+
+border-radius:50%;
+
+z-index:5;
+
+}
+
+.marker-idsn:hover{
+
+transform:scale(1.25);
+
+}
+
+.marker-idsn:hover .marker-glow{
+
+opacity:.95;
+
+filter:blur(12px);
+
+}
+
+.estado-vigente .marker-drop{
+
+background:linear-gradient(
+
+180deg,
+
+#5DFF87,
+
+#13B83F);
+
+}
+
+.estado-vigente .marker-glow{
+
+background:#38FF63;
+
+}
+
+.estado-vencer .marker-drop{
+
+background:linear-gradient(
+
+180deg,
+
+#FFE55C,
+
+#F2B300);
+
+}
+
+.estado-vencer .marker-glow{
+
+background:#FFD43B;
+
+}
+
+.estado-vencida .marker-drop{
+
+background:linear-gradient(
+
+180deg,
+
+#FF6B6B,
+
+#D62020);
+
+}
+
+.estado-vencida .marker-glow{
+
+background:#FF4545;
+
+}
+
+.estado-suspendida .marker-drop{
+
+background:linear-gradient(
+
+180deg,
+
+#C379FF,
+
+#7B3FE4);
+
+}
+
+.estado-suspendida .marker-glow{
+
+background:#9E6BFF;
+
+}
+
+.estado-tramite .marker-drop{
+
+background:linear-gradient(
+
+180deg,
+
+#62C8FF,
+
+#1976D2);
+
+}
+
+.estado-tramite .marker-glow{
+
+background:#3EAFFF;
+
+}
     
   </style>
 </head>
@@ -1221,6 +1405,39 @@ norteControl.addTo(map);
       });
     }
 
+   /*==================================================
+CREAR MARCADOR SVG
+==================================================*/
+
+function crearMarcador(estado="tramite"){
+
+return L.divIcon({
+
+className:"",
+
+iconSize:[24,24],
+
+iconAnchor:[12,20],
+
+popupAnchor:[0,-18],
+
+html:`
+
+<div class="marker-idsn estado-${estado}">
+
+<div class="marker-glow"></div>
+
+<div class="marker-drop"></div>
+
+<div class="marker-center"></div>
+
+</div>
+
+`
+
+});
+
+} 
     // ---------- Crear capas (markers) por año (mantiene popups parecidos) ----------
     function crearCapasPorAnio() {
       Object.keys(datosPorAnio).forEach(anio => {
