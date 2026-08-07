@@ -778,7 +778,7 @@ Autorizaciones Sanitarias
 
 <div class="menu">
 
-<div class="menu-item active">
+<div class="menu-item active" onclick="mostrarInicio()">
 
 <i data-lucide="house"></i>
 
@@ -1220,6 +1220,20 @@ panelTitle.innerHTML=titulo;
 panelBody.innerHTML=contenido;
 
 panel.classList.add("show");
+
+}
+
+//====================================
+// INICIO
+//====================================
+
+function mostrarInicio(){
+
+panel.classList.remove("show");
+
+// Volver al zoom general del departamento
+
+map.setView([1.289,-77.29],8);
 
 }
 
