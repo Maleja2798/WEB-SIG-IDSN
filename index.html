@@ -1093,12 +1093,20 @@ Bienvenido al Sistema de Información Geográfica de Autorizaciones Sanitarias d
       document.getElementById('input-buscar').value = "";
     }
 
+    const btnBuscar=document.getElementById("btn-buscar");
+
+if(btnBuscar){
+
+btnBuscar.addEventListener("click",()=>{
+
     // ---------- Búsqueda filtrada por año activo ----------
     document.getElementById('btn-buscar').addEventListener('click', () => {
       const q = document.getElementById('input-buscar').value.trim().toLowerCase();
       if (!q) return alert("Escribe un municipio o fuente a buscar.");
       if (!anioActivo) return alert("Activa primero un año (clic en su botón).");
+});
 
+}
       // buscar en datosPorAnio[anioActivo]
       const filas = datosPorAnio[anioActivo] || [];
       // buscar por Municipio o FUENTE (coincidencia parcial)
@@ -1135,7 +1143,13 @@ Bienvenido al Sistema de Información Geográfica de Autorizaciones Sanitarias d
       }
     });
 
-    // Reset buscador: quita zoom y muestra capa (no cambia año)
+  const btnReset=document.getElementById("btn-reset");
+
+if(btnReset){
+
+btnReset.addEventListener("click",()=>{
+
+   // Reset buscador: quita zoom y muestra capa (no cambia año)
     document.getElementById('btn-reset').addEventListener('click', () => {
       document.getElementById('input-buscar').value = "";
       if (anioActivo && markersPorAnio[anioActivo]) {
@@ -1145,6 +1159,10 @@ Bienvenido al Sistema de Información Geográfica de Autorizaciones Sanitarias d
         if (first) map.setView(first.getLatLng(), 10);
       }
     });
+
+});
+
+}
 
     // Exponer mostrarCapa por compatibilidad con tu código anterior
     window.mostrarCapa = function(year) {
