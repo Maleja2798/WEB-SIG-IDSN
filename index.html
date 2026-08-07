@@ -1340,14 +1340,6 @@ norteControl.addTo(map);
 
     let geojsonLayer;
 
-    // ---------- Iconos por año (mantener nombres existentes) ----------
-    const iconosPersonalizados = {
-      "2023": L.icon({ iconUrl: 'MARCADOR1.png', iconSize: [32, 32], iconAnchor: [16,32], popupAnchor:[0,-32]}),
-      "2024": L.icon({ iconUrl: 'MARCADOR2.png', iconSize: [32, 32], iconAnchor: [16,32], popupAnchor:[0,-32]}),
-      "2025": L.icon({ iconUrl: 'MARCADOR3.png', iconSize: [32, 32], iconAnchor: [16,32], popupAnchor:[0,-32]})
-    };
-    const iconDefault = L.icon({ iconUrl: 'MARCADOR1.png', iconSize:[32,32], iconAnchor:[16,32], popupAnchor:[0,-32] });
-
     // ---------- Variables de gestión ----------
     const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSKeiBBKiYlwHasbQMehxNAL7d4gbjb57bHVnVc4Ui5NWr5XetoTGtMGdd4KRoMWAkXDyuCcRbx0oj8/pub?output=csv"; // <--- ruta local que indicaste
     const datosPorAnio = {};        // { "2023": [row, ...], "2024": [...] }
@@ -1478,9 +1470,23 @@ html:`
             </div>
           `;
 
-          // elegir icono
-          const icono = iconosPersonalizados[anio] || iconDefault;
-          const marker = L.marker([g.lat, g.lon], { icon: icono, pane: "marcadores" }).bindPopup(contentVereda);
+          //==================================================
+// Estado temporal
+//==================================================
+
+let estado = "tramite";
+
+// Más adelante el color vendrá del Excel
+
+const icono = crearMarcador(estado);
+
+const marker = L.marker(
+    [g.lat, g.lon],
+    {
+        icon: icono,
+        pane:"marcadores"
+    }
+).bindPopup(contentVereda);
           layer.addLayer(marker);
         });
 
