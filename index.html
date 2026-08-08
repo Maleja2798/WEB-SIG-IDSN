@@ -1820,11 +1820,13 @@ Autorizaciones Sanitarias
 
 </div>
 
-<div class="menu-item">
+<div class="menu-item"
+  
+     onclick="mostrarAutorizaciones()">
 
-<i data-lucide="map-pinned"></i>
+    <i data-lucide="map-pinned"></i>
 
-<span>Autorizaciones</span>
+    <span>Autorizaciones</span>
 
 </div>
 
@@ -3938,7 +3940,318 @@ function mostrarDashboard(){
     }
 
 }
- 
+
+/*==================================================
+AUTORIZACIONES
+==================================================*/
+
+function mostrarAutorizaciones(){
+
+    const anio =
+        anioActivo ||
+        Object.keys(datosPorAnio)
+            .sort()
+            .pop();
+
+
+    const datos =
+        datosPorAnio[anio] || [];
+
+
+    const municipios =
+        new Set();
+
+
+    datos.forEach(row => {
+
+        const municipio =
+            (
+                row["MUNICIPIO"] ||
+                ""
+            )
+            .toString()
+            .trim();
+
+
+        if(municipio){
+
+            municipios.add(
+                municipio
+            );
+
+        }
+
+    });
+
+
+    const opcionesMunicipios = [
+
+        `
+        <option value="TODOS">
+
+            Todos los municipios
+
+        </option>
+        `,
+
+        ...Array.from(municipios)
+            .sort()
+            .map(municipio => `
+
+                <option value="${municipio}">
+
+                    ${municipio}
+
+                </option>
+
+            `)
+
+    ].join("");
+
+
+    const listaAutorizaciones =
+        datos.length
+        ? datos.map((row, indice) => {
+
+            const municipio =
+                row["MUNICIPIO"] || "";
+
+
+            const vereda =
+                row["VEREDA"] || "";
+
+
+            const fuente =
+                row["FUENTE"] || "";
+
+
+            const numero =
+                row["NO. AUTORIZACIÓN"] ||
+                row["NO. AUTORIZACION"] ||
+                "";
+
+
+            const fecha =
+                row["FECHA AUTORIZACIÓN"] ||
+                row["FECHA AUTORIZACION"] ||
+                "";
+
+
+            const estado =
+                obtenerEstadoAutorizacion(
+                    fecha
+                );
+
+
+            return `
+
+                <div class="autorizacion-item">
+
+                    <div class="autorizacion-numero">
+
+                        ${numero || "Sin número"}
+
+                    </div>
+
+
+                    <div class="autorizacion-dato">
+
+                        <b>Municipio:</b>
+                        ${municipio}
+
+                    </div>
+
+
+                    <div class="autorizacion-dato">
+
+                        <b>Vereda:</b>
+                        ${vereda}
+
+                    </div>
+
+
+                    <div class="autorizacion-dato">
+
+                        <b>Fuente:</b>
+                        ${fuente}
+
+                    </div>
+
+
+                    <div class="autorizacion-dato">
+
+                        <b>Fecha:</b>
+                        ${fecha}
+
+                    </div>
+
+
+                    <div class="autorizacion-estado estado-${estado}">
+
+                        ${estado.toUpperCase()}
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }).join("")
+
+        : `
+
+            <div class="autorizaciones-vacio">
+
+                No hay autorizaciones
+                disponibles para el año seleccionado.
+
+            </div>
+
+        `;
+
+
+    abrirPanel(
+
+        "Autorizaciones",
+
+        `
+
+        <div class="dashboard-header">
+
+            <div class="dashboard-title">
+
+                Autorizaciones sanitarias
+
+            </div>
+
+
+            <div class="dashboard-subtitle">
+
+                Consulta detallada de autorizaciones
+
+            </div>
+
+
+            <hr class="dashboard-line">
+
+        </div>
+
+
+        <!-- FILTROS -->
+
+        <div class="dashboard-filtros">
+
+
+            <select
+                class="dashboard-select"
+                id="autorizaciones-anio">
+
+                ${Object.keys(datosPorAnio)
+                    .sort()
+                    .map(a => `
+
+                        <option
+                            value="${a}"
+                            ${a === anio
+                                ? "selected"
+                                : ""}>
+
+                            ${a}
+
+                        </option>
+
+                    `)
+                    .join("")}
+
+            </select>
+
+
+            <select
+                class="dashboard-select"
+                id="autorizaciones-municipio">
+
+                ${opcionesMunicipios}
+
+            </select>
+
+        </div>
+
+
+        <div class="autorizaciones-resumen">
+
+            <b>${datos.length}</b>
+
+            autorizaciones encontradas
+
+        </div>
+
+
+        <div
+            class="autorizaciones-lista"
+            id="autorizaciones-lista">
+
+            ${listaAutorizaciones}
+
+        </div>
+
+        `
+
+    );
+
+
+    lucide.createIcons();
+
+
+    /*==============================================
+    CAMBIO DE AÑO
+    ==============================================*/
+
+    const selectorAnio =
+        document.getElementById(
+            "autorizaciones-anio"
+        );
+
+
+    if(selectorAnio){
+
+        selectorAnio.onchange = function(){
+
+            anioActivo =
+                this.value;
+
+
+            mostrarAutorizaciones();
+
+        };
+
+    }
+
+
+    /*==============================================
+    CAMBIO DE MUNICIPIO
+    ==============================================*/
+
+    const selectorMunicipio =
+        document.getElementById(
+            "autorizaciones-municipio"
+        );
+
+
+    if(selectorMunicipio){
+
+        selectorMunicipio.onchange = function(){
+
+            filtrarListaAutorizaciones(
+                anioActivo,
+                this.value
+            );
+
+        };
+
+    }
+
+}
+    
 /*==================================================
 PANEL DE AÑOS
 ==================================================*/
