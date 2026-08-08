@@ -2552,8 +2552,6 @@ function obtenerDatosDashboard(
 FILTRO DE MARCADORES POR ESTADO
 ==================================================*/
 
-let estadoFiltroActivo = "todos";
-
 
 function filtrarMarcadoresEstado(estado){
 
@@ -2781,6 +2779,12 @@ marker.municipio =
 
 
 layer.addLayer(marker);
+
+        });
+
+      });
+
+    }
 
     // ---------- showFuenteEncoded: abre cuadro 2 con info detallada ----------
     function showFuenteEncoded(lat, lon, jsonEnc) {
