@@ -1911,38 +1911,36 @@ function filtrarMunicipio(nombreMunicipio){
 ACTUALIZAR TARJETAS DASHBOARD
 ==========================================*/
 
-function actualizarDashboard(municipio="TODOS"){
+function actualizarTarjetasDashboard(anio, municipio = "TODOS") {
 
-    let datos = datosPorAnio[anioActivo] || [];
+    const info = obtenerDatosDashboard(anio, municipio);
 
-    if(municipio!="TODOS"){
+    document.getElementById("card-fuentes").textContent =
+        info.totalFuentes;
 
-        datos = datos.filter(r=>
+    document.getElementById("card-municipios").textContent =
+        info.totalMunicipios;
 
-            (r["MUNICIPIO"]||"").trim()==municipio
+    document.getElementById("card-anio").textContent =
+        anio;
 
-        );
+    const vigentes =
+        document.getElementById("card-vigentes");
 
-    }
+    const porVencer =
+        document.getElementById("card-por-vencer");
 
-    const totalFuentes = datos.length;
+    const vencidas =
+        document.getElementById("card-vencidas");
 
-    const totalMunicipios =
+    if(vigentes)
+        vigentes.textContent = info.vigentes;
 
-        new Set(
+    if(porVencer)
+        porVencer.textContent = info.porVencer;
 
-            datos.map(r=>r["MUNICIPIO"])
-
-        ).size;
-
-    document.querySelector("#cardFuentes").innerHTML =
-        totalFuentes;
-
-    document.querySelector("#cardMunicipios").innerHTML =
-        totalMunicipios;
-
-    document.querySelector("#cardAnio").innerHTML =
-        anioActivo;
+    if(vencidas)
+        vencidas.textContent = info.vencidas;
 
 }
     // ---------- Cargar GeoJSON (sin cambiar) ----------
@@ -2159,6 +2157,42 @@ IDSN
 <div class="texto">
 
 Sistema actualizado
+
+</div>
+
+<div class="card">
+
+    <div class="numero" id="card-vigentes">
+        0
+    </div>
+
+    <div class="texto">
+        🟢 Vigentes
+    </div>
+
+</div>
+
+<div class="card">
+
+    <div class="numero" id="card-por-vencer">
+        0
+    </div>
+
+    <div class="texto">
+        🟡 Próximas a vencer
+    </div>
+
+</div>
+
+<div class="card">
+
+    <div class="numero" id="card-vencidas">
+        0
+    </div>
+
+    <div class="texto">
+        🔴 Vencidas
+    </div>
 
 </div>
 
