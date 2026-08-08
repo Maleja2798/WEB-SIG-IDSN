@@ -1493,14 +1493,21 @@ function actualizarTarjetasDashboard(anio, municipio = "TODOS") {
 
     const info = obtenerDatosDashboard(anio, municipio);
 
-    document.getElementById("card-fuentes").innerHTML =
-        info.totalFuentes;
+    const cardFuentes = document.getElementById("card-fuentes");
+    const cardMunicipios = document.getElementById("card-municipios");
+    const cardAnio = document.getElementById("card-anio");
 
-    document.getElementById("card-municipios").innerHTML =
-        info.totalMunicipios;
+    if (cardFuentes) {
+        cardFuentes.textContent = info.totalFuentes;
+    }
 
-    document.getElementById("card-anio").innerHTML =
-        anio;
+    if (cardMunicipios) {
+        cardMunicipios.textContent = info.totalMunicipios;
+    }
+
+    if (cardAnio) {
+        cardAnio.textContent = anio;
+    }
 
 }
     // ---------- Crear capas (markers) por año (mantiene popups parecidos) ----------
