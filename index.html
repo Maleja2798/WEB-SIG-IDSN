@@ -1862,6 +1862,15 @@ municipiosPorAnio[anioActivo]
 ? municipiosPorAnio[anioActivo].size
 :0;
 
+const opcionesAnios = Object.keys(datosPorAnio)
+.sort()
+.map(a => `
+<option value="${a}" ${a===anioActivo ? "selected" : ""}>
+${a}
+</option>
+`)
+.join("");
+
 abrirPanel(
 
 "Centro de Control",
@@ -1894,9 +1903,11 @@ Información actualizada automáticamente desde la base institucional
 
 <div class="dashboard-filtros">
 
-<select class="dashboard-select">
+<select
+class="dashboard-select"
+id="dashboard-anio">
 
-<option>${anioActivo}</option>
+${opcionesAnios}
 
 </select>
 
