@@ -1471,11 +1471,44 @@ function obtenerDatosDashboard(anio, municipio = "TODOS") {
 
     const municipios = new Set();
 
+    let vigentes = 0;
+    let porVencer = 0;
+    let vencidas = 0;
+
+    const hoy = new Date();
+
     datos.forEach(r => {
 
         if (r["MUNICIPIO"]) {
-
             municipios.add(r["MUNICIPIO"].trim());
+        }
+
+        const fechaTexto = r["FECHA AUTORIZACION"];
+
+        if (!fechaTexto) return;
+
+        const fechaAut = new Date(fechaTexto);
+
+        const fechaVence = new Date(fechaAut);
+
+        fechaVence.setFullYear(
+            fechaVence.getFullYear() + 1
+        );
+
+        const dias =
+            (fechaVence - hoy) / (1000 * 60 * 60 * 24);
+
+        if (dias < 0) {
+
+            vencidas++;
+
+        } else if (dias <= 30) {
+
+            porVencer++;
+
+        } else {
+
+            vigentes++;
 
         }
 
@@ -1486,6 +1519,12 @@ function obtenerDatosDashboard(anio, municipio = "TODOS") {
         totalFuentes: datos.length,
 
         totalMunicipios: municipios.size,
+
+        vigentes,
+
+        porVencer,
+
+        vencidas,
 
         datos
 
