@@ -1780,6 +1780,85 @@ lista.style.display="none";
 });
 
 }
+
+/*==================================================
+FILTRAR MUNICIPIO
+==================================================*/
+
+function filtrarMunicipio(nombreMunicipio){
+
+    if(nombreMunicipio==="TODOS"){
+
+        activarAnio(anioActivo);
+
+        return;
+
+    }
+
+    if(!markersPorAnio[anioActivo]) return;
+
+    // Quitar la capa actual
+    map.removeLayer(markersPorAnio[anioActivo]);
+
+    const nuevaCapa = L.layerGroup();
+
+    let coordenadas = [];
+
+    datosPorAnio[anioActivo].forEach(r=>{
+
+        if((r["MUNICIPIO"] || "").trim() !== nombreMunicipio) return;
+
+        const lat = parseFloat(
+            (r["LATITUD DECIMAL"] || "")
+            .toString()
+            .replace(",",".")
+        );
+
+        const lon = parseFloat(
+            (r["LONGITUD DECIMAL"] || "")
+            .toString()
+            .replace(",",".")
+        );
+
+        if(isNaN(lat) || isNaN(lon)) return;
+
+        coordenadas.push([lat,lon]);
+
+    });
+
+    // Mostrar solamente el municipio seleccionado
+
+    markersPorAnio[anioActivo].eachLayer(marker=>{
+
+        const p = marker.getLatLng();
+
+        const existe = coordenadas.some(c=>
+
+            Math.abs(c[0]-p.lat)<0.00001 &&
+
+            Math.abs(c[1]-p.lng)<0.00001
+
+        );
+
+        if(existe){
+
+            nuevaCapa.addLayer(marker);
+
+        }
+
+    });
+
+    nuevaCapa.addTo(map);
+
+    markersPorAnio[anioActivo+"_filtrado"]=nuevaCapa;
+
+    if(coordenadas.length){
+
+        map.fitBounds(coordenadas);
+
+    }
+
+}
     // ---------- Cargar GeoJSON (sin cambiar) ----------
     fetch("https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/Municipios_Nari%C3%B1o.geojson")
       .then(response => response.json())
