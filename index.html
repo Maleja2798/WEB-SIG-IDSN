@@ -3279,43 +3279,19 @@ function aplicarFiltrosMapa(
 
 }
 
-/*==================================================
-FILTRO POR ESTADO
-==================================================*/
+function filtrarMarcadoresEstado(estado){
 
-function filtrarMarcadoresEstado(
-    estado
-){
-
-    /*
-     * Si vuelven a pulsar el mismo botón,
-     * se muestran todos.
-     */
-
-    if(
-        estadoFiltroActivo === estado
-    ){
-
-        estadoFiltroActivo =
-            "TODOS";
-
-    }else{
-
-        estadoFiltroActivo =
-            estado;
-
+    if(!anioActivo){
+        return;
     }
 
+    estadoFiltroActivo = estado;
 
-    aplicarFiltrosMapa(
-        false
-    );
-
+    aplicarFiltrosMapa(false);
 
     actualizarEstadoVisualTarjetas();
 
 }
-
 
 /*==================================================
 ESTADO VISUAL DE LAS TARJETAS
