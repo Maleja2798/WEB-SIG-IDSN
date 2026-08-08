@@ -2226,14 +2226,16 @@ document
 
 document
 .getElementById("dashboard-municipio")
-.addEventListener("change",function(){
+.addEventListener("change", function () {
 
-    filtrarMunicipio(this.value);
+    const anio = document.getElementById("dashboard-anio").value;
+    const municipio = this.value;
 
-    actualizarDashboard(this.value);
+    filtrarMunicipio(municipio);
+
+    actualizarDashboard(anio, municipio);
 
 });
-}
 
 /*==================================================
 PANEL DE AÑOS
