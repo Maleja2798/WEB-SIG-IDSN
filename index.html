@@ -1746,6 +1746,372 @@ CENTRO DE CONTROL - VERSION FINAL
     }
 
 }
+
+/*==================================================
+ AUTORIZACIONES
+==================================================*/
+
+.autorizaciones-resumen{
+
+    margin:18px 0 12px 0;
+
+    padding:10px 14px;
+
+    border-radius:12px;
+
+    background:rgba(12,43,72,.65);
+
+    color:#dcecff;
+
+    font-size:13px;
+
+    border:1px solid rgba(255,255,255,.08);
+
+}
+
+.autorizaciones-resumen b{
+
+    color:white;
+
+    font-size:17px;
+
+    margin-right:4px;
+
+}
+
+
+/* LISTA */
+
+.autorizaciones-lista{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+
+    padding-bottom:20px;
+
+}
+
+
+/* TARJETA */
+
+.autorizacion-card{
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(15,54,88,.96),
+            rgba(10,38,65,.96)
+        );
+
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:14px;
+
+    padding:14px;
+
+    box-shadow:
+        0 8px 20px rgba(0,0,0,.16);
+
+    transition:
+        transform .18s ease,
+        border-color .18s ease;
+
+}
+
+.autorizacion-card:hover{
+
+    transform:translateY(-2px);
+
+    border-color:
+        rgba(70,180,255,.55);
+
+}
+
+
+/* CABECERA */
+
+.autorizacion-card-top{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:10px;
+
+    margin-bottom:8px;
+
+}
+
+
+.autorizacion-numero{
+
+    font-size:16px;
+
+    font-weight:800;
+
+    color:white;
+
+}
+
+
+/* FUENTE */
+
+.autorizacion-fuente{
+
+    font-size:15px;
+
+    font-weight:700;
+
+    color:#6fd0ff;
+
+    margin-bottom:12px;
+
+    text-transform:uppercase;
+
+}
+
+
+/* INFORMACIÓN */
+
+.autorizacion-info{
+
+    display:grid;
+
+    grid-template-columns:
+        1fr;
+
+    gap:8px;
+
+}
+
+
+.autorizacion-info div{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:2px;
+
+}
+
+
+.autorizacion-info span{
+
+    font-size:10px;
+
+    text-transform:uppercase;
+
+    letter-spacing:.5px;
+
+    color:#91aac2;
+
+}
+
+
+.autorizacion-info strong{
+
+    font-size:13px;
+
+    color:#f2f7fc;
+
+    font-weight:600;
+
+}
+
+
+/* ESTADOS */
+
+.autorizacion-estado{
+
+    padding:5px 9px;
+
+    border-radius:20px;
+
+    font-size:9px;
+
+    font-weight:800;
+
+    white-space:nowrap;
+
+}
+
+
+.estado-vigente{
+
+    background:rgba(54,211,153,.16);
+
+    color:#62e6ad;
+
+    border:1px solid rgba(54,211,153,.35);
+
+}
+
+
+.estado-vencer{
+
+    background:rgba(255,193,61,.16);
+
+    color:#ffd15c;
+
+    border:1px solid rgba(255,193,61,.35);
+
+}
+
+
+.estado-vencida{
+
+    background:rgba(255,79,97,.16);
+
+    color:#ff6979;
+
+    border:1px solid rgba(255,79,97,.35);
+
+}
+
+
+.estado-tramite{
+
+    background:rgba(62,175,255,.16);
+
+    color:#67c5ff;
+
+    border:1px solid rgba(62,175,255,.35);
+
+}
+
+
+/* BOTÓN MAPA */
+
+.btn-ver-mapa{
+
+    width:100%;
+
+    margin-top:13px;
+
+    padding:9px 12px;
+
+    border:none;
+
+    border-radius:9px;
+
+    background:#1769aa;
+
+    color:white;
+
+    font-size:12px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:7px;
+
+    transition:
+        background .2s ease,
+        transform .2s ease;
+
+}
+
+
+.btn-ver-mapa:hover{
+
+    background:#2189d1;
+
+    transform:translateY(-1px);
+
+}
+
+
+.btn-ver-mapa svg{
+
+    width:15px;
+
+    height:15px;
+
+}
+
+
+/* SIN COORDENADAS */
+
+.sin-coordenadas{
+
+    margin-top:12px;
+
+    padding:8px;
+
+    text-align:center;
+
+    border-radius:8px;
+
+    background:rgba(255,255,255,.05);
+
+    color:#9fb2c5;
+
+    font-size:11px;
+
+}
+
+
+/* SIN RESULTADOS */
+
+.autorizaciones-vacio{
+
+    min-height:160px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    text-align:center;
+
+    gap:8px;
+
+    color:#9fb2c5;
+
+}
+
+
+.autorizaciones-vacio svg{
+
+    width:35px;
+
+    height:35px;
+
+    color:#6fc9ff;
+
+}
+
+
+.autorizaciones-vacio strong{
+
+    color:white;
+
+    font-size:15px;
+
+}
+
+
+.autorizaciones-vacio span{
+
+    font-size:12px;
+
+}
     
   </style>
 </head>
@@ -4009,105 +4375,199 @@ function mostrarAutorizaciones(){
     ].join("");
 
 
-    const listaAutorizaciones =
-        datos.length
-        ? datos.map((row, indice) => {
+const listaAutorizaciones =
+    datos.length
+    ? datos.map((row, indice) => {
 
-            const municipio =
-                row["MUNICIPIO"] || "";
+        const municipio =
+            (row["MUNICIPIO"] || "")
+            .toString()
+            .trim();
 
+        const vereda =
+            (row["VEREDA"] || "")
+            .toString()
+            .trim();
 
-            const vereda =
-                row["VEREDA"] || "";
+        const fuente =
+            (row["FUENTE"] || "")
+            .toString()
+            .trim();
 
-
-            const fuente =
-                row["FUENTE"] || "";
-
-
-            const numero =
+        const numero =
+            (
                 row["NO. AUTORIZACIÓN"] ||
                 row["NO. AUTORIZACION"] ||
-                "";
+                ""
+            )
+            .toString()
+            .trim();
 
-
-            const fecha =
+        const fecha =
+            (
                 row["FECHA AUTORIZACIÓN"] ||
                 row["FECHA AUTORIZACION"] ||
-                "";
+                ""
+            )
+            .toString()
+            .trim();
+
+        const lat =
+            parseFloat(
+                (
+                    row["LATITUD DECIMAL"] ||
+                    ""
+                )
+                .toString()
+                .replace(",", ".")
+            );
+
+        const lon =
+            parseFloat(
+                (
+                    row["LONGITUD DECIMAL"] ||
+                    ""
+                )
+                .toString()
+                .replace(",", ".")
+            );
+
+        const estado =
+            obtenerEstadoAutorizacion(fecha);
 
 
-            const estado =
-                obtenerEstadoAutorizacion(
-                    fecha
-                );
+        let estadoTexto = "EN TRÁMITE";
+
+        if(estado === "vigente"){
+            estadoTexto = "VIGENTE";
+        }
+        else if(estado === "vencer"){
+            estadoTexto = "PRÓXIMA A VENCER";
+        }
+        else if(estado === "vencida"){
+            estadoTexto = "VENCIDA";
+        }
 
 
-            return `
+        return `
 
-                <div class="autorizacion-item">
+        <div class="autorizacion-card">
 
-                    <div class="autorizacion-numero">
+            <div class="autorizacion-card-top">
 
-                        ${numero || "Sin número"}
+                <div class="autorizacion-numero">
 
-                    </div>
-
-
-                    <div class="autorizacion-dato">
-
-                        <b>Municipio:</b>
-                        ${municipio}
-
-                    </div>
-
-
-                    <div class="autorizacion-dato">
-
-                        <b>Vereda:</b>
-                        ${vereda}
-
-                    </div>
-
-
-                    <div class="autorizacion-dato">
-
-                        <b>Fuente:</b>
-                        ${fuente}
-
-                    </div>
-
-
-                    <div class="autorizacion-dato">
-
-                        <b>Fecha:</b>
-                        ${fecha}
-
-                    </div>
-
-
-                    <div class="autorizacion-estado estado-${estado}">
-
-                        ${estado.toUpperCase()}
-
-                    </div>
+                    ${numero || "SIN NÚMERO"}
 
                 </div>
 
-            `;
+                <div class="autorizacion-estado estado-${estado}">
 
-        }).join("")
+                    ${estadoTexto}
 
-        : `
-
-            <div class="autorizaciones-vacio">
-
-                No hay autorizaciones
-                disponibles para el año seleccionado.
+                </div>
 
             </div>
 
+
+            <div class="autorizacion-fuente">
+
+                ${fuente || "Fuente no registrada"}
+
+            </div>
+
+
+            <div class="autorizacion-info">
+
+                <div>
+
+                    <span>Municipio</span>
+
+                    <strong>
+                        ${municipio || "Sin municipio"}
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>Vereda</span>
+
+                    <strong>
+                        ${vereda || "Sin vereda"}
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>Fecha de autorización</span>
+
+                    <strong>
+                        ${fecha || "Sin fecha"}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            ${
+                !isNaN(lat) && !isNaN(lon)
+                ?
+
+                `
+
+                <button
+                    class="btn-ver-mapa"
+                    onclick="irAAutorizacion(${lat}, ${lon})">
+
+                    <i data-lucide="map-pin"></i>
+
+                    Ver en el mapa
+
+                </button>
+
+                `
+
+                :
+
+                `
+
+                <div class="sin-coordenadas">
+
+                    Ubicación no disponible
+
+                </div>
+
+                `
+            }
+
+        </div>
+
         `;
+
+    }).join("")
+
+    :
+
+    `
+
+    <div class="autorizaciones-vacio">
+
+        <i data-lucide="file-search"></i>
+
+        <strong>No hay autorizaciones</strong>
+
+        <span>
+            No existen registros para los filtros seleccionados.
+        </span>
+
+    </div>
+
+    `;
 
 
     abrirPanel(
@@ -4165,14 +4625,26 @@ function mostrarAutorizaciones(){
 
             </select>
 
+<select
+    class="dashboard-select"
+    id="autorizaciones-municipio">
 
-            <select
-                class="dashboard-select"
-                id="autorizaciones-municipio">
+    <option value="TODOS" selected>
+        Todos los municipios
+    </option>
 
-                ${opcionesMunicipios}
+    ${Array.from(municipios)
+        .sort()
+        .map(municipio => `
 
-            </select>
+            <option value="${municipio}">
+                ${municipio}
+            </option>
+
+        `)
+        .join("")}
+
+</select>
 
         </div>
 
@@ -4226,7 +4698,372 @@ function mostrarAutorizaciones(){
 
     }
 
+/*==================================================
+ UBICAR AUTORIZACIÓN EN EL MAPA
+==================================================*/
 
+function irAAutorizacion(lat, lon){
+
+    if(
+        typeof lat !== "number" ||
+        typeof lon !== "number" ||
+        isNaN(lat) ||
+        isNaN(lon)
+    ){
+
+        return;
+
+    }
+
+
+    /* Cerrar el panel */
+
+    if(
+        typeof panel !== "undefined" &&
+        panel
+    ){
+
+        panel.classList.remove("show");
+
+    }
+
+
+    /* Centrar mapa */
+
+    map.setView(
+        [lat, lon],
+        15,
+        {
+            animate:true
+        }
+    );
+
+
+    /* Abrir popup si existe un marcador cercano */
+
+    setTimeout(() => {
+
+        map.eachLayer(layer => {
+
+            if(
+                layer instanceof L.Marker
+            ){
+
+                const posicion =
+                    layer.getLatLng();
+
+
+                const distanciaLat =
+                    Math.abs(
+                        posicion.lat - lat
+                    );
+
+
+                const distanciaLon =
+                    Math.abs(
+                        posicion.lng - lon
+                    );
+
+
+                if(
+                    distanciaLat < 0.0001 &&
+                    distanciaLon < 0.0001
+                ){
+
+                    layer.openPopup();
+
+                }
+
+            }
+
+        });
+
+    }, 500);
+
+}
+
+/*==================================================
+ FILTRAR AUTORIZACIONES
+==================================================*/
+
+function filtrarListaAutorizaciones(
+    anio,
+    municipio
+){
+
+    const datos =
+        datosPorAnio[anio] || [];
+
+
+    let filtrados = datos;
+
+
+    if(
+        municipio &&
+        municipio !== "TODOS"
+    ){
+
+        filtrados =
+            datos.filter(row => {
+
+                const nombre =
+                    (
+                        row["MUNICIPIO"] ||
+                        ""
+                    )
+                    .toString()
+                    .trim();
+
+
+                return nombre === municipio;
+
+            });
+
+    }
+
+
+    const contenedor =
+        document.getElementById(
+            "autorizaciones-lista"
+        );
+
+
+    const resumen =
+        document.querySelector(
+            ".autorizaciones-resumen"
+        );
+
+
+    if(!contenedor) return;
+
+
+    if(resumen){
+
+        resumen.innerHTML = `
+
+            <b>${filtrados.length}</b>
+
+            autorizaciones encontradas
+
+        `;
+
+    }
+
+
+    contenedor.innerHTML =
+        filtrados.length
+
+        ?
+
+        filtrados.map(row => {
+
+            const municipioRow =
+                (row["MUNICIPIO"] || "")
+                .toString()
+                .trim();
+
+            const vereda =
+                (row["VEREDA"] || "")
+                .toString()
+                .trim();
+
+            const fuente =
+                (row["FUENTE"] || "")
+                .toString()
+                .trim();
+
+            const numero =
+                (
+                    row["NO. AUTORIZACIÓN"] ||
+                    row["NO. AUTORIZACION"] ||
+                    ""
+                )
+                .toString()
+                .trim();
+
+            const fecha =
+                (
+                    row["FECHA AUTORIZACIÓN"] ||
+                    row["FECHA AUTORIZACION"] ||
+                    ""
+                )
+                .toString()
+                .trim();
+
+
+            const lat =
+                parseFloat(
+                    (
+                        row["LATITUD DECIMAL"] ||
+                        ""
+                    )
+                    .toString()
+                    .replace(",", ".")
+                );
+
+
+            const lon =
+                parseFloat(
+                    (
+                        row["LONGITUD DECIMAL"] ||
+                        ""
+                    )
+                    .toString()
+                    .replace(",", ".")
+                );
+
+
+            const estado =
+                obtenerEstadoAutorizacion(
+                    fecha
+                );
+
+
+            let estadoTexto =
+                "EN TRÁMITE";
+
+
+            if(estado === "vigente")
+                estadoTexto =
+                    "VIGENTE";
+
+            else if(estado === "vencer")
+                estadoTexto =
+                    "PRÓXIMA A VENCER";
+
+            else if(estado === "vencida")
+                estadoTexto =
+                    "VENCIDA";
+
+
+            return `
+
+            <div class="autorizacion-card">
+
+                <div class="autorizacion-card-top">
+
+                    <div class="autorizacion-numero">
+
+                        ${numero || "SIN NÚMERO"}
+
+                    </div>
+
+                    <div class="autorizacion-estado estado-${estado}">
+
+                        ${estadoTexto}
+
+                    </div>
+
+                </div>
+
+
+                <div class="autorizacion-fuente">
+
+                    ${fuente || "Fuente no registrada"}
+
+                </div>
+
+
+                <div class="autorizacion-info">
+
+                    <div>
+
+                        <span>Municipio</span>
+
+                        <strong>
+                            ${municipioRow}
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>Vereda</span>
+
+                        <strong>
+                            ${vereda || "Sin vereda"}
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>Fecha de autorización</span>
+
+                        <strong>
+                            ${fecha || "Sin fecha"}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                ${
+                    !isNaN(lat) &&
+                    !isNaN(lon)
+
+                    ?
+
+                    `
+
+                    <button
+                        class="btn-ver-mapa"
+                        onclick="irAAutorizacion(${lat}, ${lon})">
+
+                        <i data-lucide="map-pin"></i>
+
+                        Ver en el mapa
+
+                    </button>
+
+                    `
+
+                    :
+
+                    `
+
+                    <div class="sin-coordenadas">
+
+                        Ubicación no disponible
+
+                    </div>
+
+                    `
+                }
+
+            </div>
+
+            `;
+
+        }).join("")
+
+        :
+
+        `
+
+        <div class="autorizaciones-vacio">
+
+            <i data-lucide="file-search"></i>
+
+            <strong>
+                No hay autorizaciones
+            </strong>
+
+            <span>
+                No existen registros para este municipio.
+            </span>
+
+        </div>
+
+        `;
+
+
+    lucide.createIcons();
+
+}
     /*==============================================
     CAMBIO DE MUNICIPIO
     ==============================================*/
