@@ -397,15 +397,9 @@ display:none;
       width: 160px;
       font-size: 13px;
     }
-#botones-anio {
-      position: absolute;
-      bottom: 40px;
-      right: 10px;
-      z-index: 1000;
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
+#botones-anio{
+    display:none;
+}
 .boton-anio {
       background: rgba(0, 0, 0, 0.6);
       border: 1px solid white;
@@ -1193,11 +1187,11 @@ onclick="mostrarDashboard()">
 
 </div>
 
-<div class="menu-item">
+<div class="menu-item" onclick="mostrarPanelAnios()">
 
-<i data-lucide="calendar-days"></i>
+    <i data-lucide="calendar-days"></i>
 
-<span>Años</span>
+    <span>Años</span>
 
 </div>
 
@@ -1363,12 +1357,19 @@ norteControl.addTo(map);
     if (document.querySelector(".leaflet-control-geocoder-icon")) {
       document.querySelector(".leaflet-control-geocoder-icon").title = "Buscar";
     }
-    new L.Control.MiniMap(
+    new L.Control.MiniMap( 
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"),
       { toggleDisplay: true, position: "bottomleft" }
     ).addTo(map);
 
     let geojsonLayer;
+
+    new L.Control.MiniMap(
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{y}/{x}.png"),
+    { toggleDisplay: true, position: "bottomleft" }
+).addTo(map);
+
+let geojsonLayer;
 
     // ---------- Variables de gestión ----------
     const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSKeiBBKiYlwHasbQMehxNAL7d4gbjb57bHVnVc4Ui5NWr5XetoTGtMGdd4KRoMWAkXDyuCcRbx0oj8/pub?output=csv"; // <--- ruta local que indicaste
@@ -1995,6 +1996,77 @@ const opcionesMunicipios = [
         .sort()
         .map(m => `<option value="${m}">${m}</option>`)
 ].join("");
+
+/*==================================================
+PANEL DE AÑOS
+==================================================*/
+
+function mostrarPanelAnios(){
+
+    let html = `
+    <div class="dashboard-header">
+
+        <div class="dashboard-title">
+            Años disponibles
+        </div>
+
+        <div class="dashboard-subtitle">
+            Seleccione el año que desea visualizar
+        </div>
+
+        <hr class="dashboard-line">
+
+    </div>
+    `;
+
+    Object.keys(datosPorAnio)
+    .sort()
+    .forEach(anio=>{
+
+        html += `
+
+        <div class="card card-anio"
+             onclick="seleccionarAnio('${anio}')">
+
+            <div class="numero">
+
+                ${anio}
+
+            </div>
+
+            <div class="texto">
+
+                Ver autorizaciones sanitarias
+
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
+    abrirPanel(
+
+        "Años",
+
+        html
+
+    );
+
+}
+
+/*==================================================
+SELECCIONAR AÑO
+==================================================*/
+
+function seleccionarAnio(anio){
+
+    activarAnio(anio);
+
+    mostrarDashboard();
+
+}
 
 abrirPanel(
 
