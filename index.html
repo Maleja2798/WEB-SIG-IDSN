@@ -1859,6 +1859,45 @@ function filtrarMunicipio(nombreMunicipio){
     }
 
 }
+
+/*==========================================
+ACTUALIZAR TARJETAS DASHBOARD
+==========================================*/
+
+function actualizarDashboard(municipio="TODOS"){
+
+    let datos = datosPorAnio[anioActivo] || [];
+
+    if(municipio!="TODOS"){
+
+        datos = datos.filter(r=>
+
+            (r["MUNICIPIO"]||"").trim()==municipio
+
+        );
+
+    }
+
+    const totalFuentes = datos.length;
+
+    const totalMunicipios =
+
+        new Set(
+
+            datos.map(r=>r["MUNICIPIO"])
+
+        ).size;
+
+    document.querySelector("#cardFuentes").innerHTML =
+        totalFuentes;
+
+    document.querySelector("#cardMunicipios").innerHTML =
+        totalMunicipios;
+
+    document.querySelector("#cardAnio").innerHTML =
+        anioActivo;
+
+}
     // ---------- Cargar GeoJSON (sin cambiar) ----------
     fetch("https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/Municipios_Nari%C3%B1o.geojson")
       .then(response => response.json())
@@ -2015,7 +2054,7 @@ ${opcionesAnios}
         <i data-lucide="droplets"></i>
     </div>
 
-   <div class="numero" id="card-fuentes">
+  <div class="numero" id="cardFuentes">
         ${totalFuentes}
     </div>
 
@@ -2031,7 +2070,7 @@ ${opcionesAnios}
 
 <div class="card">
 
-<div class="numero" id="card-municipios">
+<div class="numero" id="cardMunicipios">
 
 ${totalMunicipios}
 
@@ -2047,7 +2086,7 @@ Municipios
 
 <div class="card">
 
-<div class="numero" id="card-anio">
+<div class="numero" id="cardAnio">
 
 ${anioActivo}
 
