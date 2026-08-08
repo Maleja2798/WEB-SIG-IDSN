@@ -1371,6 +1371,381 @@ ESTADOS
         0 0 12px rgba(255,79,97,.7);
 
 }
+
+/*==================================================
+CENTRO DE CONTROL - VERSION FINAL
+==================================================*/
+
+
+/* PANEL */
+
+#panel-content{
+
+    box-sizing:border-box;
+
+    width:520px;
+
+    max-width:
+        calc(100vw - 300px);
+
+    height:
+        calc(100vh - 120px);
+
+    overflow:hidden;
+
+}
+
+
+#panel-body{
+
+    box-sizing:border-box;
+
+    height:
+        calc(100% - 65px);
+
+    padding:
+        18px 18px 30px 18px;
+
+    overflow-y:auto;
+
+    overflow-x:hidden;
+
+}
+
+
+/* FILTROS */
+
+.dashboard-filtros{
+
+    display:grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:10px;
+
+    margin-top:16px;
+
+    margin-bottom:18px;
+
+}
+
+
+.dashboard-select{
+
+    width:100%;
+
+    min-width:0;
+
+    box-sizing:border-box;
+
+}
+
+
+/* DOS TARJETAS PRINCIPALES */
+
+.dashboard-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,minmax(0,1fr));
+
+    gap:12px;
+
+    margin-bottom:18px;
+
+}
+
+
+.dashboard-card{
+
+    min-width:0;
+
+    padding:18px;
+
+}
+
+
+.dashboard-card .numero{
+
+    font-size:36px;
+
+    line-height:1;
+
+}
+
+
+.dashboard-card .texto{
+
+    margin-top:8px;
+
+    font-size:13px;
+
+}
+
+
+.dashboard-card .card-icon{
+
+    margin-bottom:4px;
+
+}
+
+
+/* TITULO ESTADOS */
+
+.estado-titulo{
+
+    margin:
+
+        2px 0 9px 2px;
+
+    color:#EAF6FF;
+
+    font-size:13px;
+
+    font-weight:600;
+
+}
+
+
+/* TRES ESTADOS EN UNA SOLA FILA */
+
+.dashboard-estados{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,minmax(0,1fr));
+
+    gap:9px;
+
+    width:100%;
+
+    padding-bottom:12px;
+
+}
+
+
+.estado-card{
+
+    min-width:0;
+
+    box-sizing:border-box;
+
+    padding:14px 9px;
+
+    border-radius:15px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #163A5E,
+            #102F4D
+        );
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+
+    cursor:pointer;
+
+    transition:
+
+        transform .2s ease,
+
+        box-shadow .2s ease,
+
+        border-color .2s ease;
+
+}
+
+
+.estado-card:hover{
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 8px 18px
+        rgba(0,0,0,.28);
+
+}
+
+
+.estado-card-activa{
+
+    transform:
+        translateY(-2px)
+        scale(1.02);
+
+    border-color:
+        #49B9FF;
+
+    box-shadow:
+
+        0 0 18px
+        rgba(73,185,255,.35);
+
+}
+
+
+.estado-numero{
+
+    color:white;
+
+    font-size:28px;
+
+    font-weight:700;
+
+    line-height:1;
+
+    margin-bottom:8px;
+
+}
+
+
+.estado-texto{
+
+    display:flex;
+
+    align-items:center;
+
+    min-width:0;
+
+    color:#D9E8F5;
+
+    font-size:10.5px;
+
+    font-weight:600;
+
+    line-height:1.2;
+
+    white-space:nowrap;
+
+}
+
+
+.estado-punto{
+
+    flex:0 0 auto;
+
+    width:8px;
+
+    height:8px;
+
+    border-radius:50%;
+
+    margin-right:5px;
+
+}
+
+
+.verde{
+
+    background:#42E38A;
+
+    box-shadow:
+
+        0 0 6px #42E38A,
+
+        0 0 11px
+        rgba(66,227,138,.7);
+
+}
+
+
+.amarillo{
+
+    background:#FFD34E;
+
+    box-shadow:
+
+        0 0 6px #FFD34E,
+
+        0 0 11px
+        rgba(255,211,78,.7);
+
+}
+
+
+.rojo{
+
+    background:#FF4F61;
+
+    box-shadow:
+
+        0 0 6px #FF4F61,
+
+        0 0 11px
+        rgba(255,79,97,.7);
+
+}
+
+
+/* ESPACIO FINAL DEL SCROLL */
+
+.dashboard{
+
+    padding-bottom:15px;
+
+}
+
+
+@media(max-width:900px){
+
+    #panel-content{
+
+        left:270px;
+
+        width:
+            calc(100vw - 285px);
+
+        max-width:
+            calc(100vw - 285px);
+
+    }
+
+}
+
+
+@media(max-width:650px){
+
+    #panel-content{
+
+        left:10px;
+
+        right:10px;
+
+        width:auto;
+
+        max-width:none;
+
+    }
+
+
+    .dashboard-estados{
+
+        gap:6px;
+
+    }
+
+
+    .estado-card{
+
+        padding:
+            12px 6px;
+
+    }
+
+
+    .estado-texto{
+
+        font-size:9px;
+
+    }
+
+}
     
   </style>
 </head>
@@ -3485,10 +3860,57 @@ function mostrarDashboard(){
      * Crear iconos Lucide del panel
      */
 
-    lucide.createIcons();
-
+       lucide.createIcons();
 
     actualizarEstadoVisualTarjetas();
+
+
+    //==================================================
+    // CAMBIO DE AÑO
+    //==================================================
+
+    const selectorAnio =
+        document.getElementById("dashboard-anio");
+
+    if(selectorAnio){
+
+        selectorAnio.onchange = function(){
+
+            const nuevoAnio = this.value;
+
+            activarAnio(nuevoAnio);
+
+            mostrarDashboard();
+
+        };
+
+    }
+
+
+    //==================================================
+    // CAMBIO DE MUNICIPIO
+    //==================================================
+
+    const selectorMunicipio =
+        document.getElementById("dashboard-municipio");
+
+    if(selectorMunicipio){
+
+        selectorMunicipio.onchange = function(){
+
+            const municipio =
+                this.value || "TODOS";
+
+            filtrarMunicipio(municipio);
+
+            actualizarTarjetasDashboard(
+                anioActivo,
+                municipio
+            );
+
+        };
+
+    }
 
 }
  
