@@ -1153,6 +1153,50 @@ background:linear-gradient(
 background:#FF5A5A;
 
 }
+
+.card-kpi{
+
+cursor:pointer;
+
+transition:.25s;
+
+}
+
+.card-kpi:hover{
+
+transform:translateY(-6px);
+
+box-shadow:0 15px 35px rgba(0,0,0,.35);
+
+}
+
+.dashboard-reset{
+
+background:#1B4E81;
+
+color:white;
+
+border:none;
+
+padding:12px 22px;
+
+border-radius:12px;
+
+cursor:pointer;
+
+font-family:Poppins;
+
+font-size:14px;
+
+transition:.25s;
+
+}
+
+.dashboard-reset:hover{
+
+background:#2568A8;
+
+}
     
   </style>
 </head>
@@ -2312,11 +2356,10 @@ Año activo
 
 </div>
 
-<div class="card">
+<div class="card card-kpi"
+     onclick="filtrarMarcadoresEstado('vigente')">
 
-    <div class="numero" id="card-vigentes">
-        0
-    </div>
+    <div class="numero" id="card-vigentes">0</div>
 
     <div class="texto">
         🟢 Vigentes
@@ -2324,11 +2367,10 @@ Año activo
 
 </div>
 
-<div class="card">
+<div class="card card-kpi"
+     onclick="filtrarMarcadoresEstado('vencer')">
 
-    <div class="numero" id="card-por-vencer">
-        0
-    </div>
+    <div class="numero" id="card-por-vencer">0</div>
 
     <div class="texto">
         🟡 Próximas a vencer
@@ -2336,11 +2378,10 @@ Año activo
 
 </div>
 
-<div class="card">
+<div class="card card-kpi"
+     onclick="filtrarMarcadoresEstado('vencida')">
 
-    <div class="numero" id="card-vencidas">
-        0
-    </div>
+    <div class="numero" id="card-vencidas">0</div>
 
     <div class="texto">
         🔴 Vencidas
@@ -2349,6 +2390,18 @@ Año activo
 </div>
 
 </div>
+
+</div>
+
+<div style="text-align:center;margin-top:20px;">
+
+    <button
+        class="dashboard-reset"
+        onclick="filtrarMarcadoresEstado('todos')">
+
+        Mostrar todas las autorizaciones
+
+    </button>
 
 </div>
 
