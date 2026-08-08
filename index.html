@@ -1871,6 +1871,13 @@ ${a}
 `)
 .join("");
 
+const opcionesMunicipios = [
+    '<option value="TODOS">Todos los municipios</option>',
+    ...Array.from(municipiosPorAnio[anioActivo] || [])
+        .sort()
+        .map(m => `<option value="${m}">${m}</option>`)
+].join("");
+
 abrirPanel(
 
 "Centro de Control",
@@ -1911,18 +1918,13 @@ ${opcionesAnios}
 
 </select>
 
-<div class="dashboard-search">
+<select
+    class="dashboard-select"
+    id="dashboard-municipio">
 
-    <i data-lucide="search"></i>
+    ${opcionesMunicipios}
 
-    <input
-        type="text"
-        id="buscarMunicipio"
-        placeholder="Buscar municipio...">
-
-    <div id="listaMunicipios"></div>
-
-</div>
+</select>
 
 </div>
 
