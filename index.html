@@ -1546,6 +1546,36 @@ html:`
 
     return "vigente";
 
+} 
+
+ function filtrarMarcadoresEstado(estado){
+
+    Object.values(markersPorAnio).forEach(layer=>{
+
+        layer.eachLayer(marker=>{
+
+            if(estado==="todos"){
+
+                marker.addTo(layer);
+
+                return;
+
+            }
+
+            if(marker.estado===estado){
+
+                marker.addTo(layer);
+
+            }else{
+
+                layer.removeLayer(marker);
+
+            }
+
+        });
+
+    });
+
 }   
 /*==================================================
 DASHBOARD
@@ -1680,12 +1710,17 @@ const estado = obtenerEstadoAutorizacion(fechaAutorizacion);
 const icono = crearMarcador(estado);
 
 const marker = L.marker(
-    [g.lat, g.lon],
+    [g.lat,g.lon],
     {
-        icon: icono,
+        icon:icono,
         pane:"marcadores"
     }
 ).bindPopup(contentVereda);
+
+// Guardar información del marcador
+marker.estado = estado;
+marker.anio = anio;
+marker.municipio = g.municipio;
           layer.addLayer(marker);
         });
 
