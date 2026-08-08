@@ -1647,7 +1647,9 @@ norteControl.addTo(map);
     const municipiosPorAnio = {};   // { "2023": Set(...), ... }
     const fuentesPorAnio = {};      // { "2023": Set(...), ... }
     let anioActivo = null;
-
+    let municipioFiltroActivo = "TODOS";
+    let estadoFiltroActivo = "TODOS";
+    
     // ---------- Leer CSV único y agrupar por AÑO ----------
     Papa.parse(CSV_URL, {
       download: true,
@@ -1767,86 +1769,410 @@ html:`
 } 
 
 /*==================================================
-DASHBOARD
+DATOS DEL DASHBOARD
 ==================================================*/
 
-function obtenerDatosDashboard(anio, municipio = "TODOS") {
+function obtenerFechaAutorizacion(row){
 
-    const datosOriginales = datosPorAnio[anio] || [];
+    return (
+        row["FECHA AUTORIZACION"] ||
+        row["FECHA AUTORIZACIÓN"] ||
+        row["FECHA AUTORIZACION "] ||
+        row["FECHA AUTORIZACIÓN "] ||
+        ""
+    );
 
-    const datos = municipio === "TODOS"
-        ? datosOriginales
-        : datosOriginales.filter(r =>
-            (r["MUNICIPIO"] || "").trim() === municipio
+}
+
+
+/*==================================================
+CONVERTIR FECHA
+==================================================*/
+
+function convertirFecha(fechaTexto){
+
+    if(!fechaTexto){
+
+        return null;
+
+    }
+
+    const texto =
+        fechaTexto.toString().trim();
+
+
+    /* FORMATO YYYY-MM-DD */
+
+    let match =
+        texto.match(/^(\d{4})-(\d{2})-(\d{2})/);
+
+    if(match){
+
+        return new Date(
+            Number(match[1]),
+            Number(match[2]) - 1,
+            Number(match[3])
         );
 
-    const municipios = new Set();
+    }
 
-    let vigentes = 0;
-    let porVencer = 0;
-    let vencidas = 0;
+
+    /* FORMATO DD/MM/YYYY */
+
+    match =
+        texto.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+
+    if(match){
+
+        return new Date(
+            Number(match[3]),
+            Number(match[2]) - 1,
+            Number(match[1])
+        );
+
+    }
+
+
+    /* OTROS FORMATOS */
+
+    const fecha =
+        new Date(texto);
+
+
+    if(isNaN(fecha.getTime())){
+
+        return null;
+
+    }
+
+
+    return fecha;
+
+}
+
+
+/*==================================================
+DETERMINAR ESTADO DE AUTORIZACIÓN
+==================================================*/
+
+function obtenerEstadoAutorizacion(fechaTexto){
+
+    const fechaAutorizacion =
+        convertirFecha(fechaTexto);
+
+
+    if(!fechaAutorizacion){
+
+        return "tramite";
+
+    }
+
+
+    const fechaVence =
+        new Date(fechaAutorizacion);
+
+
+    fechaVence.setFullYear(
+        fechaVence.getFullYear() + 1
+    );
+
 
     const hoy = new Date();
 
-    datos.forEach(r => {
+    hoy.setHours(
+        0,
+        0,
+        0,
+        0
+    );
 
-        if (r["MUNICIPIO"]) {
-            municipios.add(r["MUNICIPIO"].trim());
-        }
 
-       const fechaTexto =
-    r["FECHA AUTORIZACION"] ||
-    r["FECHA AUTORIZACIÓN"] ||
-    r["FECHA AUTORIZACION "] ||
-    r["FECHA AUTORIZACIÓN "];
+    const dias = Math.ceil(
+        (
+            fechaVence.getTime() -
+            hoy.getTime()
+        ) /
+        (1000 * 60 * 60 * 24)
+    );
 
-if(!fechaTexto) return;
 
-const fechaAut = new Date(fechaTexto);
+    if(dias < 0){
 
-        const fechaVence = new Date(fechaAut);
+        return "vencida";
 
-        fechaVence.setFullYear(
-            fechaVence.getFullYear() + 1
+    }
+
+
+    if(dias <= 30){
+
+        return "vencer";
+
+    }
+
+
+    return "vigente";
+
+}
+
+/*==================================================
+DATOS DEL DASHBOARD
+==================================================*/
+
+function obtenerFechaAutorizacion(row){
+
+    return (
+        row["FECHA AUTORIZACION"] ||
+        row["FECHA AUTORIZACIÓN"] ||
+        row["FECHA AUTORIZACION "] ||
+        row["FECHA AUTORIZACIÓN "] ||
+        ""
+    );
+
+}
+
+
+/*==================================================
+CONVERTIR FECHA
+==================================================*/
+
+function convertirFecha(fechaTexto){
+
+    if(!fechaTexto){
+
+        return null;
+
+    }
+
+    const texto =
+        fechaTexto.toString().trim();
+
+
+    /* FORMATO YYYY-MM-DD */
+
+    let match =
+        texto.match(/^(\d{4})-(\d{2})-(\d{2})/);
+
+    if(match){
+
+        return new Date(
+            Number(match[1]),
+            Number(match[2]) - 1,
+            Number(match[3])
         );
 
-        const dias =
-            (fechaVence - hoy) / (1000 * 60 * 60 * 24);
+    }
 
-        if (dias < 0) {
 
-            vencidas++;
+    /* FORMATO DD/MM/YYYY */
 
-        } else if (dias <= 30) {
+    match =
+        texto.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
 
-            porVencer++;
+    if(match){
 
-        } else {
+        return new Date(
+            Number(match[3]),
+            Number(match[2]) - 1,
+            Number(match[1])
+        );
+
+    }
+
+
+    /* OTROS FORMATOS */
+
+    const fecha =
+        new Date(texto);
+
+
+    if(isNaN(fecha.getTime())){
+
+        return null;
+
+    }
+
+
+    return fecha;
+
+}
+
+
+/*==================================================
+DETERMINAR ESTADO DE AUTORIZACIÓN
+==================================================*/
+
+function obtenerEstadoAutorizacion(fechaTexto){
+
+    const fechaAutorizacion =
+        convertirFecha(fechaTexto);
+
+
+    if(!fechaAutorizacion){
+
+        return "tramite";
+
+    }
+
+
+    const fechaVence =
+        new Date(fechaAutorizacion);
+
+
+    fechaVence.setFullYear(
+        fechaVence.getFullYear() + 1
+    );
+
+
+    const hoy = new Date();
+
+    hoy.setHours(
+        0,
+        0,
+        0,
+        0
+    );
+
+
+    const dias = Math.ceil(
+        (
+            fechaVence.getTime() -
+            hoy.getTime()
+        ) /
+        (1000 * 60 * 60 * 24)
+    );
+
+
+    if(dias < 0){
+
+        return "vencida";
+
+    }
+
+
+    if(dias <= 30){
+
+        return "vencer";
+
+    }
+
+
+    return "vigente";
+
+}
+
+
+/*==================================================
+DATOS DEL DASHBOARD
+==================================================*/
+
+function obtenerDatosDashboard(
+    anio,
+    municipio = "TODOS"
+){
+
+    const datosOriginales =
+        datosPorAnio[anio] || [];
+
+
+    const datos =
+        municipio === "TODOS"
+
+        ? datosOriginales
+
+        : datosOriginales.filter(r =>
+
+            (
+                r["MUNICIPIO"] || ""
+            ).trim() === municipio
+
+        );
+
+
+    const municipios =
+        new Set();
+
+
+    let vigentes = 0;
+
+    let porVencer = 0;
+
+    let vencidas = 0;
+
+
+    datos.forEach(r => {
+
+
+        const nombreMunicipio =
+            (
+                r["MUNICIPIO"] || ""
+            ).trim();
+
+
+        if(nombreMunicipio){
+
+            municipios.add(
+                nombreMunicipio
+            );
+
+        }
+
+
+        const fecha =
+            obtenerFechaAutorizacion(r);
+
+
+        const estado =
+            obtenerEstadoAutorizacion(
+                fecha
+            );
+
+
+        if(estado === "vigente"){
 
             vigentes++;
 
         }
 
+
+        if(estado === "vencer"){
+
+            porVencer++;
+
+        }
+
+
+        if(estado === "vencida"){
+
+            vencidas++;
+
+        }
+
     });
+
 
     return {
 
-        totalFuentes: datos.length,
+        totalFuentes:
+            datos.length,
 
-        totalMunicipios: municipios.size,
+        totalMunicipios:
+            municipios.size,
 
-        vigentes,
+        vigentes:
+            vigentes,
 
-        porVencer,
+        porVencer:
+            porVencer,
 
-        vencidas,
+        vencidas:
+            vencidas,
 
-        datos
+        datos:
+            datos
 
     };
 
 }
-
 /*==================================================
 FILTRO DE MARCADORES POR ESTADO
 ==================================================*/
