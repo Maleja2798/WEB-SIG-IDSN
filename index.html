@@ -2321,35 +2321,91 @@ function actualizarEstadoVisualTarjetas(){
             </div>
           `;
 
-const fechaAutorizacion =
-    g.filas[0]["FECHA AUTORIZACION"] ||
-    g.filas[0]["FECHA AUTORIZACIÓN"] ||
-    "";
+/*==================================================
+ESTADO DEL MARCADOR
+==================================================*/
 
-const estado = obtenerEstadoAutorizacion(fechaAutorizacion);
+/*
+ * Una misma vereda/coordenada puede tener
+ * varias fuentes/autorizaciones.
+ *
+ * Se toma el estado más crítico:
+ *
+ * VENCIDA
+ *     ↓
+ * PRÓXIMA A VENCER
+ *     ↓
+ * VIGENTE
+ *     ↓
+ * EN TRÁMITE
+ */
 
-// Más adelante el color vendrá del Excel
+const estadosGrupo = g.filas
+    .map(f => {
 
-const icono = crearMarcador(estado);
+        const fecha = obtenerFechaAutorizacion(f);
+
+        return obtenerEstadoAutorizacion(fecha);
+
+    })
+    .filter(e => e !== "tramite");
+
+
+let estado = "tramite";
+
+
+if(estadosGrupo.includes("vencida")){
+
+    estado = "vencida";
+
+}
+else if(estadosGrupo.includes("vencer")){
+
+    estado = "vencer";
+
+}
+else if(estadosGrupo.includes("vigente")){
+
+    estado = "vigente";
+
+}
+
+
+/*==================================================
+CREAR MARCADOR
+==================================================*/
+
+const icono =
+    crearMarcador(estado);
+
 
 const marker = L.marker(
-    [g.lat,g.lon],
+
+    [g.lat, g.lon],
+
     {
-        icon:icono,
-        pane:"marcadores"
+        icon: icono,
+        pane: "marcadores"
     }
+
 ).bindPopup(contentVereda);
 
-// Guardar información del marcador
-marker.estado = estado;
-marker.anio = anio;
-marker.municipio = g.municipio;
-          layer.addLayer(marker);
-        });
 
-        markersPorAnio[anio] = layer;
-      });
-    }
+/*==================================================
+GUARDAR INFORMACIÓN DEL MARCADOR
+==================================================*/
+
+marker.estado =
+    estado;
+
+marker.anio =
+    anio;
+
+marker.municipio =
+    municipio;
+
+
+layer.addLayer(marker);
 
     // ---------- showFuenteEncoded: abre cuadro 2 con info detallada ----------
     function showFuenteEncoded(lat, lon, jsonEnc) {
@@ -2418,35 +2474,147 @@ ${tituloEstado}
     // Exponer para onclick en HTML generado
     window.showFuenteEncoded = showFuenteEncoded;
 
-    // ---------- Activar / cambiar año (muestra capa, actualiza UI de búsqueda) ----------
-    function activarAnio(anio) {
-      // remover capa anterior
-      if (anioActivo && markersPorAnio[anioActivo] && map.hasLayer(markersPorAnio[anioActivo])) {
-        map.removeLayer(markersPorAnio[anioActivo]);
-      }
-      anioActivo = anio;
-      const capa = markersPorAnio[anio];
-      if (capa) map.addLayer(capa);
+    /*==================================================
+ACTIVAR AÑO
+==================================================*/
 
-      // marcar botón activo visualmente
-      document.querySelectorAll('.boton-anio').forEach(b => b.classList.remove('activo'));
-      const boton = document.getElementById(`boton-anio-${anio}`);
-      if (boton) boton.classList.add('activo');
+function activarAnio(anio){
 
-      // actualizar nota año activo
-      // document.getElementById('nota-ano').textContent =
-      // `Año activo: ${anio}`;
+    /*
+     * Quitar capa del año anterior
+     */
 
-      // centrar mapa en la primera marca de ese año (si existe)
-      const firstLayer = capa && capa.getLayers && capa.getLayers()[0];
-      if (firstLayer) {
-        const latlng = firstLayer.getLatLng();
-        map.setView(latlng, 10);
-      }
+    if(
+        anioActivo &&
+        markersPorAnio[anioActivo] &&
+        map.hasLayer(
+            markersPorAnio[anioActivo]
+        )
+    ){
 
-      // resetear buscador
-      document.getElementById('input-buscar').value = "";
+        map.removeLayer(
+            markersPorAnio[anioActivo]
+        );
+
     }
+
+
+    /*
+     * Cambiar año
+     */
+
+    anioActivo =
+        anio;
+
+
+    /*
+     * Reiniciar filtros
+     */
+
+    municipioFiltroActivo =
+        "TODOS";
+
+    estadoFiltroActivo =
+        "TODOS";
+
+
+    /*
+     * Obtener capa
+     */
+
+    const capa =
+        markersPorAnio[anio];
+
+
+    if(capa){
+
+        map.addLayer(capa);
+
+
+        /*
+         * Mostrar todos los puntos
+         */
+
+        capa.eachLayer(marker => {
+
+            marker.setOpacity(1);
+
+        });
+
+    }
+
+
+    /*
+     * Botón de año activo
+     */
+
+    document
+        .querySelectorAll(".boton-anio")
+        .forEach(b => {
+
+            b.classList.remove(
+                "activo"
+            );
+
+        });
+
+
+    const boton =
+        document.getElementById(
+            `boton-anio-${anio}`
+        );
+
+
+    if(boton){
+
+        boton.classList.add(
+            "activo"
+        );
+
+    }
+
+
+    /*
+     * Centrar mapa
+     */
+
+    const firstLayer =
+        capa &&
+        capa.getLayers &&
+        capa.getLayers()[0];
+
+
+    if(firstLayer){
+
+        const latlng =
+            firstLayer.getLatLng();
+
+
+        map.setView(
+            latlng,
+            10
+        );
+
+    }
+
+
+    /*
+     * Limpiar buscador
+     */
+
+    const buscador =
+        document.getElementById(
+            "input-buscar"
+        );
+
+
+    if(buscador){
+
+        buscador.value = "";
+
+    }
+
+}
 
     //====================================
 // BUSCADOR
@@ -2609,115 +2777,348 @@ lista.style.display="none";
 FILTRAR MUNICIPIO
 ==================================================*/
 
-function filtrarMunicipio(nombreMunicipio){
+function filtrarMunicipio(
+    nombreMunicipio
+){
 
-    if(nombreMunicipio==="TODOS"){
+    municipioFiltroActivo =
+        nombreMunicipio || "TODOS";
 
-        activarAnio(anioActivo);
+
+    aplicarFiltrosMapa(
+        true
+    );
+
+}
+
+/*==================================================
+APLICAR FILTROS AL MAPA
+==================================================*/
+
+function aplicarFiltrosMapa(
+    ajustarVista = false
+){
+
+    if(!anioActivo){
 
         return;
 
     }
 
-    if(!markersPorAnio[anioActivo]) return;
 
-    // Quitar la capa actual
-    map.removeLayer(markersPorAnio[anioActivo]);
+    const capa =
+        markersPorAnio[anioActivo];
 
-    const nuevaCapa = L.layerGroup();
 
-    let coordenadas = [];
+    if(!capa){
 
-    datosPorAnio[anioActivo].forEach(r=>{
+        return;
 
-        if((r["MUNICIPIO"] || "").trim() !== nombreMunicipio) return;
+    }
 
-        const lat = parseFloat(
-            (r["LATITUD DECIMAL"] || "")
-            .toString()
-            .replace(",",".")
+
+    const coordenadasVisibles = [];
+
+
+    capa.eachLayer(marker => {
+
+
+        const municipioOK =
+
+            municipioFiltroActivo === "TODOS"
+
+            ||
+
+            marker.municipio ===
+            municipioFiltroActivo;
+
+
+        const estadoOK =
+
+            estadoFiltroActivo === "TODOS"
+
+            ||
+
+            marker.estado ===
+            estadoFiltroActivo;
+
+
+        const visible =
+            municipioOK &&
+            estadoOK;
+
+
+        /*
+         * NO eliminamos el marcador.
+         * Solamente lo mostramos/ocultamos.
+         */
+
+        marker.setOpacity(
+            visible ? 1 : 0
         );
 
-        const lon = parseFloat(
-            (r["LONGITUD DECIMAL"] || "")
-            .toString()
-            .replace(",",".")
-        );
 
-        if(isNaN(lat) || isNaN(lon)) return;
+        if(visible){
 
-        coordenadas.push([lat,lon]);
+            const p =
+                marker.getLatLng();
 
-    });
 
-    // Mostrar solamente el municipio seleccionado
+            coordenadasVisibles.push([
 
-    markersPorAnio[anioActivo].eachLayer(marker=>{
+                p.lat,
 
-        const p = marker.getLatLng();
+                p.lng
 
-        const existe = coordenadas.some(c=>
-
-            Math.abs(c[0]-p.lat)<0.00001 &&
-
-            Math.abs(c[1]-p.lng)<0.00001
-
-        );
-
-        if(existe){
-
-            nuevaCapa.addLayer(marker);
+            ]);
 
         }
 
     });
 
-    nuevaCapa.addTo(map);
 
-    markersPorAnio[anioActivo+"_filtrado"]=nuevaCapa;
+    /*
+     * Ajustar mapa cuando cambia municipio
+     */
 
-    if(coordenadas.length){
+    if(
+        ajustarVista &&
+        coordenadasVisibles.length
+    ){
 
-        map.fitBounds(coordenadas);
+        map.fitBounds(
+            coordenadasVisibles,
+            {
+                padding:[30,30]
+            }
+        );
 
     }
 
 }
 
-/*==========================================
+/*==================================================
+FILTRO POR ESTADO
+==================================================*/
+
+function filtrarMarcadoresEstado(
+    estado
+){
+
+    /*
+     * Si vuelven a pulsar el mismo botón,
+     * se muestran todos.
+     */
+
+    if(
+        estadoFiltroActivo === estado
+    ){
+
+        estadoFiltroActivo =
+            "TODOS";
+
+    }else{
+
+        estadoFiltroActivo =
+            estado;
+
+    }
+
+
+    aplicarFiltrosMapa(
+        false
+    );
+
+
+    actualizarEstadoVisualTarjetas();
+
+}
+
+
+/*==================================================
+ESTADO VISUAL DE LAS TARJETAS
+==================================================*/
+
+function actualizarEstadoVisualTarjetas(){
+
+    const tarjetas = [
+
+        document.getElementById(
+            "card-estado-vigente"
+        ),
+
+        document.getElementById(
+            "card-estado-vencer"
+        ),
+
+        document.getElementById(
+            "card-estado-vencida"
+        )
+
+    ];
+
+
+    tarjetas.forEach(card => {
+
+        if(card){
+
+            card.classList.remove(
+                "estado-card-activa"
+            );
+
+        }
+
+    });
+
+
+    if(
+        estadoFiltroActivo === "vigente"
+    ){
+
+        const card =
+            document.getElementById(
+                "card-estado-vigente"
+            );
+
+
+        if(card){
+
+            card.classList.add(
+                "estado-card-activa"
+            );
+
+        }
+
+    }
+
+
+    if(
+        estadoFiltroActivo === "vencer"
+    ){
+
+        const card =
+            document.getElementById(
+                "card-estado-vencer"
+            );
+
+
+        if(card){
+
+            card.classList.add(
+                "estado-card-activa"
+            );
+
+        }
+
+    }
+
+
+    if(
+        estadoFiltroActivo === "vencida"
+    ){
+
+        const card =
+            document.getElementById(
+                "card-estado-vencida"
+            );
+
+
+        if(card){
+
+            card.classList.add(
+                "estado-card-activa"
+            );
+
+        }
+
+    }
+
+}
+          
+/*==================================================
 ACTUALIZAR TARJETAS DASHBOARD
-==========================================*/
+==================================================*/
 
-function actualizarTarjetasDashboard(anio, municipio = "TODOS") {
+function actualizarTarjetasDashboard(
+    anio,
+    municipio = "TODOS"
+){
 
-    const info = obtenerDatosDashboard(anio, municipio);
+    const info =
+        obtenerDatosDashboard(
+            anio,
+            municipio
+        );
 
-    document.getElementById("card-fuentes").textContent =
-        info.totalFuentes;
 
-    document.getElementById("card-municipios").textContent =
-        info.totalMunicipios;
+    const fuentes =
+        document.getElementById(
+            "card-fuentes"
+        );
 
-    document.getElementById("card-anio").textContent =
-        anio;
+
+    const municipios =
+        document.getElementById(
+            "card-municipios"
+        );
+
 
     const vigentes =
-        document.getElementById("card-vigentes");
+        document.getElementById(
+            "card-vigentes"
+        );
+
 
     const porVencer =
-        document.getElementById("card-por-vencer");
+        document.getElementById(
+            "card-por-vencer"
+        );
+
 
     const vencidas =
-        document.getElementById("card-vencidas");
+        document.getElementById(
+            "card-vencidas"
+        );
 
-    if(vigentes)
-        vigentes.textContent = info.vigentes;
 
-    if(porVencer)
-        porVencer.textContent = info.porVencer;
+    if(fuentes){
 
-    if(vencidas)
-        vencidas.textContent = info.vencidas;
+        fuentes.textContent =
+            info.totalFuentes;
+
+    }
+
+
+    if(municipios){
+
+        municipios.textContent =
+            info.totalMunicipios;
+
+    }
+
+
+    if(vigentes){
+
+        vigentes.textContent =
+            info.vigentes;
+
+    }
+
+
+    if(porVencer){
+
+        porVencer.textContent =
+            info.porVencer;
+
+    }
+
+
+    if(vencidas){
+
+        vencidas.textContent =
+            info.vencidas;
+
+    }
 
 }
     // ---------- Cargar GeoJSON (sin cambiar) ----------
@@ -2785,260 +3186,312 @@ panel.classList.remove("show");
 map.setView([1.289,-77.29],8);
 
 }
-
-  //=====================================
-// DASHBOARD
-//=====================================
+/*=====================================
+CENTRO DE CONTROL
+=====================================*/
 
 function mostrarDashboard(){
 
-const totalFuentes =
-datosPorAnio[anioActivo]
-? datosPorAnio[anioActivo].length
-:0;
+    const info =
+        obtenerDatosDashboard(
+            anioActivo,
+            "TODOS"
+        );
 
-const totalMunicipios =
-municipiosPorAnio[anioActivo]
-? municipiosPorAnio[anioActivo].size
-:0;
 
-const opcionesAnios = Object.keys(datosPorAnio)
-.sort()
-.map(a => `
-<option value="${a}" ${a===anioActivo ? "selected" : ""}>
-${a}
-</option>
-`)
-.join("");
-
-const opcionesMunicipios = [
-    '<option value="TODOS">Todos los municipios</option>',
-    ...Array.from(municipiosPorAnio[anioActivo] || [])
+    const opcionesAnios =
+        Object.keys(datosPorAnio)
         .sort()
-        .map(m => `<option value="${m}">${m}</option>`)
-].join("");
-  
-abrirPanel(
+        .map(a => `
 
-"Centro de Control",
+            <option
+                value="${a}"
+                ${a === anioActivo
+                    ? "selected"
+                    : ""}>
 
-`
+                ${a}
 
-<div class="dashboard-header">
+            </option>
 
-<div class="dashboard-title">
-
-Centro de Control
-
-</div>
-
-<div class="dashboard-subtitle">
-
-Instituto Departamental de Salud de Nariño
-
-</div>
-
-<div class="dashboard-update">
-
-Información actualizada automáticamente desde la base institucional
-
-</div>
-
-<hr class="dashboard-line">
-
-</div>
-
-<div class="dashboard-filtros">
-
-<select
-class="dashboard-select"
-id="dashboard-anio">
-
-${opcionesAnios}
-
-</select>
-
-<select
-    class="dashboard-select"
-    id="dashboard-municipio">
-
-    ${opcionesMunicipios}
-
-</select>
-
-</div>
-
-<div class="dashboard-grid">
-
-    <!-- FUENTES REGISTRADAS -->
-
-    <div class="card">
-
-        <div class="card-icon">
-            <i data-lucide="droplets"></i>
-        </div>
-
-        <div class="numero" id="card-fuentes">
-            ${totalFuentes}
-        </div>
-
-        <div class="texto">
-            Fuentes registradas
-        </div>
-
-    </div>
+        `)
+        .join("");
 
 
-    <!-- MUNICIPIOS -->
+    const opcionesMunicipios = [
 
-    <div class="card">
+        '<option value="TODOS">Todos los municipios</option>',
 
-        <div class="numero" id="card-municipios">
-            ${totalMunicipios}
-        </div>
+        ...Array.from(
+            municipiosPorAnio[anioActivo] || []
+        )
+        .sort()
+        .map(m => `
 
-        <div class="texto">
-            Municipios
-        </div>
+            <option value="${m}">
 
-    </div>
+                ${m}
 
-</div>
+            </option>
 
+        `)
 
-<!-- ESTADO DE LAS AUTORIZACIONES -->
-
-<div class="estado-titulo">
-    Estado de las autorizaciones
-</div>
+    ].join("");
 
 
-<div class="dashboard-estados">
+    abrirPanel(
+
+        "Centro de Control",
+
+        `
+
+        <div class="dashboard-header">
+
+            <div class="dashboard-title">
+
+                Centro de Control
+
+            </div>
 
 
-    <!-- VIGENTES -->
+            <div class="dashboard-subtitle">
 
-    <div
-        class="estado-card estado-card-verde"
-        id="card-estado-vigente"
-        onclick="filtrarMarcadoresEstado('vigente')">
+                Instituto Departamental
+                de Salud de Nariño
 
-        <div
-            class="estado-numero"
-            id="card-vigentes">
+            </div>
 
-            0
+
+            <hr class="dashboard-line">
 
         </div>
 
-        <div class="estado-texto">
 
-            <span class="estado-punto verde"></span>
+        <!-- FILTROS -->
 
-            Vigentes
+        <div class="dashboard-filtros">
 
-        </div>
+            <select
+                class="dashboard-select"
+                id="dashboard-anio">
 
-    </div>
+                ${opcionesAnios}
+
+            </select>
 
 
-    <!-- PRÓXIMAS A VENCER -->
+            <select
+                class="dashboard-select"
+                id="dashboard-municipio">
 
-    <div
-        class="estado-card estado-card-amarillo"
-        id="card-estado-vencer"
-        onclick="filtrarMarcadoresEstado('vencer')">
+                ${opcionesMunicipios}
 
-        <div
-            class="estado-numero"
-            id="card-por-vencer">
-
-            0
+            </select>
 
         </div>
 
-        <div class="estado-texto">
 
-            <span class="estado-punto amarillo"></span>
+        <!-- RESUMEN -->
 
-            Próximas a vencer
+        <div class="dashboard-grid">
+
+
+            <!-- FUENTES -->
+
+            <div class="card dashboard-card">
+
+                <div class="card-icon">
+
+                    <i
+                        data-lucide="droplets">
+                    </i>
+
+                </div>
+
+
+                <div
+                    class="numero"
+                    id="card-fuentes">
+
+                    ${info.totalFuentes}
+
+                </div>
+
+
+                <div class="texto">
+
+                    Fuentes registradas
+
+                </div>
+
+            </div>
+
+
+            <!-- MUNICIPIOS -->
+
+            <div class="card dashboard-card">
+
+                <div
+                    class="numero"
+                    id="card-municipios">
+
+                    ${info.totalMunicipios}
+
+                </div>
+
+
+                <div class="texto">
+
+                    Municipios
+
+                </div>
+
+            </div>
 
         </div>
 
-    </div>
 
+        <!-- ESTADOS -->
 
-    <!-- VENCIDAS -->
+        <div class="estado-titulo">
 
-    <div
-        class="estado-card estado-card-rojo"
-        id="card-estado-vencida"
-        onclick="filtrarMarcadoresEstado('vencida')">
-
-        <div
-            class="estado-numero"
-            id="card-vencidas">
-
-            0
+            Estado de las autorizaciones
 
         </div>
 
-        <div class="estado-texto">
 
-            <span class="estado-punto rojo"></span>
+        <div class="dashboard-estados">
 
-            Vencidas
+
+            <!-- VIGENTES -->
+
+            <div
+                class="estado-card
+                       estado-card-verde"
+                id="card-estado-vigente"
+                onclick="
+                    filtrarMarcadoresEstado(
+                        'vigente'
+                    )
+                ">
+
+                <div
+                    class="estado-numero"
+                    id="card-vigentes">
+
+                    ${info.vigentes}
+
+                </div>
+
+
+                <div class="estado-texto">
+
+                    <span
+                        class="
+                            estado-punto
+                            verde
+                        ">
+                    </span>
+
+                    Vigentes
+
+                </div>
+
+            </div>
+
+
+            <!-- PRÓXIMAS -->
+
+            <div
+                class="estado-card
+                       estado-card-amarillo"
+                id="card-estado-vencer"
+                onclick="
+                    filtrarMarcadoresEstado(
+                        'vencer'
+                    )
+                ">
+
+                <div
+                    class="estado-numero"
+                    id="card-por-vencer">
+
+                    ${info.porVencer}
+
+                </div>
+
+
+                <div class="estado-texto">
+
+                    <span
+                        class="
+                            estado-punto
+                            amarillo
+                        ">
+                    </span>
+
+                    Próximas a vencer
+
+                </div>
+
+            </div>
+
+
+            <!-- VENCIDAS -->
+
+            <div
+                class="estado-card
+                       estado-card-rojo"
+                id="card-estado-vencida"
+                onclick="
+                    filtrarMarcadoresEstado(
+                        'vencida'
+                    )
+                ">
+
+                <div
+                    class="estado-numero"
+                    id="card-vencidas">
+
+                    ${info.vencidas}
+
+                </div>
+
+
+                <div class="estado-texto">
+
+                    <span
+                        class="
+                            estado-punto
+                            rojo
+                        ">
+                    </span>
+
+                    Vencidas
+
+                </div>
+
+            </div>
+
 
         </div>
 
-    </div>
+        `
 
-</div>
+    );
 
-`
 
-);
-  
-//========================================
-// CAMBIO DE AÑO
-//========================================
+    /*
+     * Crear iconos Lucide del panel
+     */
 
-document
-.getElementById("dashboard-anio")
-.addEventListener("change",function(){
+    lucide.createIcons();
 
-activarAnio(this.value);
 
-mostrarDashboard();
+    actualizarEstadoVisualTarjetas();
 
-actualizarTarjetasDashboard(
-    this.value,
-    "TODOS"
-);
-});
-
-//========================================
-// CAMBIO DE MUNICIPIO
-//========================================
-
-document
-.getElementById("dashboard-municipio")
-.addEventListener("change", function () {
-
-    const anio = document.getElementById("dashboard-anio").value;
-    const municipio = this.value;
-
-    filtrarMunicipio(municipio);
-
-   actualizarTarjetasDashboard(
-    anio,
-    municipio
-);
-
-});
 }
-  
-
+ 
 /*==================================================
 PANEL DE AÑOS
 ==================================================*/
