@@ -1584,14 +1584,14 @@ html:`
 
     if(dias <=30){
 
-        return "porVencer";
+        return "vencer";
 
     }
 
     return "vigente";
 
 } 
-
+/*
  function filtrarMarcadoresEstado(estado){
 
     Object.values(markersPorAnio).forEach(layer=>{
@@ -1615,6 +1615,7 @@ html:`
                 layer.removeLayer(marker);
 
             }
+            */
 
         });
 
@@ -2357,7 +2358,6 @@ Año activo
 </div>
 
 <div class="card card-kpi"
-     onclick="filtrarMarcadoresEstado('vigente')">
 
     <div class="numero" id="card-vigentes">0</div>
 
@@ -2368,7 +2368,6 @@ Año activo
 </div>
 
 <div class="card card-kpi"
-     onclick="filtrarMarcadoresEstado('vencer')">
 
     <div class="numero" id="card-por-vencer">0</div>
 
@@ -2379,8 +2378,7 @@ Año activo
 </div>
 
 <div class="card card-kpi"
-     onclick="filtrarMarcadoresEstado('vencida')">
-
+     
     <div class="numero" id="card-vencidas">0</div>
 
     <div class="texto">
@@ -2397,7 +2395,6 @@ Año activo
 
     <button
         class="dashboard-reset"
-        onclick="filtrarMarcadoresEstado('todos')">
 
         Mostrar todas las autorizaciones
 
