@@ -2241,6 +2241,52 @@ const opcionesMunicipios = [
 ].join("");
 
 
+/*==================================================
+MOSTRAR TODAS LAS AUTORIZACIONES
+==================================================*/
+
+function mostrarTodasLasAutorizaciones(){
+
+    if(!anioActivo) return;
+
+    // Si existe una capa filtrada, eliminarla
+    if(markersPorAnio[anioActivo + "_filtrado"]){
+
+        map.removeLayer(
+            markersPorAnio[anioActivo + "_filtrado"]
+        );
+
+        delete markersPorAnio[anioActivo + "_filtrado"];
+    }
+
+    // Mostrar nuevamente la capa completa del año activo
+    const capa = markersPorAnio[anioActivo];
+
+    if(capa && !map.hasLayer(capa)){
+
+        capa.addTo(map);
+
+    }
+
+    // Limpiar el filtro de municipio del Dashboard
+    const selectorMunicipio =
+        document.getElementById("dashboard-municipio");
+
+    if(selectorMunicipio){
+
+        selectorMunicipio.value = "TODOS";
+
+    }
+
+    // Actualizar las tarjetas
+    actualizarTarjetasDashboard(
+        anioActivo,
+        "TODOS"
+    );
+
+}
+
+  
 abrirPanel(
 
 "Centro de Control",
@@ -2402,51 +2448,6 @@ Año activo
     </button>
 
 </div>
-
-/*==================================================
-MOSTRAR TODAS LAS AUTORIZACIONES
-==================================================*/
-
-function mostrarTodasLasAutorizaciones(){
-
-    if(!anioActivo) return;
-
-    // Si existe una capa filtrada, eliminarla
-    if(markersPorAnio[anioActivo + "_filtrado"]){
-
-        map.removeLayer(
-            markersPorAnio[anioActivo + "_filtrado"]
-        );
-
-        delete markersPorAnio[anioActivo + "_filtrado"];
-    }
-
-    // Mostrar nuevamente la capa completa del año activo
-    const capa = markersPorAnio[anioActivo];
-
-    if(capa && !map.hasLayer(capa)){
-
-        capa.addTo(map);
-
-    }
-
-    // Limpiar el filtro de municipio del Dashboard
-    const selectorMunicipio =
-        document.getElementById("dashboard-municipio");
-
-    if(selectorMunicipio){
-
-        selectorMunicipio.value = "TODOS";
-
-    }
-
-    // Actualizar las tarjetas
-    actualizarTarjetasDashboard(
-        anioActivo,
-        "TODOS"
-    );
-
-}
 
 `
 
