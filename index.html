@@ -4699,17 +4699,22 @@ const listaAutorizaciones =
     }
 
 /*==================================================
- UBICAR AUTORIZACIÓN EN EL MAPA
+ VER AUTORIZACIÓN EN EL MAPA
 ==================================================*/
 
-/*==================================================
- UBICAR AUTORIZACIÓN EN EL MAPA
-==================================================*/
+window.irAAutorizacion = function(lat, lon){
 
-function irAAutorizacion(lat, lon){
+    /*----------------------------------------------
+      CONVERTIR COORDENADAS
+    ----------------------------------------------*/
 
     lat = parseFloat(lat);
     lon = parseFloat(lon);
+
+
+    /*----------------------------------------------
+      VALIDAR COORDENADAS
+    ----------------------------------------------*/
 
     if(
         isNaN(lat) ||
@@ -4728,26 +4733,30 @@ function irAAutorizacion(lat, lon){
 
 
     /*----------------------------------------------
-      1. CERRAR EL PANEL DE AUTORIZACIONES
+      CERRAR PANEL
     ----------------------------------------------*/
 
-    if(
-        typeof panel !== "undefined" &&
-        panel
-    ){
+    const panelActual =
+        document.getElementById(
+            "panel-content"
+        );
 
-        panel.classList.remove("show");
+    if(panelActual){
+
+        panelActual.classList.remove(
+            "show"
+        );
 
     }
 
 
     /*----------------------------------------------
-      2. CENTRAR EL MAPA
+      CENTRAR MAPA
     ----------------------------------------------*/
 
     map.setView(
         [lat, lon],
-        16,
+        15,
         {
             animate:true
         }
@@ -4755,24 +4764,17 @@ function irAAutorizacion(lat, lon){
 
 
     /*----------------------------------------------
-      3. BUSCAR EL MARCADOR MÁS CERCANO
+      BUSCAR MARCADOR DEL AÑO ACTIVO
     ----------------------------------------------*/
 
-    setTimeout(() => {
-
-        let marcadorEncontrado = null;
-
-        let menorDistancia = Infinity;
-
-
-       const capaActual =
+    const capa =
         markersPorAnio[anioActivo];
 
 
-    if(!capaActual){
+    if(!capa){
 
         console.warn(
-            "No existe una capa para el año:",
+            "No existe capa para el año:",
             anioActivo
         );
 
@@ -4781,7 +4783,16 @@ function irAAutorizacion(lat, lon){
     }
 
 
-               capaActual.eachLayer(marker => {
+    /*----------------------------------------------
+      BUSCAR MARCADOR MÁS CERCANO
+    ----------------------------------------------*/
+
+    let marcadorCercano = null;
+
+    let distanciaMinima = Infinity;
+
+
+    capa.eachLayer(marker => {
 
         if(
             !marker.getLatLng
@@ -4792,34 +4803,26 @@ function irAAutorizacion(lat, lon){
         }
 
 
-        const posicion =
-            marker.getLatLng();
-
-
         const distancia =
-
-            Math.pow(
-                posicion.lat - lat,
-                2
-            )
-
-            +
-
-            Math.pow(
-                posicion.lng - lon,
-                2
+            marker
+            .getLatLng()
+            .distanceTo(
+                L.latLng(
+                    lat,
+                    lon
+                )
             );
 
 
         if(
             distancia <
-            menorDistancia
+            distanciaMinima
         ){
 
-            menorDistancia =
+            distanciaMinima =
                 distancia;
 
-            marcadorEncontrado =
+            marcadorCercano =
                 marker;
 
         }
@@ -4827,28 +4830,30 @@ function irAAutorizacion(lat, lon){
     });
 
 
-        /*------------------------------------------
-          4. ABRIR EL MARCADOR
-        ------------------------------------------*/
+    /*----------------------------------------------
+      ABRIR POPUP
+    ----------------------------------------------*/
 
-        if(marcadorEncontrado){
+    if(marcadorCercano){
 
-            marcadorEncontrado.openPopup();
+        setTimeout(() => {
 
-        }
-        else{
+            marcadorCercano.openPopup();
 
-            console.warn(
-                "No se encontró un marcador para:",
-                lat,
-                lon
-            );
+        }, 300);
 
-        }
+    }
+    else{
 
-    }, 700);
+        console.warn(
+            "No se encontró marcador cercano.",
+            lat,
+            lon
+        );
 
-}
+    }
+
+};
 
 /*==================================================
  FILTRAR AUTORIZACIONES
