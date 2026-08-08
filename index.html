@@ -4702,21 +4702,34 @@ const listaAutorizaciones =
  UBICAR AUTORIZACIÓN EN EL MAPA
 ==================================================*/
 
+/*==================================================
+ UBICAR AUTORIZACIÓN EN EL MAPA
+==================================================*/
+
 function irAAutorizacion(lat, lon){
 
+    lat = parseFloat(lat);
+    lon = parseFloat(lon);
+
     if(
-        typeof lat !== "number" ||
-        typeof lon !== "number" ||
         isNaN(lat) ||
         isNaN(lon)
     ){
+
+        console.error(
+            "Coordenadas inválidas:",
+            lat,
+            lon
+        );
 
         return;
 
     }
 
 
-    /* Cerrar el panel */
+    /*----------------------------------------------
+      1. CERRAR EL PANEL DE AUTORIZACIONES
+    ----------------------------------------------*/
 
     if(
         typeof panel !== "undefined" &&
@@ -4728,57 +4741,112 @@ function irAAutorizacion(lat, lon){
     }
 
 
-    /* Centrar mapa */
+    /*----------------------------------------------
+      2. CENTRAR EL MAPA
+    ----------------------------------------------*/
 
     map.setView(
         [lat, lon],
-        15,
+        16,
         {
             animate:true
         }
     );
 
 
-    /* Abrir popup si existe un marcador cercano */
+    /*----------------------------------------------
+      3. BUSCAR EL MARCADOR MÁS CERCANO
+    ----------------------------------------------*/
 
     setTimeout(() => {
 
-        map.eachLayer(layer => {
+        let marcadorEncontrado = null;
 
-            if(
-                layer instanceof L.Marker
-            ){
-
-                const posicion =
-                    layer.getLatLng();
+        let menorDistancia = Infinity;
 
 
-                const distanciaLat =
-                    Math.abs(
-                        posicion.lat - lat
-                    );
+       const capaActual =
+        markersPorAnio[anioActivo];
 
 
-                const distanciaLon =
-                    Math.abs(
-                        posicion.lng - lon
-                    );
+    if(!capaActual){
+
+        console.warn(
+            "No existe una capa para el año:",
+            anioActivo
+        );
+
+        return;
+
+    }
 
 
-                if(
-                    distanciaLat < 0.0001 &&
-                    distanciaLon < 0.0001
-                ){
+               capaActual.eachLayer(marker => {
 
-                    layer.openPopup();
+        if(
+            !marker.getLatLng
+        ){
 
-                }
+            return;
 
-            }
+        }
 
-        });
 
-    }, 500);
+        const posicion =
+            marker.getLatLng();
+
+
+        const distancia =
+
+            Math.pow(
+                posicion.lat - lat,
+                2
+            )
+
+            +
+
+            Math.pow(
+                posicion.lng - lon,
+                2
+            );
+
+
+        if(
+            distancia <
+            menorDistancia
+        ){
+
+            menorDistancia =
+                distancia;
+
+            marcadorEncontrado =
+                marker;
+
+        }
+
+    });
+
+
+        /*------------------------------------------
+          4. ABRIR EL MARCADOR
+        ------------------------------------------*/
+
+        if(marcadorEncontrado){
+
+            marcadorEncontrado.openPopup();
+
+        }
+        else{
+
+            console.warn(
+                "No se encontró un marcador para:",
+                lat,
+                lon
+            );
+
+        }
+
+    }, 700);
 
 }
 
