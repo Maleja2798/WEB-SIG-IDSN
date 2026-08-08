@@ -2004,6 +2004,20 @@ Sistema actualizado
 
 );
 
+//========================================
+// CAMBIO DE AÑO
+//========================================
+
+document
+.getElementById("dashboard-anio")
+.addEventListener("change",function(){
+
+    activarAnio(this.value);
+
+    mostrarDashboard();
+
+});
+
 }
     
    lucide.createIcons();
