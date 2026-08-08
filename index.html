@@ -1196,6 +1196,181 @@ transition:.25s;
 background:#2568A8;
 
 }
+
+/*==================================================
+DASHBOARD - TARJETAS PRINCIPALES
+==================================================*/
+
+.dashboard-kpis{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:14px;
+
+    margin-bottom:18px;
+
+}
+
+
+/*==================================================
+ESTADOS
+==================================================*/
+
+.estado-titulo{
+
+    font-size:14px;
+
+    font-weight:600;
+
+    color:#EAF6FF;
+
+    margin:8px 0 10px 2px;
+
+}
+
+
+.dashboard-estados{
+
+    display:grid;
+
+    grid-template-columns:repeat(3, 1fr);
+
+    gap:10px;
+
+    width:100%;
+
+}
+
+
+.estado-card{
+
+    min-width:0;
+
+    padding:16px 10px;
+
+    border-radius:16px;
+
+    background:#123454;
+
+    cursor:pointer;
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        border .2s ease;
+
+    border:1px solid transparent;
+
+}
+
+
+.estado-card:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 8px 20px rgba(0,0,0,.25);
+
+}
+
+
+.estado-numero{
+
+    font-size:30px;
+
+    font-weight:700;
+
+    color:white;
+
+    margin-bottom:8px;
+
+}
+
+
+.estado-texto{
+
+    font-size:12px;
+
+    font-weight:600;
+
+    color:#D9E8F5;
+
+    line-height:1.25;
+
+}
+
+
+.estado-punto{
+
+    display:inline-block;
+
+    width:9px;
+
+    height:9px;
+
+    border-radius:50%;
+
+    margin-right:5px;
+
+}
+
+
+/* VERDE */
+
+.estado-card-verde{
+
+    border-color:rgba(70,220,130,.35);
+
+}
+
+.verde{
+
+    background:#42E38A;
+
+    box-shadow:
+        0 0 6px #42E38A,
+        0 0 12px rgba(66,227,138,.7);
+
+}
+
+
+/* AMARILLO */
+
+.estado-card-amarillo{
+
+    border-color:rgba(255,210,60,.35);
+
+}
+
+.amarillo{
+
+    background:#FFD34E;
+
+    box-shadow:
+        0 0 6px #FFD34E,
+        0 0 12px rgba(255,211,78,.7);
+
+}
+
+
+/* ROJO */
+
+.estado-card-rojo{
+
+    border-color:rgba(255,80,90,.35);
+
+}
+
+.rojo{
+
+    background:#FF4F61;
+
+    box-shadow:
+        0 0 6px #FF4F61,
+        0 0 12px rgba(255,79,97,.7);
+
+}
     
   </style>
 </head>
@@ -1590,38 +1765,7 @@ html:`
     return "vigente";
 
 } 
-/*
- function filtrarMarcadoresEstado(estado){
 
-    Object.values(markersPorAnio).forEach(layer=>{
-
-        layer.eachLayer(marker=>{
-
-            if(estado==="todos"){
-
-                marker.addTo(layer);
-
-                return;
-
-            }
-            
-            if(marker.estado===estado){
-
-                marker.addTo(layer);
-
-            }else{
-
-                layer.removeLayer(marker);
-
-            }
-
-        });
-
-    });
-
-}  
-
- */
 /*==================================================
 DASHBOARD
 ==================================================*/
@@ -1700,6 +1844,114 @@ const fechaAut = new Date(fechaTexto);
         datos
 
     };
+
+}
+
+/*==================================================
+FILTRO DE MARCADORES POR ESTADO
+==================================================*/
+
+let estadoFiltroActivo = "todos";
+
+
+function filtrarMarcadoresEstado(estado){
+
+    if(!anioActivo) return;
+
+
+    /*
+     * Si se vuelve a pulsar el mismo estado,
+     * quitamos el filtro.
+     */
+
+    if(estadoFiltroActivo === estado){
+
+        estadoFiltroActivo = "todos";
+
+    }else{
+
+        estadoFiltroActivo = estado;
+
+    }
+
+
+    const capa = markersPorAnio[anioActivo];
+
+    if(!capa) return;
+
+
+    capa.eachLayer(marker => {
+
+        if(estadoFiltroActivo === "todos"){
+
+            marker.setOpacity(1);
+
+            return;
+
+        }
+
+
+        if(marker.estado === estadoFiltroActivo){
+
+            marker.setOpacity(1);
+
+        }else{
+
+            marker.setOpacity(0);
+
+        }
+
+    });
+
+
+    actualizarEstadoVisualTarjetas();
+
+}
+
+function actualizarEstadoVisualTarjetas(){
+
+    const verde =
+        document.getElementById("card-estado-vigente");
+
+    const amarillo =
+        document.getElementById("card-estado-vencer");
+
+    const rojo =
+        document.getElementById("card-estado-vencida");
+
+
+    [verde, amarillo, rojo].forEach(card => {
+
+        if(card){
+
+            card.style.opacity = "1";
+
+            card.style.transform = "scale(1)";
+
+        }
+
+    });
+
+
+    if(estadoFiltroActivo === "vigente" && verde){
+
+        verde.style.transform = "scale(1.04)";
+
+    }
+
+
+    if(estadoFiltroActivo === "vencer" && amarillo){
+
+        amarillo.style.transform = "scale(1.04)";
+
+    }
+
+
+    if(estadoFiltroActivo === "vencida" && rojo){
+
+        rojo.style.transform = "scale(1.04)";
+
+    }
 
 }
 
@@ -2292,164 +2544,134 @@ ${opcionesAnios}
 
 <div class="dashboard-grid">
 
-<div class="card">
+    <!-- FUENTES REGISTRADAS -->
 
-    <div class="card-icon">
-        <i data-lucide="droplets"></i>
+    <div class="card">
+
+        <div class="card-icon">
+            <i data-lucide="droplets"></i>
+        </div>
+
+        <div class="numero" id="card-fuentes">
+            ${totalFuentes}
+        </div>
+
+        <div class="texto">
+            Fuentes registradas
+        </div>
+
     </div>
 
-  <div class="numero" id="card-fuentes">
-        ${totalFuentes}
-    </div>
 
-    <div class="texto">
-        Fuentes registradas
-    </div>
+    <!-- MUNICIPIOS -->
 
-    <div class="card-footer">
-        Actualizado automáticamente
-    </div>
+    <div class="card">
 
-</div>
+        <div class="numero" id="card-municipios">
+            ${totalMunicipios}
+        </div>
 
-<div class="card">
+        <div class="texto">
+            Municipios
+        </div>
 
-<div class="numero" id="card-municipios">
-
-${totalMunicipios}
-
-</div>
-
-<div class="texto">
-
-Municipios
-
-</div>
-
-</div>
-
-<div class="card">
-
-<div class="numero" id="card-anio">
-
-${anioActivo}
-
-</div>
-
-<div class="texto">
-
-Año activo
-
-</div>
-
-</div>
-
-<div class="card">
-
-    <div class="numero">
-        IDSN
-    </div>
-
-    <div class="texto">
-        Sistema actualizado
     </div>
 
 </div>
 
-<div class="card card-kpi"
 
-    <div class="numero" id="card-vigentes">0</div>
+<!-- ESTADO DE LAS AUTORIZACIONES -->
 
-    <div class="texto">
-        🟢 Vigentes
+<div class="estado-titulo">
+    Estado de las autorizaciones
+</div>
+
+
+<div class="dashboard-estados">
+
+
+    <!-- VIGENTES -->
+
+    <div
+        class="estado-card estado-card-verde"
+        id="card-estado-vigente"
+        onclick="filtrarMarcadoresEstado('vigente')">
+
+        <div
+            class="estado-numero"
+            id="card-vigentes">
+
+            0
+
+        </div>
+
+        <div class="estado-texto">
+
+            <span class="estado-punto verde"></span>
+
+            Vigentes
+
+        </div>
+
     </div>
 
-</div>
 
-<div class="card card-kpi"
+    <!-- PRÓXIMAS A VENCER -->
 
-    <div class="numero" id="card-por-vencer">0</div>
+    <div
+        class="estado-card estado-card-amarillo"
+        id="card-estado-vencer"
+        onclick="filtrarMarcadoresEstado('vencer')">
 
-    <div class="texto">
-        🟡 Próximas a vencer
+        <div
+            class="estado-numero"
+            id="card-por-vencer">
+
+            0
+
+        </div>
+
+        <div class="estado-texto">
+
+            <span class="estado-punto amarillo"></span>
+
+            Próximas a vencer
+
+        </div>
+
     </div>
 
-</div>
 
-<div class="card card-kpi"
-     
-    <div class="numero" id="card-vencidas">0</div>
+    <!-- VENCIDAS -->
 
-    <div class="texto">
-        🔴 Vencidas
+    <div
+        class="estado-card estado-card-rojo"
+        id="card-estado-vencida"
+        onclick="filtrarMarcadoresEstado('vencida')">
+
+        <div
+            class="estado-numero"
+            id="card-vencidas">
+
+            0
+
+        </div>
+
+        <div class="estado-texto">
+
+            <span class="estado-punto rojo"></span>
+
+            Vencidas
+
+        </div>
+
     </div>
-
-</div>
-
-</div>
-
-</div>
-
-<div style="text-align:center;margin-top:20px;">
-
-    <button
-        class="dashboard-reset"
-        onclick="mostrarTodasLasAutorizaciones()">
-
-        Mostrar todas las autorizaciones
-
-    </button>
 
 </div>
 
 `
 
 );
-
-/*==================================================
-MOSTRAR TODAS LAS AUTORIZACIONES
-==================================================*/
-
-function mostrarTodasLasAutorizaciones(){
-
-    if(!anioActivo) return;
-
-    // Si existe una capa filtrada, eliminarla
-    if(markersPorAnio[anioActivo + "_filtrado"]){
-
-        map.removeLayer(
-            markersPorAnio[anioActivo + "_filtrado"]
-        );
-
-        delete markersPorAnio[anioActivo + "_filtrado"];
-    }
-
-    // Mostrar nuevamente la capa completa del año activo
-    const capa = markersPorAnio[anioActivo];
-
-    if(capa && !map.hasLayer(capa)){
-
-        capa.addTo(map);
-
-    }
-
-    // Limpiar el filtro de municipio del Dashboard
-    const selectorMunicipio =
-        document.getElementById("dashboard-municipio");
-
-    if(selectorMunicipio){
-
-        selectorMunicipio.value = "TODOS";
-
-    }
-
-    // Actualizar las tarjetas
-    actualizarTarjetasDashboard(
-        anioActivo,
-        "TODOS"
-    );
-
-}
   
 //========================================
 // CAMBIO DE AÑO
