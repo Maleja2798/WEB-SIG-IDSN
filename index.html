@@ -1698,15 +1698,60 @@ const marker = L.marker(
       try {
         const f = JSON.parse(decodeURIComponent(jsonEnc));
         // Cuadro 2: nombre de la quebrada (FUENTE) EN MAYÚSCULAS, No. autorización, Fecha, Anexo, Autorización Sanitaria (VER)
-        const content = `
-          <div style="font-family:'Arial Narrow', sans-serif; font-size:13px; color: black;">
+        const estado = obtenerEstadoAutorizacion(f.fecha);
+
+let colorEstado = "#3EAFFF";
+let tituloEstado = "🟦 EN TRÁMITE";
+
+if (estado === "vigente") {
+    colorEstado = "#1B9C4A";
+    tituloEstado = "🟢 AUTORIZACIÓN VIGENTE";
+}
+
+if (estado === "vencer") {
+    colorEstado = "#F5A623";
+    tituloEstado = "🟡 PRÓXIMA A VENCER";
+}
+
+if (estado === "vencida") {
+    colorEstado = "#D63031";
+    tituloEstado = "🔴 AUTORIZACIÓN VENCIDA";
+}
+
+const content = `
+
+<div style="
+border-radius:12px;
+overflow:hidden;
+font-family:Poppins,sans-serif;
+font-size:13px;
+background:white;
+">
+
+<div style="
+background:${colorEstado};
+color:white;
+padding:10px;
+font-weight:600;
+text-align:center;
+">
+
+${tituloEstado}
+
+</div>
+
+<div style="padding:12px;color:#222;">
+
             <div style="font-weight:bold; text-transform: uppercase; margin-bottom:6px;">${f.fuente || ''}</div>
             <div><b>No. autorización:</b><br>${f.no_aut || ''}</div>
             <div style="margin-top:6px;"><b>Fecha autorización:</b><br>${f.fecha || ''}</div>
             <div style="margin-top:6px;"><b>Anexo:</b><br><a href="${f.anexo || '#'}" target="_blank" style="color:#00BFFF;">VER</a></div>
             <div style="margin-top:6px;"><b>Autorización sanitaria:</b><br><a href="${f.autorizacion || f.anexo || '#'}" target="_blank" style="color:#00BFFF;">VER</a></div>
           </div>
-        `;
+
+</div>
+
+`;
         L.popup({ maxWidth: 350 }).setLatLng([lat, lon]).setContent(content).openOn(map);
       } catch (e) {
         console.error("Error al mostrar fuente:", e);
