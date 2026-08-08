@@ -1483,11 +1483,15 @@ function obtenerDatosDashboard(anio, municipio = "TODOS") {
             municipios.add(r["MUNICIPIO"].trim());
         }
 
-        console.log(r);
+       const fechaTexto =
+    r["FECHA AUTORIZACION"] ||
+    r["FECHA AUTORIZACIÓN"] ||
+    r["FECHA AUTORIZACION "] ||
+    r["FECHA AUTORIZACIÓN "];
 
-        if (!fechaTexto) return;
+if(!fechaTexto) return;
 
-        const fechaAut = new Date(fechaTexto);
+const fechaAut = new Date(fechaTexto);
 
         const fechaVence = new Date(fechaAut);
 
@@ -1531,31 +1535,7 @@ function obtenerDatosDashboard(anio, municipio = "TODOS") {
     };
 
 }
-/*==================================================
-ACTUALIZAR TARJETAS
-==================================================*/
 
-function actualizarTarjetasDashboard(anio, municipio = "TODOS") {
-
-    const info = obtenerDatosDashboard(anio, municipio);
-
-    const cardFuentes = document.getElementById("card-fuentes");
-    const cardMunicipios = document.getElementById("card-municipios");
-    const cardAnio = document.getElementById("card-anio");
-
-    if (cardFuentes) {
-        cardFuentes.textContent = info.totalFuentes;
-    }
-
-    if (cardMunicipios) {
-        cardMunicipios.textContent = info.totalMunicipios;
-    }
-
-    if (cardAnio) {
-        cardAnio.textContent = anio;
-    }
-
-}
     // ---------- Crear capas (markers) por año (mantiene popups parecidos) ----------
     function crearCapasPorAnio() {
       Object.keys(datosPorAnio).forEach(anio => {
@@ -2100,7 +2080,7 @@ ${opcionesAnios}
         <i data-lucide="droplets"></i>
     </div>
 
-  <div class="numero" id="cardFuentes">
+  <div class="numero" id="card-fuentes">
         ${totalFuentes}
     </div>
 
@@ -2116,7 +2096,7 @@ ${opcionesAnios}
 
 <div class="card">
 
-<div class="numero" id="cardMunicipios">
+<div class="numero" id="card-municipios">
 
 ${totalMunicipios}
 
@@ -2132,7 +2112,7 @@ Municipios
 
 <div class="card">
 
-<div class="numero" id="cardAnio">
+<div class="numero" id="card-anio">
 
 ${anioActivo}
 
@@ -2148,15 +2128,13 @@ Año activo
 
 <div class="card">
 
-<div class="numero">
+    <div class="numero">
+        IDSN
+    </div>
 
-IDSN
-
-</div>
-
-<div class="texto">
-
-Sistema actualizado
+    <div class="texto">
+        Sistema actualizado
+    </div>
 
 </div>
 
@@ -2212,13 +2190,15 @@ document
 .getElementById("dashboard-anio")
 .addEventListener("change",function(){
 
-    activarAnio(this.value);
+activarAnio(this.value);
 
-    mostrarDashboard();
+mostrarDashboard();
 
-    actualizarDashboard();
-
-});
+actualizarTarjetasDashboard(
+    this.value,
+    "TODOS"
+);
+}  
 
 //========================================
 // CAMBIO DE MUNICIPIO
@@ -2233,7 +2213,10 @@ document
 
     filtrarMunicipio(municipio);
 
-    actualizarDashboard(anio, municipio);
+   actualizarTarjetasDashboard(
+    anio,
+    municipio
+);
 
 });
 
