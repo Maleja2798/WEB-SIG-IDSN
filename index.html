@@ -3159,17 +3159,59 @@ lista.style.display="none";
 FILTRAR MUNICIPIO
 ==================================================*/
 
-function filtrarMunicipio(
-    nombreMunicipio
-){
+function filtrarMunicipio(nombreMunicipio){
+
+    if(!anioActivo){
+
+        return;
+
+    }
+
+
+    /*==============================================
+    GUARDAR MUNICIPIO
+    ==============================================*/
 
     municipioFiltroActivo =
         nombreMunicipio || "TODOS";
 
 
+    /*==============================================
+    AL CAMBIAR MUNICIPIO SE QUITA
+    CUALQUIER FILTRO DE ESTADO
+    ==============================================*/
+
+    estadoFiltroActivo =
+        "TODOS";
+
+
+    /*==============================================
+    APLICAR SOLAMENTE EL FILTRO DE MUNICIPIO
+    ==============================================*/
+
     aplicarFiltrosMapa(
         true
     );
+
+
+    /*==============================================
+    ACTUALIZAR TARJETAS
+    ==============================================*/
+
+    actualizarTarjetasDashboard(
+
+        anioActivo,
+
+        municipioFiltroActivo
+
+    );
+
+
+    /*==============================================
+    QUITAR RESALTADO DE LOS TRES ESTADOS
+    ==============================================*/
+
+    actualizarEstadoVisualTarjetas();
 
 }
 
