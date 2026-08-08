@@ -2780,11 +2780,14 @@ marker.municipio =
 
 layer.addLayer(marker);
 
-        });
+    });
 
-      });
+    // Guardar la capa completa del año
+    markersPorAnio[anio] = layer;
 
-    }
+  });
+
+}
 
     // ---------- showFuenteEncoded: abre cuadro 2 con info detallada ----------
     function showFuenteEncoded(lat, lon, jsonEnc) {
