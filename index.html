@@ -1364,13 +1364,6 @@ norteControl.addTo(map);
 
     let geojsonLayer;
 
-    new L.Control.MiniMap(
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{y}/{x}.png"),
-    { toggleDisplay: true, position: "bottomleft" }
-).addTo(map);
-
-let geojsonLayer;
-
     // ---------- Variables de gestión ----------
     const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSKeiBBKiYlwHasbQMehxNAL7d4gbjb57bHVnVc4Ui5NWr5XetoTGtMGdd4KRoMWAkXDyuCcRbx0oj8/pub?output=csv"; // <--- ruta local que indicaste
     const datosPorAnio = {};        // { "2023": [row, ...], "2024": [...] }
@@ -1997,76 +1990,6 @@ const opcionesMunicipios = [
         .map(m => `<option value="${m}">${m}</option>`)
 ].join("");
 
-/*==================================================
-PANEL DE AÑOS
-==================================================*/
-
-function mostrarPanelAnios(){
-
-    let html = `
-    <div class="dashboard-header">
-
-        <div class="dashboard-title">
-            Años disponibles
-        </div>
-
-        <div class="dashboard-subtitle">
-            Seleccione el año que desea visualizar
-        </div>
-
-        <hr class="dashboard-line">
-
-    </div>
-    `;
-
-    Object.keys(datosPorAnio)
-    .sort()
-    .forEach(anio=>{
-
-        html += `
-
-        <div class="card card-anio"
-             onclick="seleccionarAnio('${anio}')">
-
-            <div class="numero">
-
-                ${anio}
-
-            </div>
-
-            <div class="texto">
-
-                Ver autorizaciones sanitarias
-
-            </div>
-
-        </div>
-
-        `;
-
-    });
-
-    abrirPanel(
-
-        "Años",
-
-        html
-
-    );
-
-}
-
-/*==================================================
-SELECCIONAR AÑO
-==================================================*/
-
-function seleccionarAnio(anio){
-
-    activarAnio(anio);
-
-    mostrarDashboard();
-
-}
 
 abrirPanel(
 
@@ -2223,6 +2146,77 @@ document
     actualizarDashboard(this.value);
 
 });
+}
+
+/*==================================================
+PANEL DE AÑOS
+==================================================*/
+
+function mostrarPanelAnios(){
+
+    let html = `
+    <div class="dashboard-header">
+
+        <div class="dashboard-title">
+            Años disponibles
+        </div>
+
+        <div class="dashboard-subtitle">
+            Seleccione el año que desea visualizar
+        </div>
+
+        <hr class="dashboard-line">
+
+    </div>
+    `;
+
+    Object.keys(datosPorAnio)
+    .sort()
+    .forEach(anio=>{
+
+        html += `
+
+        <div class="card card-anio"
+             onclick="seleccionarAnio('${anio}')">
+
+            <div class="numero">
+
+                ${anio}
+
+            </div>
+
+            <div class="texto">
+
+                Ver autorizaciones sanitarias
+
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
+    abrirPanel(
+
+        "Años",
+
+        html
+
+    );
+
+}
+
+/*==================================================
+SELECCIONAR AÑO
+==================================================*/
+
+function seleccionarAnio(anio){
+
+    activarAnio(anio);
+
+    mostrarDashboard();
+
 }
     
    lucide.createIcons();
