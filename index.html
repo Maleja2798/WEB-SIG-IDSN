@@ -2134,6 +2134,8 @@ document
 
     mostrarDashboard();
 
+    actualizarDashboard();
+
 });
 
 //========================================
@@ -2145,6 +2147,8 @@ document
 .addEventListener("change",function(){
 
     filtrarMunicipio(this.value);
+
+    actualizarDashboard(this.value);
 
 });
 }
