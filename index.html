@@ -1461,30 +1461,37 @@ DASHBOARD
 
 function obtenerDatosDashboard(anio, municipio = "TODOS") {
 
-    let datos = datosPorAnio[anio] || [];
+    const datosOriginales = datosPorAnio[anio] || [];
 
-    if (municipio !== "TODOS") {
-
-        datos = datos.filter(r =>
+    const datos = municipio === "TODOS"
+        ? datosOriginales
+        : datosOriginales.filter(r =>
             (r["MUNICIPIO"] || "").trim() === municipio
         );
 
-    }
+    const municipios = new Set();
+
+    datos.forEach(r => {
+
+        if (r["MUNICIPIO"]) {
+
+            municipios.add(r["MUNICIPIO"].trim());
+
+        }
+
+    });
 
     return {
 
         totalFuentes: datos.length,
 
-        totalMunicipios: new Set(
-            datos.map(r => r["MUNICIPIO"])
-        ).size,
+        totalMunicipios: municipios.size,
 
-        datos: datos
+        datos
 
     };
 
 }
-
 /*==================================================
 ACTUALIZAR TARJETAS
 ==================================================*/
