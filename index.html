@@ -1460,6 +1460,55 @@ html:`
 });
 
 } 
+
+/*==================================================
+DASHBOARD
+==================================================*/
+
+function obtenerDatosDashboard(anio, municipio = "TODOS") {
+
+    let datos = datosPorAnio[anio] || [];
+
+    if (municipio !== "TODOS") {
+
+        datos = datos.filter(r =>
+            (r["MUNICIPIO"] || "").trim() === municipio
+        );
+
+    }
+
+    return {
+
+        totalFuentes: datos.length,
+
+        totalMunicipios: new Set(
+            datos.map(r => r["MUNICIPIO"])
+        ).size,
+
+        datos: datos
+
+    };
+
+}
+
+/*==================================================
+ACTUALIZAR TARJETAS
+==================================================*/
+
+function actualizarTarjetasDashboard(anio, municipio = "TODOS") {
+
+    const info = obtenerDatosDashboard(anio, municipio);
+
+    document.getElementById("card-fuentes").innerHTML =
+        info.totalFuentes;
+
+    document.getElementById("card-municipios").innerHTML =
+        info.totalMunicipios;
+
+    document.getElementById("card-anio").innerHTML =
+        anio;
+
+}
     // ---------- Crear capas (markers) por año (mantiene popups parecidos) ----------
     function crearCapasPorAnio() {
       Object.keys(datosPorAnio).forEach(anio => {
@@ -1874,7 +1923,7 @@ Información actualizada automáticamente desde la base institucional
         <i data-lucide="droplets"></i>
     </div>
 
-    <div class="numero">
+   <div class="numero" id="card-fuentes">
         ${totalFuentes}
     </div>
 
@@ -1890,7 +1939,7 @@ Información actualizada automáticamente desde la base institucional
 
 <div class="card">
 
-<div class="numero">
+<div class="numero" id="card-municipios">
 
 ${totalMunicipios}
 
@@ -1906,7 +1955,7 @@ Municipios
 
 <div class="card">
 
-<div class="numero">
+<div class="numero" id="card-anio">
 
 ${anioActivo}
 
