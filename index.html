@@ -1096,6 +1096,63 @@ background:linear-gradient(
 background:#3EAFFF;
 
 }
+
+/*==========================
+VIGENTE
+==========================*/
+
+.estado-vigente .marker-drop{
+
+background:linear-gradient(
+180deg,
+#57E38B,
+#1B9C4A);
+
+}
+
+.estado-vigente .marker-glow{
+
+background:#38D976;
+
+}
+
+/*==========================
+POR VENCER
+==========================*/
+
+.estado-vencer .marker-drop{
+
+background:linear-gradient(
+180deg,
+#FFD95A,
+#F5A623);
+
+}
+
+.estado-vencer .marker-glow{
+
+background:#FFD54A;
+
+}
+
+/*==========================
+VENCIDA
+==========================*/
+
+.estado-vencida .marker-drop{
+
+background:linear-gradient(
+180deg,
+#FF6B6B,
+#D63031);
+
+}
+
+.estado-vencida .marker-glow{
+
+background:#FF5A5A;
+
+}
     
   </style>
 </head>
@@ -1456,6 +1513,40 @@ html:`
 
 } 
 
+ function obtenerEstadoAutorizacion(fechaTexto){
+
+    if(!fechaTexto) return "tramite";
+
+    const hoy = new Date();
+
+    const fechaAut = new Date(fechaTexto);
+
+    if(isNaN(fechaAut)) return "tramite";
+
+    const fechaVence = new Date(fechaAut);
+
+    fechaVence.setFullYear(
+        fechaVence.getFullYear()+1
+    );
+
+    const dias =
+        (fechaVence-hoy)/(1000*60*60*24);
+
+    if(dias < 0){
+
+        return "vencida";
+
+    }
+
+    if(dias <=30){
+
+        return "porVencer";
+
+    }
+
+    return "vigente";
+
+}   
 /*==================================================
 DASHBOARD
 ==================================================*/
@@ -1577,11 +1668,12 @@ const fechaAut = new Date(fechaTexto);
             </div>
           `;
 
-          //==================================================
-// Estado temporal
-//==================================================
+const fechaAutorizacion =
+    g.filas[0]["FECHA AUTORIZACION"] ||
+    g.filas[0]["FECHA AUTORIZACIÓN"] ||
+    "";
 
-let estado = "tramite";
+const estado = obtenerEstadoAutorizacion(fechaAutorizacion);
 
 // Más adelante el color vendrá del Excel
 
