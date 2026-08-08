@@ -1483,7 +1483,7 @@ function obtenerDatosDashboard(anio, municipio = "TODOS") {
             municipios.add(r["MUNICIPIO"].trim());
         }
 
-        const fechaTexto = r["FECHA AUTORIZACION"];
+        console.log(r);
 
         if (!fechaTexto) return;
 
