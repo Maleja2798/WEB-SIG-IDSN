@@ -1638,7 +1638,8 @@ const marker = L.marker(
       if (boton) boton.classList.add('activo');
 
       // actualizar nota año activo
-      document.getElementById('nota-ano').textContent = `Año activo: ${anio}`;
+      // document.getElementById('nota-ano').textContent =
+      // `Año activo: ${anio}`;
 
       // centrar mapa en la primera marca de ese año (si existe)
       const firstLayer = capa && capa.getLayers && capa.getLayers()[0];
@@ -2198,7 +2199,7 @@ actualizarTarjetasDashboard(
     this.value,
     "TODOS"
 );
-}  
+});
 
 //========================================
 // CAMBIO DE MUNICIPIO
