@@ -2200,6 +2200,161 @@ CENTRO DE CONTROL - VERSION FINAL
     font-weight:800;
     white-space:nowrap;
 }    
+
+/*==================================================
+ BARRA DE HERRAMIENTAS DEL MAPA
+==================================================*/
+
+.mapa-herramientas{
+
+    position:absolute;
+
+    top:150px;
+    right:18px;
+
+    z-index:1000;
+
+    width:72px;
+
+    background:rgba(8,25,42,.94);
+
+    border-radius:0 0 12px 12px;
+
+    overflow:hidden;
+
+    box-shadow:
+        0 4px 14px rgba(0,0,0,.35);
+
+    backdrop-filter:blur(8px);
+
+}
+
+
+.mapa-herramienta{
+
+    width:72px;
+    height:82px;
+
+    border:0;
+
+    border-bottom:1px solid
+        rgba(255,255,255,.08);
+
+    background:transparent;
+
+    color:white;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:7px;
+
+    cursor:pointer;
+
+    transition:
+        background .2s ease,
+        transform .15s ease;
+
+}
+
+
+.mapa-herramienta:last-child{
+
+    border-bottom:0;
+
+}
+
+
+.mapa-herramienta:hover{
+
+    background:
+        rgba(35,125,190,.35);
+
+}
+
+
+.mapa-herramienta:active{
+
+    transform:scale(.96);
+
+}
+
+
+.mapa-herramienta svg{
+
+    width:27px;
+    height:27px;
+
+    stroke-width:2;
+
+}
+
+
+.mapa-herramienta span{
+
+    font-family:'Poppins',sans-serif;
+
+    font-size:11px;
+
+    font-weight:600;
+
+    line-height:1;
+
+    text-align:center;
+
+}
+
+
+/*-----------------------------------------------
+ ESTADO ACTIVO
+------------------------------------------------*/
+
+.mapa-herramienta.activo{
+
+    background:
+        linear-gradient(
+            180deg,
+            #164b72,
+            #103552
+        );
+
+}
+
+
+/*-----------------------------------------------
+ RESPONSIVE
+------------------------------------------------*/
+
+@media(max-width:700px){
+
+    .mapa-herramientas{
+
+        right:8px;
+        top:130px;
+
+        width:60px;
+
+    }
+
+    .mapa-herramienta{
+
+        width:60px;
+        height:68px;
+
+    }
+
+    .mapa-herramienta span{
+
+        font-size:9px;
+
+    }
+
+}
     
   </style>
 </head>
@@ -2378,6 +2533,96 @@ Bienvenido al Sistema de Información Geográfica de Autorizaciones Sanitarias d
     map.invalidateSize();
 });
 
+<!--==================================================
+ BARRA DE HERRAMIENTAS DEL MAPA
+==================================================-->
+
+<div
+    id="mapa-herramientas"
+    class="mapa-herramientas"
+>
+
+    <button
+        class="mapa-herramienta"
+        id="btn-capas"
+        onclick="abrirCapasMapa()"
+        title="Capas"
+    >
+
+        <i data-lucide="layers"></i>
+
+        <span>
+            Capas
+        </span>
+
+    </button>
+
+
+    <button
+        class="mapa-herramienta"
+        id="btn-filtro"
+        onclick="abrirFiltroMapa()"
+        title="Filtro"
+    >
+
+        <i data-lucide="funnel"></i>
+
+        <span>
+            Filtro
+        </span>
+
+    </button>
+
+
+    <button
+        class="mapa-herramienta"
+        id="btn-medir"
+        onclick="activarMedicion()"
+        title="Medir"
+    >
+
+        <i data-lucide="ruler"></i>
+
+        <span>
+            Medir
+        </span>
+
+    </button>
+
+
+    <button
+        class="mapa-herramienta"
+        id="btn-imprimir"
+        onclick="imprimirMapa()"
+        title="Imprimir"
+    >
+
+        <i data-lucide="printer"></i>
+
+        <span>
+            Imprimir
+        </span>
+
+    </button>
+
+
+    <button
+        class="mapa-herramienta"
+        id="btn-compartir"
+        onclick="compartirMapa()"
+        title="Compartir"
+    >
+
+        <i data-lucide="share-2"></i>
+
+        <span>
+            Compartir
+        </span>
+
+    </button>
+
+</div>
+
    /*=========================================
 ROSA DE LOS VIENTOS SVG
 =========================================*/
@@ -2455,6 +2700,450 @@ norteControl.addTo(map);
       }),
     };
     L.control.layers(baseMaps, null, { position: "topright" }).addTo(map);
+
+/*==================================================
+ HERRAMIENTA: CAPAS
+==================================================*/
+
+function abrirCapasMapa(){
+
+    const controlCapas =
+        document.querySelector(
+            ".leaflet-control-layers"
+        );
+
+
+    if(controlCapas){
+
+        const boton =
+            controlCapas.querySelector(
+                ".leaflet-control-layers-toggle"
+            );
+
+
+        if(boton){
+
+            boton.click();
+
+        }
+
+    }
+
+}
+
+
+/*==================================================
+ HERRAMIENTA: FILTRO
+==================================================*/
+
+function abrirFiltroMapa(){
+
+    abrirPanel(
+
+        "Filtros del mapa",
+
+        `
+
+        <div class="dashboard-header">
+
+            <div class="dashboard-title">
+                Filtrar autorizaciones
+            </div>
+
+            <div class="dashboard-subtitle">
+                Seleccione el estado que desea visualizar
+            </div>
+
+            <hr class="dashboard-line">
+
+        </div>
+
+
+        <div
+            style="
+                display:grid;
+                gap:10px;
+            "
+        >
+
+            <button
+                onclick="filtrarMarcadoresEstado('todos')"
+                style="
+                    padding:14px;
+                    border:0;
+                    border-radius:10px;
+                    background:#1976D2;
+                    color:white;
+                    font-weight:600;
+                    cursor:pointer;
+                "
+            >
+
+                Mostrar todas
+
+            </button>
+
+
+            <button
+                onclick="filtrarMarcadoresEstado('vigente')"
+                style="
+                    padding:14px;
+                    border:0;
+                    border-radius:10px;
+                    background:#159447;
+                    color:white;
+                    font-weight:600;
+                    cursor:pointer;
+                "
+            >
+
+                🟢 Vigentes
+
+            </button>
+
+
+            <button
+                onclick="filtrarMarcadoresEstado('vencer')"
+                style="
+                    padding:14px;
+                    border:0;
+                    border-radius:10px;
+                    background:#D99D16;
+                    color:white;
+                    font-weight:600;
+                    cursor:pointer;
+                "
+            >
+
+                🟡 Próximas a vencer
+
+            </button>
+
+
+            <button
+                onclick="filtrarMarcadoresEstado('vencida')"
+                style="
+                    padding:14px;
+                    border:0;
+                    border-radius:10px;
+                    background:#D93D52;
+                    color:white;
+                    font-weight:600;
+                    cursor:pointer;
+                "
+            >
+
+                🔴 Vencidas
+
+            </button>
+
+        </div>
+
+        `
+
+    );
+
+}
+
+
+/*==================================================
+ HERRAMIENTA: MEDIR
+==================================================*/
+
+let modoMedicion = false;
+
+let puntosMedicion = [];
+
+let lineaMedicion = null;
+
+let marcadorMedicion = null;
+
+
+function activarMedicion(){
+
+    modoMedicion =
+        !modoMedicion;
+
+
+    const boton =
+        document.getElementById(
+            "btn-medir"
+        );
+
+
+    if(modoMedicion){
+
+        boton.classList.add(
+            "activo"
+        );
+
+
+        puntosMedicion = [];
+
+
+        if(lineaMedicion){
+
+            map.removeLayer(
+                lineaMedicion
+            );
+
+        }
+
+
+        if(marcadorMedicion){
+
+            map.removeLayer(
+                marcadorMedicion
+            );
+
+        }
+
+
+        lineaMedicion =
+            L.polyline(
+                [],
+                {
+                    color:"#00BFFF",
+                    weight:4,
+                    dashArray:"7,7"
+                }
+            ).addTo(map);
+
+
+        map.getContainer()
+            .style.cursor =
+            "crosshair";
+
+
+    }
+    else{
+
+        finalizarMedicion();
+
+    }
+
+}
+
+
+map.on(
+    "click",
+    function(e){
+
+        if(!modoMedicion){
+
+            return;
+
+        }
+
+
+        puntosMedicion.push(
+            e.latlng
+        );
+
+
+        lineaMedicion.setLatLngs(
+            puntosMedicion
+        );
+
+
+        if(puntosMedicion.length >= 2){
+
+            const distancia =
+                calcularDistanciaMedicion(
+                    puntosMedicion
+                );
+
+
+            if(marcadorMedicion){
+
+                map.removeLayer(
+                    marcadorMedicion
+                );
+
+            }
+
+
+            marcadorMedicion =
+                L.popup({
+                    closeButton:false,
+                    autoClose:false
+                })
+                .setLatLng(
+                    e.latlng
+                )
+                .setContent(
+                    "<b>Distancia:</b> " +
+                    distancia
+                )
+                .openOn(map);
+
+        }
+
+    }
+);
+
+
+function calcularDistanciaMedicion(
+    puntos
+){
+
+    let total = 0;
+
+
+    for(
+        let i = 1;
+        i < puntos.length;
+        i++
+    ){
+
+        total +=
+            map.distance(
+                puntos[i - 1],
+                puntos[i]
+            );
+
+    }
+
+
+    if(total >= 1000){
+
+        return (
+            total / 1000
+        ).toFixed(2) +
+        " km";
+
+    }
+
+
+    return (
+        total
+    ).toFixed(0) +
+    " m";
+
+}
+
+
+function finalizarMedicion(){
+
+    modoMedicion =
+        false;
+
+
+    const boton =
+        document.getElementById(
+            "btn-medir"
+        );
+
+
+    if(boton){
+
+        boton.classList.remove(
+            "activo"
+        );
+
+    }
+
+
+    map.getContainer()
+        .style.cursor =
+        "";
+
+
+    if(marcadorMedicion){
+
+        map.removeLayer(
+            marcadorMedicion
+        );
+
+        marcadorMedicion =
+            null;
+
+    }
+
+}
+
+
+/*==================================================
+ HERRAMIENTA: IMPRIMIR
+==================================================*/
+
+function imprimirMapa(){
+
+    map.invalidateSize();
+
+
+    setTimeout(
+        function(){
+
+            window.print();
+
+        },
+        300
+    );
+
+}
+
+
+/*==================================================
+ HERRAMIENTA: COMPARTIR
+==================================================*/
+
+function compartirMapa(){
+
+    const url =
+        window.location.href;
+
+
+    if(
+        navigator.share
+    ){
+
+        navigator.share({
+
+            title:
+                "Autorizaciones Sanitarias de Agua",
+
+            text:
+                "Sistema de Información Geográfica de Autorizaciones Sanitarias",
+
+            url:
+                url
+
+        });
+
+        return;
+
+    }
+
+
+    if(
+        navigator.clipboard
+    ){
+
+        navigator.clipboard
+            .writeText(url)
+            .then(
+                function(){
+
+                    alert(
+                        "Enlace copiado al portapapeles."
+                    );
+
+                }
+            );
+
+        return;
+
+    }
+
+
+    prompt(
+        "Copie este enlace:",
+        url
+    );
+
+}
+    
     L.control.zoom({ position: "topright" }).addTo(map);
     L.control.scale({ position: "bottomright", metric: true, imperial: false }).addTo(map);
     L.Control.geocoder({ defaultMarkGeocode: true }).on("markgeocode", e => {
