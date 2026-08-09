@@ -2112,6 +2112,94 @@ CENTRO DE CONTROL - VERSION FINAL
     font-size:12px;
 
 }
+
+/*==================================================
+ REPORTES
+==================================================*/
+
+.reporte-resumen{
+    margin:15px 0;
+}
+
+.reporte-indicadores{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:8px;
+}
+
+.reporte-indicador{
+    padding:12px;
+    border-radius:12px;
+    background:rgba(12,43,72,.8);
+    border:1px solid rgba(255,255,255,.08);
+}
+
+.reporte-indicador strong{
+    display:block;
+    color:white;
+    font-size:22px;
+    font-weight:800;
+}
+
+.reporte-indicador span{
+    color:#a9bfd3;
+    font-size:10px;
+}
+
+.reporte-indicador.verde strong{
+    color:#62e6ad;
+}
+
+.reporte-indicador.amarillo strong{
+    color:#ffd15c;
+}
+
+.reporte-indicador.rojo strong{
+    color:#ff6979;
+}
+
+
+.tabla-scroll{
+    width:100%;
+    overflow-x:auto;
+    border-radius:12px;
+}
+
+
+.tabla-reporte{
+    width:100%;
+    border-collapse:collapse;
+    font-size:10px;
+}
+
+
+.tabla-reporte th{
+    background:#123858;
+    color:#8fd8ff;
+    padding:9px 7px;
+    text-align:left;
+    position:sticky;
+    top:0;
+}
+
+
+.tabla-reporte td{
+    padding:9px 7px;
+    color:#e9f3fa;
+    border-bottom:1px solid rgba(255,255,255,.07);
+}
+
+
+.tabla-reporte tr:hover{
+    background:rgba(62,175,255,.08);
+}
+
+
+.reporte-estado{
+    font-size:8px;
+    font-weight:800;
+    white-space:nowrap;
+}    
     
   </style>
 </head>
@@ -4669,9 +4757,514 @@ const listaAutorizaciones =
         `
 
     );
+  
+  lucide.createIcons();
+  
+}
+
+/*==================================================
+ REPORTES
+==================================================*/
+
+function mostrarReportes(){
+
+    const anio =
+        anioActivo ||
+        Object.keys(datosPorAnio)
+            .sort()
+            .pop();
+
+    const datos =
+        datosPorAnio[anio] || [];
+
+
+    const municipios =
+        Array.from(
+            new Set(
+                datos.map(row =>
+                    (row["MUNICIPIO"] || "")
+                    .toString()
+                    .trim()
+                )
+            )
+        )
+        .filter(Boolean)
+        .sort();
+
+
+    abrirPanel(
+
+        "Reportes",
+
+        `
+
+        <div class="dashboard-header">
+
+            <div class="dashboard-title">
+                Reportes
+            </div>
+
+            <div class="dashboard-subtitle">
+                Información consolidada de autorizaciones sanitarias
+            </div>
+
+            <hr class="dashboard-line">
+
+        </div>
+
+
+        <div class="dashboard-filtros">
+
+            <select
+                class="dashboard-select"
+                id="reporte-anio">
+
+                ${
+                    Object.keys(datosPorAnio)
+                    .sort()
+                    .map(a => `
+
+                        <option
+                            value="${a}"
+                            ${a === anio ? "selected" : ""}>
+
+                            ${a}
+
+                        </option>
+
+                    `)
+                    .join("")
+                }
+
+            </select>
+
+
+            <select
+                class="dashboard-select"
+                id="reporte-municipio">
+
+                <option value="TODOS">
+                    Todos los municipios
+                </option>
+
+                ${
+                    municipios
+                    .map(m => `
+
+                        <option value="${m}">
+                            ${m}
+                        </option>
+
+                    `)
+                    .join("")
+                }
+
+            </select>
+
+        </div>
+
+
+        <div
+            id="reporte-resumen"
+            class="reporte-resumen">
+
+            ${generarResumenReporte(datos)}
+
+        </div>
+
+
+        <div
+            id="reporte-tabla"
+            class="reporte-tabla">
+
+            ${generarTablaReporte(datos)}
+
+        </div>
+
+        `
+
+    );
 
 
     lucide.createIcons();
+
+
+    const selectorAnio =
+        document.getElementById(
+            "reporte-anio"
+        );
+
+
+    if(selectorAnio){
+
+        selectorAnio.onchange = function(){
+
+            anioActivo =
+                this.value;
+
+            mostrarReportes();
+
+        };
+
+    }
+
+
+    const selectorMunicipio =
+        document.getElementById(
+            "reporte-municipio"
+        );
+
+
+    if(selectorMunicipio){
+
+        selectorMunicipio.onchange = function(){
+
+            actualizarReporte();
+
+        };
+
+    }
+
+}
+
+/*==================================================
+ RESUMEN DEL REPORTE
+==================================================*/
+
+function generarResumenReporte(datos){
+
+    let vigentes = 0;
+    let vencer = 0;
+    let vencidas = 0;
+
+
+    datos.forEach(row => {
+
+        const fecha =
+            row["FECHA AUTORIZACIÓN"] ||
+            row["FECHA AUTORIZACION"] ||
+            "";
+
+
+        const estado =
+            obtenerEstadoAutorizacion(
+                fecha
+            );
+
+
+        if(estado === "vigente"){
+            vigentes++;
+        }
+
+        else if(estado === "vencer"){
+            vencer++;
+        }
+
+        else if(estado === "vencida"){
+            vencidas++;
+        }
+
+    });
+
+
+    const municipios =
+        new Set(
+            datos.map(row =>
+                (row["MUNICIPIO"] || "")
+                .toString()
+                .trim()
+            )
+        );
+
+
+    return `
+
+    <div class="reporte-indicadores">
+
+        <div class="reporte-indicador">
+
+            <strong>
+                ${datos.length}
+            </strong>
+
+            <span>
+                Autorizaciones
+            </span>
+
+        </div>
+
+
+        <div class="reporte-indicador">
+
+            <strong>
+                ${municipios.size}
+            </strong>
+
+            <span>
+                Municipios
+            </span>
+
+        </div>
+
+
+        <div class="reporte-indicador verde">
+
+            <strong>
+                ${vigentes}
+            </strong>
+
+            <span>
+                Vigentes
+            </span>
+
+        </div>
+
+
+        <div class="reporte-indicador amarillo">
+
+            <strong>
+                ${vencer}
+            </strong>
+
+            <span>
+                Próximas a vencer
+            </span>
+
+        </div>
+
+
+        <div class="reporte-indicador rojo">
+
+            <strong>
+                ${vencidas}
+            </strong>
+
+            <span>
+                Vencidas
+            </span>
+
+        </div>
+
+    </div>
+
+    `;
+
+}
+
+/*==================================================
+ TABLA DEL REPORTE
+==================================================*/
+
+function generarTablaReporte(datos){
+
+    if(!datos.length){
+
+        return `
+
+        <div class="autorizaciones-vacio">
+
+            <i data-lucide="file-search"></i>
+
+            <strong>
+                No hay información
+            </strong>
+
+            <span>
+                No existen registros para los filtros seleccionados.
+            </span>
+
+        </div>
+
+        `;
+
+    }
+
+
+    return `
+
+    <div class="tabla-scroll">
+
+        <table class="tabla-reporte">
+
+            <thead>
+
+                <tr>
+
+                    <th>Autorización</th>
+
+                    <th>Municipio</th>
+
+                    <th>Fuente</th>
+
+                    <th>Fecha</th>
+
+                    <th>Estado</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                ${
+                    datos.map(row => {
+
+                        const numero =
+                            row["NO. AUTORIZACIÓN"] ||
+                            row["NO. AUTORIZACION"] ||
+                            "Sin número";
+
+
+                        const municipio =
+                            row["MUNICIPIO"] ||
+                            "";
+
+
+                        const fuente =
+                            row["FUENTE"] ||
+                            "";
+
+
+                        const fecha =
+                            row["FECHA AUTORIZACIÓN"] ||
+                            row["FECHA AUTORIZACION"] ||
+                            "";
+
+
+                        const estado =
+                            obtenerEstadoAutorizacion(
+                                fecha
+                            );
+
+
+                        let textoEstado =
+                            "EN TRÁMITE";
+
+
+                        if(estado === "vigente"){
+                            textoEstado = "VIGENTE";
+                        }
+
+                        else if(estado === "vencer"){
+                            textoEstado = "PRÓXIMA";
+                        }
+
+                        else if(estado === "vencida"){
+                            textoEstado = "VENCIDA";
+                        }
+
+
+                        return `
+
+                        <tr>
+
+                            <td>
+                                ${numero}
+                            </td>
+
+                            <td>
+                                ${municipio}
+                            </td>
+
+                            <td>
+                                ${fuente}
+                            </td>
+
+                            <td>
+                                ${fecha}
+                            </td>
+
+                            <td>
+
+                                <span
+                                    class="reporte-estado estado-${estado}">
+
+                                    ${textoEstado}
+
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+                        `;
+
+                    }).join("")
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    `;
+
+}
+    
+/*==================================================
+ ACTUALIZAR REPORTE
+==================================================*/
+
+function actualizarReporte(){
+
+    const anio =
+        document.getElementById(
+            "reporte-anio"
+        ).value;
+
+
+    const municipio =
+        document.getElementById(
+            "reporte-municipio"
+        ).value;
+
+
+    let datos =
+        datosPorAnio[anio] || [];
+
+
+    if(
+        municipio &&
+        municipio !== "TODOS"
+    ){
+
+        datos =
+            datos.filter(row => {
+
+                const nombre =
+                    (
+                        row["MUNICIPIO"] ||
+                        ""
+                    )
+                    .toString()
+                    .trim();
+
+
+                return nombre === municipio;
+
+            });
+
+    }
+
+
+    document.getElementById(
+        "reporte-resumen"
+    ).innerHTML =
+        generarResumenReporte(datos);
+
+
+    document.getElementById(
+        "reporte-tabla"
+    ).innerHTML =
+        generarTablaReporte(datos);
+
+
+    lucide.createIcons();
+
+}    
+  
 
 
     /*==============================================
