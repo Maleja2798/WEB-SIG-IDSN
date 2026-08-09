@@ -2515,23 +2515,10 @@ Bienvenido al Sistema de Información Geográfica de Autorizaciones Sanitarias d
 
 <div id="map"></div>
 
-  <div id="botones-anio">
+<div id="botones-anio">
     <!-- Botones generados automáticamente -->
-  </div>
+</div>
 
-  <script>
-    // ---------- Inicialización Mapa (sin cambios importantes) ----------
-    const map = L.map("map", { zoomControl: false }).setView([1.289, -77.29], 8);
-
-    window.addEventListener("load", () => {
-    setTimeout(() => {
-        map.invalidateSize();
-    }, 300);
-});
-
-    window.addEventListener("resize", () => {
-    map.invalidateSize();
-});
 
 <!--==================================================
  BARRA DE HERRAMIENTAS DEL MAPA
@@ -2548,13 +2535,8 @@ Bienvenido al Sistema de Información Geográfica de Autorizaciones Sanitarias d
         onclick="abrirCapasMapa()"
         title="Capas"
     >
-
         <i data-lucide="layers"></i>
-
-        <span>
-            Capas
-        </span>
-
+        <span>Capas</span>
     </button>
 
 
@@ -2564,13 +2546,8 @@ Bienvenido al Sistema de Información Geográfica de Autorizaciones Sanitarias d
         onclick="abrirFiltroMapa()"
         title="Filtro"
     >
-
         <i data-lucide="funnel"></i>
-
-        <span>
-            Filtro
-        </span>
-
+        <span>Filtro</span>
     </button>
 
 
@@ -2580,13 +2557,8 @@ Bienvenido al Sistema de Información Geográfica de Autorizaciones Sanitarias d
         onclick="activarMedicion()"
         title="Medir"
     >
-
         <i data-lucide="ruler"></i>
-
-        <span>
-            Medir
-        </span>
-
+        <span>Medir</span>
     </button>
 
 
@@ -2596,13 +2568,8 @@ Bienvenido al Sistema de Información Geográfica de Autorizaciones Sanitarias d
         onclick="imprimirMapa()"
         title="Imprimir"
     >
-
         <i data-lucide="printer"></i>
-
-        <span>
-            Imprimir
-        </span>
-
+        <span>Imprimir</span>
     </button>
 
 
@@ -2612,16 +2579,25 @@ Bienvenido al Sistema de Información Geográfica de Autorizaciones Sanitarias d
         onclick="compartirMapa()"
         title="Compartir"
     >
-
         <i data-lucide="share-2"></i>
-
-        <span>
-            Compartir
-        </span>
-
+        <span>Compartir</span>
     </button>
 
 </div>
+
+  <script>
+    // ---------- Inicialización Mapa (sin cambios importantes) ----------
+    const map = L.map("map", { zoomControl: false }).setView([1.289, -77.29], 8);
+
+    window.addEventListener("load", () => {
+    setTimeout(() => {
+        map.invalidateSize();
+    }, 300);
+});
+
+    window.addEventListener("resize", () => {
+    map.invalidateSize();
+});
 
    /*=========================================
 ROSA DE LOS VIENTOS SVG
