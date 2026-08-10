@@ -2309,27 +2309,25 @@ CENTRO DE CONTROL - VERSION FINAL
 
 }
 
- /*==================================================
- ZOOM DEL MAPA
+/*==================================================
+ ZOOM DEL MAPA — BLOQUE INDEPENDIENTE
 ==================================================*/
 
 .mapa-zoom{
 
     position:absolute;
 
-   top:auto;
-
     right:18px;
+
+    bottom:75px;
 
     z-index:1000;
 
     width:72px;
 
-   bottom:75px;
-
     background:rgba(8,25,42,.94);
 
-    border-radius:0 0 10px 10px;
+    border-radius:10px;
 
     overflow:hidden;
 
@@ -2338,65 +2336,7 @@ CENTRO DE CONTROL - VERSION FINAL
 
     backdrop-filter:blur(8px);
 
-}
-
-
-.mapa-zoom-btn{
-
-    width:72px;
-
-    height:48px;
-
-    border:0;
-
-    border-bottom:
-        1px solid
-        rgba(255,255,255,.10);
-
-    background:transparent;
-
-    color:white;
-
-    font-size:26px;
-
-    font-weight:400;
-
-    line-height:1;
-
-    cursor:pointer;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    transition:
-        background .2s ease;
-
-}
-
-
-.mapa-zoom-btn:last-child{
-
-    border-bottom:0;
-
-}
-
-
-.mapa-zoom-btn:hover{
-
-    background:
-        rgba(35,125,190,.35);
-
-}
-
-
-.mapa-zoom-btn:active{
-
-    transform:scale(.94);
-
-}   
+}  
     
 /*==================================================
  OCULTAR CONTROLES ANTIGUOS DE LEAFLET
