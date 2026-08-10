@@ -3398,13 +3398,7 @@ function compartirMapa(){
     
     L.control.zoom({ position: "topright" }).addTo(map);
     L.control.scale({ position: "bottomright", metric: true, imperial: false }).addTo(map);
-    L.Control.geocoder({ defaultMarkGeocode: true }).on("markgeocode", e => {
-      map.setView(e.geocode.center, 12);
-    }).addTo(map);
     // evitar error si no existe aún el icono
-    if (document.querySelector(".leaflet-control-geocoder-icon")) {
-      document.querySelector(".leaflet-control-geocoder-icon").title = "Buscar";
-    }
     new L.Control.MiniMap( 
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"),
       { toggleDisplay: true, position: "bottomleft" }
