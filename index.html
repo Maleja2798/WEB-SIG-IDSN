@@ -2355,6 +2355,197 @@ CENTRO DE CONTROL - VERSION FINAL
     }
 
 }
+
+/*==================================================
+ LEYENDA DE ESTADOS DEL MAPA
+==================================================*/
+
+.leyenda-estados{
+
+    position:absolute;
+
+    left:50%;
+
+    bottom:18px;
+
+    transform:translateX(-50%);
+
+    z-index:1000;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:28px;
+
+    padding:13px 22px;
+
+    background:rgba(7,24,40,.94);
+
+    border:1px solid
+        rgba(255,255,255,.08);
+
+    border-radius:11px;
+
+    box-shadow:
+        0 8px 25px
+        rgba(0,0,0,.35);
+
+    backdrop-filter:blur(10px);
+
+    color:white;
+
+    font-family:'Poppins',sans-serif;
+
+    font-size:11px;
+
+    white-space:nowrap;
+
+}
+
+
+.leyenda-item{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:7px;
+
+}
+
+
+.leyenda-punto{
+
+    width:11px;
+
+    height:11px;
+
+    min-width:11px;
+
+    border-radius:50%;
+
+    display:inline-block;
+
+    box-shadow:
+        0 0 8px
+        currentColor;
+
+}
+
+
+/*-----------------------------------------------
+ COLORES
+------------------------------------------------*/
+
+.leyenda-punto.vigente{
+
+    background:#38D976;
+
+    color:#38D976;
+
+}
+
+
+.leyenda-punto.vencer{
+
+    background:#FFD54A;
+
+    color:#FFD54A;
+
+}
+
+
+.leyenda-punto.vencida{
+
+    background:#FF5A5A;
+
+    color:#FF5A5A;
+
+}
+
+
+.leyenda-punto.suspendida{
+
+    background:#9E6BFF;
+
+    color:#9E6BFF;
+
+}
+
+
+.leyenda-punto.tramite{
+
+    background:#3EAFFF;
+
+    color:#3EAFFF;
+
+}
+
+
+/*==================================================
+ MINI MAPA
+==================================================*/
+
+.leaflet-control-minimap{
+
+    width:120px !important;
+
+    height:105px !important;
+
+}
+
+
+.leaflet-control-minimap
+.leaflet-container{
+
+    width:120px !important;
+
+    height:105px !important;
+
+}
+
+/*==================================================
+ ESCALA
+==================================================*/
+
+.leaflet-control-scale{
+
+    margin-bottom:18px !important;
+
+    margin-right:10px !important;
+
+}
+
+
+.leaflet-control-scale-line{
+
+    background:
+        rgba(7,24,40,.88) !important;
+
+    border:
+        2px solid
+        rgba(255,255,255,.65) !important;
+
+    border-top:0 !important;
+
+    color:white !important;
+
+    font-family:'Poppins',sans-serif;
+
+    font-size:10px;
+
+    font-weight:600;
+
+    padding:
+        3px 7px !important;
+
+    border-radius:
+        0 0 5px 5px;
+
+}
     
   </style>
 </head>
@@ -2582,6 +2773,81 @@ Bienvenido al Sistema de Información Geográfica de Autorizaciones Sanitarias d
         <i data-lucide="share-2"></i>
         <span>Compartir</span>
     </button>
+
+</div>
+
+<!--==================================================
+ LEYENDA DE ESTADOS
+==================================================-->
+
+<div
+    id="leyenda-estados"
+    class="leyenda-estados"
+>
+
+    <div class="leyenda-item">
+
+        <span
+            class="leyenda-punto vigente"
+        ></span>
+
+        <span>
+            Vigente
+        </span>
+
+    </div>
+
+
+    <div class="leyenda-item">
+
+        <span
+            class="leyenda-punto vencer"
+        ></span>
+
+        <span>
+            Próxima a vencer
+        </span>
+
+    </div>
+
+
+    <div class="leyenda-item">
+
+        <span
+            class="leyenda-punto vencida"
+        ></span>
+
+        <span>
+            Vencida
+        </span>
+
+    </div>
+
+
+    <div class="leyenda-item">
+
+        <span
+            class="leyenda-punto suspendida"
+        ></span>
+
+        <span>
+            Suspendida
+        </span>
+
+    </div>
+
+
+    <div class="leyenda-item">
+
+        <span
+            class="leyenda-punto tramite"
+        ></span>
+
+        <span>
+            En trámite
+        </span>
+
+    </div>
 
 </div>
 
