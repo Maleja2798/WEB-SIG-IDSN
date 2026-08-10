@@ -2309,6 +2309,95 @@ CENTRO DE CONTROL - VERSION FINAL
 
 }
 
+ /*==================================================
+ ZOOM DEL MAPA
+==================================================*/
+
+.mapa-zoom{
+
+    position:absolute;
+
+    top:150px;
+
+    right:18px;
+
+    z-index:1000;
+
+    width:72px;
+
+    margin-top:420px;
+
+    background:rgba(8,25,42,.94);
+
+    border-radius:0 0 10px 10px;
+
+    overflow:hidden;
+
+    box-shadow:
+        0 4px 14px rgba(0,0,0,.35);
+
+    backdrop-filter:blur(8px);
+
+}
+
+
+.mapa-zoom-btn{
+
+    width:72px;
+
+    height:48px;
+
+    border:0;
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.10);
+
+    background:transparent;
+
+    color:white;
+
+    font-size:26px;
+
+    font-weight:400;
+
+    line-height:1;
+
+    cursor:pointer;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    transition:
+        background .2s ease;
+
+}
+
+
+.mapa-zoom-btn:last-child{
+
+    border-bottom:0;
+
+}
+
+
+.mapa-zoom-btn:hover{
+
+    background:
+        rgba(35,125,190,.35);
+
+}
+
+
+.mapa-zoom-btn:active{
+
+    transform:scale(.94);
+
+}   
+    
 /*==================================================
  OCULTAR CONTROLES ANTIGUOS DE LEAFLET
 ==================================================*/
@@ -2799,6 +2888,30 @@ Bienvenido al Sistema de Información Geográfica de Autorizaciones Sanitarias d
 
 </div>
 
+<!--==================================================
+ ZOOM DEL MAPA
+==================================================-->
+
+<div class="mapa-zoom">
+
+    <button
+        class="mapa-zoom-btn"
+        onclick="map.zoomIn()"
+        title="Acercar"
+    >
+        +
+    </button>
+
+    <button
+        class="mapa-zoom-btn"
+        onclick="map.zoomOut()"
+        title="Alejar"
+    >
+        −
+    </button>
+
+</div>
+  
 <!--==================================================
  LEYENDA DE ESTADOS
 ==================================================-->
