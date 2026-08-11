@@ -3319,14 +3319,13 @@ norteControl.addTo(map);
 
 const baseMaps = {
 
-    "Mapa oscuro": L.tileLayer(
+  "Mapa azul oscuro": L.tileLayer(
         "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
         {
             attribution:
                 '&copy; OpenStreetMap &copy; CARTO'
         }
     ).addTo(map),
-
 
     "Mapa estándar": L.tileLayer(
         "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
@@ -3995,10 +3994,31 @@ function compartirMapa(){
     L.control.zoom({ position: "topright" }).addTo(map);
     L.control.scale({ position: "bottomright", metric: true, imperial: false }).addTo(map);
     // evitar error si no existe aún el icono
-    new L.Control.MiniMap( 
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"),
-      { toggleDisplay: true, position: "bottomleft" }
-    ).addTo(map);
+   new L.Control.MiniMap(
+
+    L.tileLayer(
+        "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+        {
+            attribution:
+                '&copy; OpenStreetMap &copy; CARTO'
+        }
+    ),
+
+    {
+        toggleDisplay: true,
+        position: "bottomleft",
+
+        width: 120,
+        height: 105,
+
+        zoomLevelOffset: -5,
+
+        zoomAnimation: true,
+
+        minimized: false
+    }
+
+).addTo(map);
 
     let geojsonLayer;
 
