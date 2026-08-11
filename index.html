@@ -2918,32 +2918,6 @@ CENTRO DE CONTROL - VERSION FINAL
     color:#EAF4FA;
 
 }
-
-/*==================================================
- MAPA PRINCIPAL — AZUL OSCURO
-==================================================*/
-
-#map .leaflet-tile-pane{
-
-    filter:
-        brightness(.62)
-        contrast(1.15)
-        saturate(.95);
-
-}
-
-/*==================================================
- MINI MAPA — AZUL OSCURO
-==================================================*/
-
-.leaflet-control-minimap .leaflet-tile-pane{
-
-    filter:
-        brightness(.62)
-        contrast(1.15)
-        saturate(.95);
-
-}
     
   </style>
 </head>
@@ -3345,11 +3319,13 @@ norteControl.addTo(map);
 
 const baseMaps = {
 
-  "Mapa azul oscuro": L.tileLayer(
-        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    "Mapa azul oscuro": L.tileLayer(
+        "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
         {
             attribution:
-                "&copy; OpenStreetMap contributors"
+                '&copy; OpenStreetMap contributors &copy; CARTO',
+            subdomains: "abcd",
+            maxZoom: 20
         }
     ).addTo(map),
 
@@ -3360,7 +3336,6 @@ const baseMaps = {
                 "&copy; OpenStreetMap contributors"
         }
     ),
-
 
     "Satélite": L.tileLayer(
         "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
@@ -4023,10 +3998,12 @@ function compartirMapa(){
 new L.Control.MiniMap(
 
     L.tileLayer(
-        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
         {
             attribution:
-                "&copy; OpenStreetMap contributors"
+                '&copy; OpenStreetMap contributors &copy; CARTO',
+            subdomains: "abcd",
+            maxZoom: 20
         }
     ),
 
