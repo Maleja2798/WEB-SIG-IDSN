@@ -2683,6 +2683,241 @@ CENTRO DE CONTROL - VERSION FINAL
         rgba(0,0,0,.30);
 
 }
+
+/*==================================================
+ PANEL PERSONALIZADO DE CAPAS
+==================================================*/
+
+.panel-capas-mapa{
+
+    position:absolute;
+
+    top:120px;
+
+    right:105px;
+
+    z-index:3000;
+
+    width:235px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #142F46,
+            #0D2437
+        );
+
+    border:
+        1px solid
+        rgba(62,175,255,.30);
+
+    border-radius:14px;
+
+    box-shadow:
+        0 12px 30px
+        rgba(0,0,0,.45);
+
+    overflow:hidden;
+
+    color:white;
+
+    font-family:
+        'Poppins',
+        sans-serif;
+
+}
+
+
+/*==================================================
+ ENCABEZADO
+==================================================*/
+
+.panel-capas-titulo{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:
+        14px 16px;
+
+    background:
+        rgba(7,24,40,.55);
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.10);
+
+    color:white;
+
+    font-size:14px;
+
+    font-weight:600;
+
+}
+
+
+.panel-capas-cerrar{
+
+    width:28px;
+
+    height:28px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:
+        rgba(255,255,255,.08);
+
+    color:white;
+
+    font-size:20px;
+
+    line-height:1;
+
+    cursor:pointer;
+
+}
+
+
+.panel-capas-cerrar:hover{
+
+    background:
+        rgba(62,175,255,.30);
+
+}
+
+
+/*==================================================
+ CONTENIDO
+==================================================*/
+
+.panel-capas-contenido{
+
+    padding:8px;
+
+}
+
+
+/*==================================================
+ OPCIONES DE CAPA
+==================================================*/
+
+.capa-opcion{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    padding:
+        12px 10px;
+
+    border-radius:9px;
+
+    cursor:pointer;
+
+    transition:
+        background .2s ease;
+
+}
+
+
+.capa-opcion:hover{
+
+    background:
+        rgba(62,175,255,.12);
+
+}
+
+
+.capa-opcion.capa-activa{
+
+    background:
+        rgba(62,175,255,.18);
+
+}
+
+
+/*==================================================
+ RADIO
+==================================================*/
+
+.capa-opcion input{
+
+    display:none;
+
+}
+
+
+.capa-radio{
+
+    width:15px;
+
+    height:15px;
+
+    border-radius:50%;
+
+    border:
+        2px solid
+        rgba(255,255,255,.45);
+
+    position:relative;
+
+    flex-shrink:0;
+
+}
+
+
+.capa-opcion.capa-activa
+.capa-radio{
+
+    border-color:
+        #3EAFFF;
+
+}
+
+
+.capa-opcion.capa-activa
+.capa-radio::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:7px;
+
+    height:7px;
+
+    border-radius:50%;
+
+    background:
+        #3EAFFF;
+
+    top:2px;
+
+    left:2px;
+
+}
+
+
+/*==================================================
+ NOMBRE DE LA CAPA
+==================================================*/
+
+.capa-nombre{
+
+    font-size:12px;
+
+    font-weight:500;
+
+    color:#EAF4FA;
+
+}
     
   </style>
 </head>
@@ -3078,17 +3313,48 @@ norteControl.addTo(map);
     map.createPane("marcadores");
     map.getPane("marcadores").style.zIndex = 650;
 
-    const baseMaps = {
-      "Mapa Estándar": L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: "&copy; OpenStreetMap contributors",
-      }).addTo(map),
-      "Satélite (ESRI)": L.tileLayer("https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
-        attribution: "Tiles &copy; Esri",
-      }),
-      "Topográfico": L.tileLayer("https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", {
-        attribution: "&copy; OpenTopoMap contributors",
-      }),
-    };
+/*==================================================
+ CAPAS BASE DEL MAPA
+==================================================*/
+
+const baseMaps = {
+
+    "Mapa oscuro": L.tileLayer(
+        "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+        {
+            attribution:
+                '&copy; OpenStreetMap &copy; CARTO'
+        }
+    ).addTo(map),
+
+
+    "Mapa estándar": L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+            attribution:
+                "&copy; OpenStreetMap contributors"
+        }
+    ),
+
+
+    "Satélite": L.tileLayer(
+        "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+        {
+            attribution:
+                "Tiles &copy; Esri"
+        }
+    ),
+
+
+    "Topográfico": L.tileLayer(
+        "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
+        {
+            attribution:
+                "&copy; OpenTopoMap contributors"
+        }
+    )
+
+};
     L.control.layers(baseMaps, null, { position: "topright" }).addTo(map);
 
 /*==================================================
@@ -3097,30 +3363,222 @@ norteControl.addTo(map);
 
 function abrirCapasMapa(){
 
-    const controlCapas =
-        document.querySelector(
-            ".leaflet-control-layers"
+    let panel =
+        document.getElementById(
+            "panel-capas-mapa"
         );
 
 
-    if(controlCapas){
+    /*-----------------------------------------------
+      SI YA ESTÁ ABIERTO → CERRAR
+    ------------------------------------------------*/
 
-        const boton =
-            controlCapas.querySelector(
-                ".leaflet-control-layers-toggle"
-            );
+    if(panel){
+
+        panel.remove();
+
+        return;
+
+    }
 
 
-        if(boton){
+    /*-----------------------------------------------
+      CREAR PANEL
+    ------------------------------------------------*/
 
-            boton.click();
+    panel =
+        document.createElement("div");
+
+    panel.id =
+        "panel-capas-mapa";
+
+    panel.className =
+        "panel-capas-mapa";
+
+
+    /*-----------------------------------------------
+      ENCABEZADO
+    ------------------------------------------------*/
+
+    let html = `
+
+        <div class="panel-capas-titulo">
+
+            <span>
+                Capas del mapa
+            </span>
+
+            <button
+                class="panel-capas-cerrar"
+                onclick="cerrarCapasMapa()"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <div class="panel-capas-contenido">
+
+    `;
+
+
+    /*-----------------------------------------------
+      LISTAR CAPAS
+    ------------------------------------------------*/
+
+    Object.keys(baseMaps).forEach(
+        nombre => {
+
+            const capa =
+                baseMaps[nombre];
+
+            const activa =
+                map.hasLayer(capa);
+
+
+            html += `
+
+                <label
+                    class="
+                        capa-opcion
+                        ${activa
+                            ? "capa-activa"
+                            : ""}
+                    "
+                >
+
+                    <input
+                        type="radio"
+                        name="capa-base"
+                        ${activa
+                            ? "checked"
+                            : ""}
+                        onchange="
+                            cambiarCapaBase(
+                                '${nombre.replace(
+                                    /'/g,
+                                    "\\'"
+                                )}'
+                            )
+                        "
+                    >
+
+                    <span
+                        class="capa-radio"
+                    ></span>
+
+                    <span
+                        class="capa-nombre"
+                    >
+                        ${nombre}
+                    </span>
+
+                </label>
+
+            `;
 
         }
+    );
+
+
+    html += `
+
+        </div>
+
+    `;
+
+
+    panel.innerHTML =
+        html;
+
+
+    document.body.appendChild(
+        panel
+    );
+
+}
+
+/*==================================================
+ CERRAR PANEL DE CAPAS
+==================================================*/
+
+function cerrarCapasMapa(){
+
+    const panel =
+        document.getElementById(
+            "panel-capas-mapa"
+        );
+
+    if(panel){
+
+        panel.remove();
 
     }
 
 }
 
+
+/*==================================================
+ CAMBIAR CAPA BASE
+==================================================*/
+
+function cambiarCapaBase(nombre){
+
+    const nuevaCapa =
+        baseMaps[nombre];
+
+
+    if(!nuevaCapa){
+
+        console.warn(
+            "No se encontró la capa:",
+            nombre
+        );
+
+        return;
+
+    }
+
+
+    /*-----------------------------------------------
+      QUITAR TODAS LAS CAPAS BASE
+    ------------------------------------------------*/
+
+    Object.keys(baseMaps).forEach(
+        nombreCapa => {
+
+            const capa =
+                baseMaps[nombreCapa];
+
+            if(
+                capa &&
+                map.hasLayer(capa)
+            ){
+
+                map.removeLayer(
+                    capa
+                );
+
+            }
+
+        }
+    );
+
+
+    /*-----------------------------------------------
+      ACTIVAR LA CAPA SELECCIONADA
+    ------------------------------------------------*/
+
+    nuevaCapa.addTo(map);
+
+
+    /*-----------------------------------------------
+      CERRAR EL PANEL
+    ------------------------------------------------*/
+
+    cerrarCapasMapa();
+
+}
 
 /*==================================================
  HERRAMIENTA: FILTRO
