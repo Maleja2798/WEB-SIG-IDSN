@@ -2309,37 +2309,44 @@ CENTRO DE CONTROL - VERSION FINAL
 
 }
 
+/*==================================================
+ ZOOM DEL MAPA
+==================================================*/
+
 .mapa-zoom{
 
     position:absolute;
 
-    right:18px;
+    top:590px;
 
-    bottom:55px;
+    right:18px;
 
     z-index:1000;
 
     width:72px;
 
-    background:rgba(8,25,42,.96);
+    background:
+        linear-gradient(
+            180deg,
+            #142F46,
+            #0D2437
+        );
+
+    border:
+        1px solid
+        rgba(62,175,255,.25);
 
     border-radius:10px;
 
     overflow:hidden;
 
-    border:1px solid
-        rgba(62,175,255,.35);
-
     box-shadow:
         0 6px 18px
         rgba(0,0,0,.40);
 
-    backdrop-filter:blur(8px);
-
 }
-    
 /*==================================================
- BOTONES ZOOM — ESTILO SIG
+ BOTONES DEL ZOOM
 ==================================================*/
 
 .mapa-zoom-btn{
@@ -2352,18 +2359,20 @@ CENTRO DE CONTROL - VERSION FINAL
 
     border-bottom:
         1px solid
-        rgba(255,255,255,.12);
+        rgba(255,255,255,.10);
 
     background:
         linear-gradient(
             180deg,
-            #164b72,
-            #103b5b
+            #142F46,
+            #0D2437
         );
 
-    color:#ffffff;
+    color:#FFFFFF;
 
-    font-family:'Poppins', sans-serif;
+    font-family:
+        'Poppins',
+        sans-serif;
 
     font-size:25px;
 
@@ -2398,8 +2407,8 @@ CENTRO DE CONTROL - VERSION FINAL
     background:
         linear-gradient(
             180deg,
-            #1d6b9d,
-            #14527c
+            #1B4F72,
+            #123B58
         );
 
 }
@@ -2407,7 +2416,7 @@ CENTRO DE CONTROL - VERSION FINAL
 
 .mapa-zoom-btn:active{
 
-    transform:scale(.94);
+    transform:scale(.95);
 
 }
     
@@ -2633,14 +2642,14 @@ CENTRO DE CONTROL - VERSION FINAL
 
 }
 /*==================================================
- ESCALA
+ ESCALA DEL MAPA
 ==================================================*/
 
 .leaflet-control-scale{
 
     margin-bottom:18px !important;
 
-    margin-right:10px !important;
+    margin-right:18px !important;
 
 }
 
@@ -2648,27 +2657,30 @@ CENTRO DE CONTROL - VERSION FINAL
 .leaflet-control-scale-line{
 
     background:
-        rgba(7,24,40,.88) !important;
+        rgba(13,36,55,.96) !important;
 
     border:
-        2px solid
-        rgba(255,255,255,.65) !important;
+        1px solid
+        rgba(62,175,255,.30) !important;
 
-    border-top:0 !important;
+    color:#FFFFFF !important;
 
-    color:white !important;
-
-    font-family:'Poppins',sans-serif;
+    font-family:
+        'Poppins',
+        sans-serif;
 
     font-size:10px;
 
     font-weight:600;
 
     padding:
-        3px 7px !important;
+        4px 9px !important;
 
-    border-radius:
-        0 0 5px 5px;
+    border-radius:6px;
+
+    box-shadow:
+        0 4px 12px
+        rgba(0,0,0,.30);
 
 }
     
