@@ -2918,6 +2918,34 @@ CENTRO DE CONTROL - VERSION FINAL
     color:#EAF4FA;
 
 }
+
+/*==================================================
+ MAPA PRINCIPAL — ESTILO AZUL OSCURO
+==================================================*/
+
+#map .leaflet-tile-pane{
+
+    filter:
+        brightness(.58)
+        contrast(1.12)
+        saturate(.55)
+        grayscale(.35);
+
+}
+
+/*==================================================
+ MINI MAPA — MISMO TONO AZUL
+==================================================*/
+
+.leaflet-control-minimap .leaflet-tile-pane{
+
+    filter:
+        brightness(.58)
+        contrast(1.12)
+        saturate(.55)
+        grayscale(.35);
+
+}
     
   </style>
 </head>
@@ -3994,13 +4022,13 @@ function compartirMapa(){
     L.control.zoom({ position: "topright" }).addTo(map);
     L.control.scale({ position: "bottomright", metric: true, imperial: false }).addTo(map);
     // evitar error si no existe aún el icono
-   new L.Control.MiniMap(
+new L.Control.MiniMap(
 
     L.tileLayer(
-        "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
         {
             attribution:
-                '&copy; OpenStreetMap &copy; CARTO'
+                "&copy; OpenStreetMap contributors"
         }
     ),
 
