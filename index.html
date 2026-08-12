@@ -1505,7 +1505,7 @@ CENTRO DE CONTROL - VERSION FINAL
     grid-template-columns:
         repeat(4,minmax(0,1fr));
 
-    gap:8px;
+    gap:7px;
 
     width:100%;
 
@@ -3614,6 +3614,54 @@ CENTRO DE CONTROL - VERSION FINAL
 
     color:
         #49B9FF;
+}
+
+/*==================================================
+  AJUSTE TARJETAS DE ESTADO
+==================================================*/
+
+.estado-card{
+
+    min-width:0 !important;
+
+    overflow:hidden !important;
+
+    box-sizing:border-box !important;
+}
+
+
+/* Texto de los estados */
+.estado-texto{
+
+    display:flex !important;
+
+    align-items:center !important;
+
+    gap:5px !important;
+
+    white-space:nowrap !important;
+
+    font-size:11px !important;
+
+    letter-spacing:-0.2px !important;
+
+    min-width:0 !important;
+}
+
+
+/* Punto de estado */
+.estado-punto{
+
+    flex-shrink:0 !important;
+}
+
+
+/* El texto no debe salirse */
+.estado-texto{
+
+    overflow:hidden !important;
+
+    text-overflow:ellipsis !important;
 }
     
   </style>
