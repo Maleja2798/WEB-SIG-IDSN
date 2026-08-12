@@ -5542,7 +5542,13 @@ function actualizarTarjetasDashboard(
             let hash = 0; for (let i=0;i<nombre.length;i++) hash = nombre.charCodeAt(i)+((hash<<5)-hash);
             const colores = ["#63C5DA","#52B2BF","#82EEFD","#0492C2","#00BFFF","#1877F2","#B2FFFF","#AFEEEE","#ADD8E6","#7DF9FF","#89CFF0","#A1CAF1","#4682B4","#73C2FB","#6495ED","#AFDBF5","#15F4EE"];
             const color = colores[Math.abs(hash) % colores.length];
-            return { color: "white", weight: 2, fillOpacity: 0.6, fillColor: color };
+            return {
+    color: "#FFFFFF",
+    weight: 1,
+    opacity: 0.55,
+    fillOpacity: 0.6,
+    fillColor: color
+};
           },
           onEachFeature: function(feature, layer) {
             const nombreMunicipio = feature.properties.NOMBRE_ENT;
