@@ -6857,13 +6857,8 @@ function mostrarDashboard(){
         </div>
 
 
-        <!-- RESUMEN -->
-
-        <div class="dashboard-grid">
-
-
-            <!--==================================================
-    TARJETAS PRINCIPALES
+        <!--==================================================
+    RESUMEN
 ==================================================-->
 
 <div class="dashboard-grid">
@@ -6873,46 +6868,35 @@ function mostrarDashboard(){
 
     <div class="card dashboard-card">
 
-        <div class="dashboard-kpi-contenido">
-
-
-            <!-- ICONO -->
+        <div class="dashboard-kpi">
 
             <div class="dashboard-kpi-icon">
 
-                <i
-                    data-lucide="droplets">
-                </i>
+                <i data-lucide="droplets"></i>
 
             </div>
 
 
-            <!-- LINEA -->
-
             <div class="dashboard-kpi-linea"></div>
 
-
-            <!-- INFORMACIÓN -->
 
             <div class="dashboard-kpi-info">
 
                 <div
-                    class="numero"
+                    class="dashboard-kpi-numero"
                     id="card-fuentes">
 
                     ${info.totalFuentes}
 
                 </div>
 
-
-                <div class="texto">
+                <div class="dashboard-kpi-texto">
 
                     Fuentes registradas
 
                 </div>
 
             </div>
-
 
         </div>
 
@@ -6924,52 +6908,35 @@ function mostrarDashboard(){
 
     <div class="card dashboard-card">
 
-        <div class="dashboard-kpi-contenido">
-
-
-            <!-- ICONO -->
+        <div class="dashboard-kpi">
 
             <div class="dashboard-kpi-icon">
 
-                <i
-                    data-lucide="landmark">
-                </i>
+                <i data-lucide="landmark"></i>
 
             </div>
 
 
-            <!-- LINEA -->
-
             <div class="dashboard-kpi-linea"></div>
 
 
-            <!-- INFORMACIÓN -->
-
             <div class="dashboard-kpi-info">
 
-               <div class="card-icon">
-
-               <i data-lucide="landmark"></i>
-
-              </div>
-                   
                 <div
-                    class="numero"
+                    class="dashboard-kpi-numero"
                     id="card-municipios">
 
                     ${info.totalMunicipios}
 
                 </div>
 
-
-                <div class="texto">
+                <div class="dashboard-kpi-texto">
 
                     Municipios
 
                 </div>
 
             </div>
-
 
         </div>
 
@@ -6979,13 +6946,7 @@ function mostrarDashboard(){
 </div>
 
 
-        <!-- ESTADOS -->
-
-        <div class="estado-titulo">
-
-            Estado de las autorizaciones
-
-        </div>
+<!-- ESTADOS -->
 
 
         <div class="dashboard-estados">
