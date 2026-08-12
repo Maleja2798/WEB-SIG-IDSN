@@ -3179,6 +3179,252 @@ CENTRO DE CONTROL - VERSION FINAL
     box-sizing:
         border-box;
 }
+
+/*==================================================
+  MARCADORES SIG IDSN — DISEÑO LIMPIO
+==================================================*/
+
+/* Contenedor del marcador */
+.marker-idsn{
+
+    position:relative;
+
+    width:24px;
+    height:24px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    cursor:pointer;
+
+    transition:
+        transform .18s ease,
+        filter .18s ease;
+
+    z-index:5;
+}
+
+
+/*==================================================
+  GLOW — MUCHO MÁS DISCRETO
+==================================================*/
+
+.marker-glow{
+
+    position:absolute;
+
+    width:24px;
+    height:24px;
+
+    border-radius:50%;
+
+    opacity:.18;
+
+    filter:blur(5px);
+
+    transition:
+        opacity .18s ease,
+        transform .18s ease,
+        filter .18s ease;
+
+    z-index:0;
+}
+
+
+/*==================================================
+  PUNTO PRINCIPAL
+==================================================*/
+
+.marker-drop{
+
+    position:absolute;
+
+    width:18px;
+    height:24px;
+
+    border-radius:50% 50% 50% 0;
+
+    transform:
+        rotate(-45deg);
+
+    border:
+        1.5px solid
+        rgba(255,255,255,.95);
+
+    box-shadow:
+        0 2px 5px
+        rgba(0,0,0,.35);
+
+    z-index:2;
+
+    box-sizing:border-box;
+}
+
+
+/*==================================================
+  CENTRO BLANCO
+==================================================*/
+
+.marker-center{
+
+    position:absolute;
+
+    width:6px;
+    height:6px;
+
+    background:#FFFFFF;
+
+    border-radius:50%;
+
+    z-index:5;
+
+    box-shadow:
+        0 0 2px
+        rgba(0,0,0,.35);
+}
+
+
+/*==================================================
+  VIGENTE
+==================================================*/
+
+.estado-vigente .marker-drop{
+
+    background:
+        linear-gradient(
+            145deg,
+            #5EEB91,
+            #159447
+        );
+}
+
+.estado-vigente .marker-glow{
+
+    background:#38D976;
+}
+
+
+/*==================================================
+  PRÓXIMA A VENCER
+==================================================*/
+
+.estado-vencer .marker-drop{
+
+    background:
+        linear-gradient(
+            145deg,
+            #FFE477,
+            #E5A719
+        );
+}
+
+.estado-vencer .marker-glow{
+
+    background:#FFD54A;
+}
+
+
+/*==================================================
+  VENCIDA
+==================================================*/
+
+.estado-vencida .marker-drop{
+
+    background:
+        linear-gradient(
+            145deg,
+            #FF7777,
+            #D82F2F
+        );
+}
+
+.estado-vencida .marker-glow{
+
+    background:#FF5A5A;
+}
+
+
+/*==================================================
+  SUSPENDIDA
+==================================================*/
+
+.estado-suspendida .marker-drop{
+
+    background:
+        linear-gradient(
+            145deg,
+            #C98AFF,
+            #7437D1
+        );
+}
+
+.estado-suspendida .marker-glow{
+
+    background:#9E6BFF;
+}
+
+
+/*==================================================
+  EN TRÁMITE
+==================================================*/
+
+.estado-tramite .marker-drop{
+
+    background:
+        linear-gradient(
+            145deg,
+            #70CFFF,
+            #2479C7
+        );
+}
+
+.estado-tramite .marker-glow{
+
+    background:#3EAFFF;
+}
+
+
+/*==================================================
+  EFECTO AL PASAR EL MOUSE
+==================================================*/
+
+.marker-idsn:hover{
+
+    transform:
+        translateY(-2px)
+        scale(1.12);
+}
+
+.marker-idsn:hover .marker-glow{
+
+    opacity:.35;
+
+    filter:blur(7px);
+
+    transform:scale(1.15);
+}
+
+
+/*==================================================
+  EVITAR QUE LEAFLET AGREGUE SOMBRAS
+==================================================*/
+
+.marker-idsn,
+.marker-idsn *{
+
+    -webkit-font-smoothing:antialiased;
+}
+
+
+/*==================================================
+  CONTENEDOR LEAFLET DEL MARCADOR
+==================================================*/
+
+.leaflet-marker-icon{
+
+    filter:none !important;
+}
     
   </style>
 </head>
