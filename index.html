@@ -948,28 +948,6 @@ box-shadow:
 
 }
 
-.marker-drop::before{
-
-content:"";
-
-position:absolute;
-
-left:5px;
-
-top:4px;
-
-width:8px;
-
-height:4px;
-
-border-radius:50%;
-
-background:rgba(255,255,255,.75);
-
-filter:blur(.3px);
-
-}
-
 .marker-center{
 
 position:absolute;
@@ -3181,10 +3159,24 @@ CENTRO DE CONTROL - VERSION FINAL
 }
 
 /*==================================================
-  MARCADORES SIG IDSN — DISEÑO LIMPIO
+  MARCADORES SIG IDSN — DISEÑO FINAL
 ==================================================*/
 
-/* Contenedor del marcador */
+/* Elimina completamente el cuadro de Leaflet */
+.marker-icon-idsn{
+
+    background:transparent !important;
+
+    border:0 !important;
+
+    box-shadow:none !important;
+
+    width:24px !important;
+    height:24px !important;
+}
+
+
+/* Contenedor */
 .marker-idsn{
 
     position:relative;
@@ -3193,85 +3185,89 @@ CENTRO DE CONTROL - VERSION FINAL
     height:24px;
 
     display:flex;
+
     align-items:center;
+
     justify-content:center;
 
     cursor:pointer;
 
-    transition:
-        transform .18s ease,
-        filter .18s ease;
+    background:transparent !important;
 
-    z-index:5;
+    border:0 !important;
+
+    box-shadow:none !important;
+
+    transition:
+        transform .18s ease;
 }
 
 
 /*==================================================
-  GLOW — MUCHO MÁS DISCRETO
+  BRILLO — MUY SUAVE
 ==================================================*/
 
 .marker-glow{
 
     position:absolute;
 
-    width:24px;
-    height:24px;
+    width:22px;
+    height:22px;
 
     border-radius:50%;
 
-    opacity:.18;
+    opacity:.16;
 
-    filter:blur(5px);
-
-    transition:
-        opacity .18s ease,
-        transform .18s ease,
-        filter .18s ease;
+    filter:blur(4px);
 
     z-index:0;
+
+    pointer-events:none;
 }
 
 
 /*==================================================
-  PUNTO PRINCIPAL
+  ÚNICO PUNTO VISIBLE
 ==================================================*/
 
 .marker-drop{
 
     position:absolute;
 
-    width:18px;
-    height:24px;
+    width:15px;
+    height:15px;
 
-    border-radius:50% 50% 50% 0;
-
-    transform:
-        rotate(-45deg);
+    border-radius:50%;
 
     border:
-        1.5px solid
+        2px solid
         rgba(255,255,255,.95);
 
-    box-shadow:
-        0 2px 5px
-        rgba(0,0,0,.35);
+    box-sizing:border-box;
 
     z-index:2;
 
-    box-sizing:border-box;
+    transform:none;
+
+    clip-path:none;
+
+    box-shadow:
+        0 2px 5px
+        rgba(0,0,0,.40);
+
 }
 
 
 /*==================================================
-  CENTRO BLANCO
+  CENTRO
 ==================================================*/
 
 .marker-center{
 
     position:absolute;
 
-    width:6px;
-    height:6px;
+    width:4px;
+    height:4px;
 
     background:#FFFFFF;
 
@@ -3279,9 +3275,8 @@ CENTRO DE CONTROL - VERSION FINAL
 
     z-index:5;
 
-    box-shadow:
-        0 0 2px
-        rgba(0,0,0,.35);
+    box-shadow:none;
+
 }
 
 
@@ -3291,17 +3286,12 @@ CENTRO DE CONTROL - VERSION FINAL
 
 .estado-vigente .marker-drop{
 
-    background:
-        linear-gradient(
-            145deg,
-            #5EEB91,
-            #159447
-        );
+    background:#20C968;
 }
 
 .estado-vigente .marker-glow{
 
-    background:#38D976;
+    background:#20C968;
 }
 
 
@@ -3311,17 +3301,12 @@ CENTRO DE CONTROL - VERSION FINAL
 
 .estado-vencer .marker-drop{
 
-    background:
-        linear-gradient(
-            145deg,
-            #FFE477,
-            #E5A719
-        );
+    background:#F5B82E;
 }
 
 .estado-vencer .marker-glow{
 
-    background:#FFD54A;
+    background:#F5B82E;
 }
 
 
@@ -3331,17 +3316,12 @@ CENTRO DE CONTROL - VERSION FINAL
 
 .estado-vencida .marker-drop{
 
-    background:
-        linear-gradient(
-            145deg,
-            #FF7777,
-            #D82F2F
-        );
+    background:#FF4D5A;
 }
 
 .estado-vencida .marker-glow{
 
-    background:#FF5A5A;
+    background:#FF4D5A;
 }
 
 
@@ -3351,17 +3331,12 @@ CENTRO DE CONTROL - VERSION FINAL
 
 .estado-suspendida .marker-drop{
 
-    background:
-        linear-gradient(
-            145deg,
-            #C98AFF,
-            #7437D1
-        );
+    background:#8E5BEF;
 }
 
 .estado-suspendida .marker-glow{
 
-    background:#9E6BFF;
+    background:#8E5BEF;
 }
 
 
@@ -3371,17 +3346,12 @@ CENTRO DE CONTROL - VERSION FINAL
 
 .estado-tramite .marker-drop{
 
-    background:
-        linear-gradient(
-            145deg,
-            #70CFFF,
-            #2479C7
-        );
+    background:#299BE8;
 }
 
 .estado-tramite .marker-glow{
 
-    background:#3EAFFF;
+    background:#299BE8;
 }
 
 
@@ -3392,38 +3362,16 @@ CENTRO DE CONTROL - VERSION FINAL
 .marker-idsn:hover{
 
     transform:
-        translateY(-2px)
-        scale(1.12);
+        scale(1.15);
 }
 
 .marker-idsn:hover .marker-glow{
 
-    opacity:.35;
-
-    filter:blur(7px);
+    opacity:.28;
 
     transform:scale(1.15);
-}
 
-
-/*==================================================
-  EVITAR QUE LEAFLET AGREGUE SOMBRAS
-==================================================*/
-
-.marker-idsn,
-.marker-idsn *{
-
-    -webkit-font-smoothing:antialiased;
-}
-
-
-/*==================================================
-  CONTENEDOR LEAFLET DEL MARCADOR
-==================================================*/
-
-.leaflet-marker-icon{
-
-    filter:none !important;
+    filter:blur(5px);
 }
     
   </style>
@@ -4599,7 +4547,7 @@ function crearMarcador(estado="tramite"){
 
 return L.divIcon({
 
-className:"",
+className:"marker-icon-idsn",
 
 iconSize:[24,24],
 
