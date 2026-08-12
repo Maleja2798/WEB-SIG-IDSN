@@ -3756,81 +3756,6 @@ CENTRO DE CONTROL - VERSION FINAL
     padding:18px !important;
 }
 
-
-/* Contenido interno */
-.dashboard-kpi-contenido{
-
-    width:100%;
-
-    min-height:105px;
-
-    display:grid;
-
-    grid-template-columns:
-        52px
-        1px
-        minmax(0,1fr);
-
-    align-items:center;
-
-    column-gap:18px;
-
-    box-sizing:border-box;
-}
-
-
-/* ICONO */
-.dashboard-kpi-icon{
-
-    width:46px;
-    height:46px;
-
-    display:flex;
-
-    align-items:center;
-    justify-content:center;
-
-    color:#FFFFFF;
-
-    flex-shrink:0;
-}
-
-
-.dashboard-kpi-icon svg{
-
-    width:40px !important;
-    height:40px !important;
-
-    stroke-width:1.8 !important;
-}
-
-
-/* LINEA BLANCA */
-.dashboard-kpi-linea{
-
-    width:1px;
-
-    height:58px;
-
-    background:rgba(255,255,255,.80);
-
-    justify-self:center;
-}
-
-
-/* BLOQUE DEL NUMERO Y TEXTO */
-.dashboard-kpi-info{
-
-    min-width:0;
-
-    display:flex;
-
-    flex-direction:column;
-
-    justify-content:center;
-}
-
-
 /* NUMERO */
 .dashboard-kpi-info .numero{
 
@@ -3894,6 +3819,215 @@ CENTRO DE CONTROL - VERSION FINAL
     width:100% !important;
 
     box-sizing:border-box;
+}
+
+/*==================================================
+  TARJETAS PRINCIPALES — DISEÑO FINAL
+==================================================*/
+
+/* LAS DOS TARJETAS OCUPAN TODO EL ANCHO */
+
+.dashboard-grid{
+
+    display:grid !important;
+
+    grid-template-columns:
+        minmax(0,1fr)
+        minmax(0,1fr) !important;
+
+    gap:12px !important;
+
+    width:100% !important;
+
+    box-sizing:border-box !important;
+
+    margin-bottom:18px !important;
+}
+
+
+/*==================================================
+  TARJETA
+==================================================*/
+
+.dashboard-grid .dashboard-card{
+
+    width:100% !important;
+
+    min-width:0 !important;
+
+    height:145px !important;
+
+    box-sizing:border-box !important;
+
+    padding:22px !important;
+
+    display:grid !important;
+
+    grid-template-columns:
+        52px
+        1px
+        minmax(0,1fr) !important;
+
+    grid-template-rows:
+        1fr !important;
+
+    align-items:center !important;
+
+    column-gap:18px !important;
+
+    overflow:hidden !important;
+}
+
+
+/*==================================================
+  ICONO
+==================================================*/
+
+.dashboard-grid .dashboard-card .card-icon{
+
+    width:46px !important;
+
+    height:46px !important;
+
+    margin:0 !important;
+
+    display:flex !important;
+
+    align-items:center !important;
+
+    justify-content:center !important;
+
+    color:#FFFFFF !important;
+
+    grid-column:1 !important;
+
+    grid-row:1 !important;
+}
+
+
+.dashboard-grid .dashboard-card .card-icon svg{
+
+    width:40px !important;
+
+    height:40px !important;
+
+    stroke-width:1.8 !important;
+}
+
+
+/*==================================================
+  LINEA BLANCA
+==================================================*/
+
+/* Creamos la línea sin tocar el HTML */
+
+.dashboard-grid .dashboard-card .numero::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:-10px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    width:1px;
+
+    height:58px;
+
+    background:
+        rgba(255,255,255,.80);
+}
+
+
+/*==================================================
+  NUMERO
+==================================================*/
+
+.dashboard-grid .dashboard-card .numero{
+
+    position:relative !important;
+
+    grid-column:3 !important;
+
+    grid-row:1 !important;
+
+    align-self:center !important;
+
+    margin:0 !important;
+
+    padding:0 !important;
+
+    font-size:36px !important;
+
+    line-height:1 !important;
+
+    font-weight:800 !important;
+
+    color:#FFFFFF !important;
+
+    white-space:nowrap !important;
+}
+
+
+/*==================================================
+  TEXTO
+==================================================*/
+
+.dashboard-grid .dashboard-card .texto{
+
+    grid-column:3 !important;
+
+    grid-row:1 !important;
+
+    align-self:end !important;
+
+    margin:0 0 2px 0 !important;
+
+    padding:0 !important;
+
+    font-size:13px !important;
+
+    line-height:1.2 !important;
+
+    font-weight:500 !important;
+
+    color:#DCEAF7 !important;
+
+    white-space:nowrap !important;
+}
+
+/*==================================================
+  EVITAR QUE EL TEXTO SE SALGA
+==================================================*/
+
+.dashboard-grid .dashboard-card .texto{
+
+    overflow:hidden !important;
+
+    text-overflow:ellipsis !important;
+
+}
+
+
+/*==================================================
+  ESTADOS — MANTENER LOS 4
+==================================================*/
+
+.dashboard-estados{
+
+    width:100% !important;
+
+    display:grid !important;
+
+    grid-template-columns:
+        repeat(4,minmax(0,1fr)) !important;
+
+    gap:10px !important;
+
+    box-sizing:border-box !important;
 }
     
   </style>
@@ -6813,6 +6947,12 @@ function mostrarDashboard(){
 
             <div class="dashboard-kpi-info">
 
+               <div class="card-icon">
+
+               <i data-lucide="landmark"></i>
+
+              </div>
+                   
                 <div
                     class="numero"
                     id="card-municipios">
