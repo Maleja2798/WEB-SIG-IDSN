@@ -1222,12 +1222,12 @@ ESTADOS
 
     display:grid;
 
-    grid-template-columns:repeat(3, 1fr);
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
 
     gap:10px;
 
     width:100%;
-
 }
 
 
@@ -3574,6 +3574,48 @@ CENTRO DE CONTROL - VERSION FINAL
     background-repeat:
         no-repeat !important;
 }
+
+/*==================================================
+  EN TRÁMITE — TARJETA DASHBOARD
+==================================================*/
+
+.estado-card-azul{
+
+    border-color:
+        rgba(73,185,255,.45) !important;
+
+    background:
+        linear-gradient(
+            180deg,
+            #163A5E,
+            #102F4D
+        );
+
+}
+
+
+.azul-tramite{
+
+    background:
+        #3EAFFF;
+
+    box-shadow:
+
+        0 0 6px
+        #3EAFFF,
+
+        0 0 12px
+        rgba(62,175,255,.65);
+}
+
+
+/* Número azul */
+
+#card-en-tramite{
+
+    color:
+        #49B9FF;
+}
     
   </style>
 </head>
@@ -5133,11 +5175,13 @@ function obtenerDatosDashboard(
         new Set();
 
 
-    let vigentes = 0;
+let vigentes = 0;
 
-    let porVencer = 0;
+let porVencer = 0;
 
-    let vencidas = 0;
+let vencidas = 0;
+
+let enTramite = 0;
 
 
     datos.forEach(r => {
@@ -5188,30 +5232,39 @@ function obtenerDatosDashboard(
 
         }
 
+      if(estado === "tramite"){
+
+    enTramite++;
+
+}
     });
 
 
     return {
 
-        totalFuentes:
-            datos.length,
+      return {
 
-        totalMunicipios:
-            municipios.size,
+    totalFuentes:
+        datos.length,
 
-        vigentes:
-            vigentes,
+    totalMunicipios:
+        municipios.size,
 
-        porVencer:
-            porVencer,
+    vigentes:
+        vigentes,
 
-        vencidas:
-            vencidas,
+    porVencer:
+        porVencer,
 
-        datos:
-            datos
+    vencidas:
+        vencidas,
 
-    };
+    enTramite:
+        enTramite,
+
+    datos:
+        datos
+};
 
 }
 /*==================================================
@@ -5284,8 +5337,10 @@ function actualizarEstadoVisualTarjetas(){
     const rojo =
         document.getElementById("card-estado-vencida");
 
-
-    [verde, amarillo, rojo].forEach(card => {
+    const azul =
+        document.getElementById("card-estado-tramite");
+  
+    [verde, amarillo, rojo, azul].forEach(card => {
 
         if(card){
 
@@ -5317,6 +5372,23 @@ function actualizarEstadoVisualTarjetas(){
         rojo.style.transform = "scale(1.04)";
 
     }
+
+    if(estadoFiltroActivo === "tramite"){
+
+    const card =
+        document.getElementById(
+            "card-estado-tramite"
+        );
+
+    if(card){
+
+        card.classList.add(
+            "estado-card-activa"
+        );
+
+    }
+
+}
 
 }
 
@@ -6145,7 +6217,11 @@ function actualizarTarjetasDashboard(
         document.getElementById(
             "card-vencidas"
         );
-
+  
+  const enTramite =
+    document.getElementById(
+        "card-en-tramite"
+    );
 
     if(fuentes){
 
@@ -6186,6 +6262,13 @@ function actualizarTarjetasDashboard(
 
     }
 
+if(enTramite){
+
+    enTramite.textContent =
+        info.enTramite;
+
+}
+  
 }
     // ---------- Cargar GeoJSON (sin cambiar) ----------
     fetch("https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/Municipios_Nari%C3%B1o.geojson")
@@ -6545,8 +6628,47 @@ function mostrarDashboard(){
 
             </div>
 
+<!-- EN TRÁMITE -->
 
-        </div>
+<div
+    class="estado-card
+           estado-card-azul"
+
+    id="card-estado-tramite"
+
+    onclick="
+        filtrarMarcadoresEstado(
+            'tramite'
+        )
+    "
+>
+
+    <div
+        class="estado-numero"
+        id="card-en-tramite"
+    >
+
+        ${info.enTramite}
+
+    </div>
+
+
+    <div class="estado-texto">
+
+        <span
+            class="
+                estado-punto
+                azul-tramite
+            "
+        ></span>
+
+        En trámite
+
+    </div>
+
+</div>
+
+</div>
 
         `
 
