@@ -4553,23 +4553,6 @@ CENTRO DE CONTROL - VERSION FINAL
     z-index:1400 !important;
 }
 
-
-/*==================================================
-  CUANDO HAY UN PANEL ABIERTO
-  EL MAPA SE MUEVE A LA DERECHA
-==================================================*/
-
-body.panel-mapa-activo #map{
-
-    left:945px !important;
-
-    right:0 !important;
-
-    transition:
-        left .35s ease !important;
-}
-
-
 /*==================================================
   MAPA NORMAL — INICIO
 ==================================================*/
@@ -4620,87 +4603,113 @@ body.panel-mapa-activo #map{
 }
 
 /*==================================================
-  MOSTRAR TODOS LOS PUNTOS DEL AÑO
+   DISTRIBUCIÓN PANEL + MAPA
 ==================================================*/
 
-function mostrarTodosLosPuntosMapa(){
+/* MAPA NORMAL */
 
-    if(!anioActivo){
+#map{
 
-        return;
+    position:absolute !important;
+
+    top:0 !important;
+    left:0 !important;
+    right:0 !important;
+    bottom:0 !important;
+
+    width:auto !important;
+    height:100vh !important;
+
+    z-index:1;
+
+    transition:
+        left .35s ease,
+        right .35s ease;
+
+}
+
+
+/*==================================================
+   PANEL ABIERTO
+==================================================*/
+
+body.panel-mapa-activo #map{
+
+    left:945px !important;
+    right:0 !important;
+
+    width:auto !important;
+
+}
+
+
+/*==================================================
+   PANEL
+==================================================*/
+
+body.panel-mapa-activo #panel-content{
+
+    left:315px !important;
+
+    top:140px !important;
+
+    width:600px !important;
+
+    max-width:600px !important;
+
+    height:calc(100vh - 160px) !important;
+
+    z-index:1400 !important;
+
+}
+
+
+/*==================================================
+   MAPA EN PANTALLAS MEDIANAS
+==================================================*/
+
+@media (max-width:1450px){
+
+    body.panel-mapa-activo #map{
+
+        left:875px !important;
 
     }
 
+    body.panel-mapa-activo #panel-content{
 
-    const capa =
-        markersPorAnio[anioActivo];
+        left:315px !important;
 
+        width:540px !important;
 
-    if(!capa){
-
-        return;
+        max-width:540px !important;
 
     }
 
-
-    /* Mostrar todos los puntos */
-
-    capa.eachLayer(marker => {
-
-        marker.setOpacity(1);
-
-    });
+}
 
 
-    /* Reiniciar filtros */
+/*==================================================
+   PANTALLAS PEQUEÑAS
+==================================================*/
 
-    municipioFiltroActivo =
-        "TODOS";
+@media (max-width:900px){
 
-    estadoFiltroActivo =
-        "TODOS";
+    body.panel-mapa-activo #map{
 
+        left:270px !important;
 
-    /* Crear límites */
+    }
 
-    const bounds =
-        L.latLngBounds([]);
+    body.panel-mapa-activo #panel-content{
 
+        left:270px !important;
 
-    capa.eachLayer(marker => {
+        width:calc(100vw - 285px) !important;
 
-        if(
-            marker.getLatLng &&
-            marker.options.opacity !== 0
-        ){
+        max-width:calc(100vw - 285px) !important;
 
-            bounds.extend(
-                marker.getLatLng()
-            );
-
-        }
-
-    });
-
-
-    /* Ajustar mapa */
-
-    setTimeout(() => {
-
-        map.invalidateSize();
-
-        if(bounds.isValid()){
-
-            map.fitBounds(
-                bounds,
-                {
-                    padding:[35,35]
-                }
-            );
-
-        }
-
-    },400);
+    }
 
 }
     
@@ -7890,13 +7899,25 @@ function mostrarDashboard(){
 
         selectorAnio.onchange = function(){
 
-            const nuevoAnio = this.value;
+    const nuevoAnio =
+        this.value;
 
-            activarAnio(nuevoAnio);
 
-            mostrarDashboard();
+    activarAnio(
+        nuevoAnio
+    );
 
-        };
+
+    mostrarDashboard();
+
+
+    setTimeout(() => {
+
+        mostrarTodosLosPuntosMapa();
+
+    },450);
+
+};
 
     }
 
