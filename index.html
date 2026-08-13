@@ -9460,61 +9460,107 @@ function filtrarListaAutorizaciones(
     }
     
 /*==================================================
-PANEL DE AÑOS
+  PANEL DE AÑOS — CUADRÍCULA VITRADA
 ==================================================*/
 
 function mostrarPanelAnios(){
 
     let html = `
-    <div class="dashboard-header">
 
-        <div class="dashboard-title">
-            Años disponibles
+        <div class="dashboard-header">
+
+            <div class="dashboard-title">
+                Años disponibles
+            </div>
+
+            <div class="dashboard-subtitle">
+                Seleccione el año que desea visualizar
+            </div>
+
+            <hr class="dashboard-line">
+
         </div>
 
-        <div class="dashboard-subtitle">
-            Seleccione el año que desea visualizar
-        </div>
 
-        <hr class="dashboard-line">
+        <div class="anios-grid">
 
-    </div>
     `;
 
+
     Object.keys(datosPorAnio)
-    .sort()
-    .forEach(anio=>{
+        .sort()
+        .forEach(anio => {
 
-        html += `
+            const activo =
+                anio === anioActivo
+                ? " anio-activo"
+                : "";
 
-        <div class="card card-anio"
-             onclick="seleccionarAnio('${anio}')">
 
-            <div class="numero">
+            html += `
 
-                ${anio}
+                <div
+                    class="anio-card${activo}"
+                    onclick="seleccionarAnio('${anio}')"
+                >
 
-            </div>
+                    <div class="anio-icono">
 
-            <div class="texto">
+                        <i
+                            data-lucide="calendar-days">
+                        </i>
 
-                Ver autorizaciones sanitarias
+                    </div>
 
-            </div>
+
+                    <div class="anio-contenido">
+
+                        <div class="anio-numero">
+
+                            ${anio}
+
+                        </div>
+
+                        <div class="anio-descripcion">
+
+                            Autorizaciones sanitarias
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="anio-flecha">
+
+                        <i
+                            data-lucide="chevron-right">
+                        </i>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        });
+
+
+    html += `
 
         </div>
 
-        `;
+    `;
 
-    });
 
     abrirPanel(
-
         "Años",
-
         html
-
     );
+
+
+    /* Crear iconos después de insertar el contenido */
+
+    lucide.createIcons();
 
 }
 
