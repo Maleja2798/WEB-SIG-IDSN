@@ -9796,7 +9796,7 @@ function mostrarPanelAnios(){
             </div>
 
             <div class="dashboard-subtitle">
-                Seleccione el año que desea visualizar
+                Seleccione el año para visualizar las autorizaciones sanitarias
             </div>
 
             <hr class="dashboard-line">
@@ -9828,35 +9828,21 @@ function mostrarPanelAnios(){
 
                     <div class="anio-icono">
 
-                        <i
-                            data-lucide="calendar-days">
-                        </i>
+                        <i data-lucide="calendar-days"></i>
 
                     </div>
 
 
-                    <div class="anio-contenido">
+                    <div class="anio-numero">
 
-                        <div class="anio-numero">
-
-                            ${anio}
-
-                        </div>
-
-                        <div class="anio-descripcion">
-
-                            Autorizaciones sanitarias
-
-                        </div>
+                        ${anio}
 
                     </div>
 
 
                     <div class="anio-flecha">
 
-                        <i
-                            data-lucide="chevron-right">
-                        </i>
+                        <i data-lucide="chevron-right"></i>
 
                     </div>
 
@@ -9879,8 +9865,6 @@ function mostrarPanelAnios(){
         html
     );
 
-
-    /* Crear iconos después de insertar el contenido */
 
     lucide.createIcons();
 
