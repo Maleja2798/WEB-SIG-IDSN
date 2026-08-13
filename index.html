@@ -4029,6 +4029,221 @@ CENTRO DE CONTROL - VERSION FINAL
 
     box-sizing:border-box !important;
 }
+
+/*==================================================
+  KPI PRINCIPALES — DISEÑO FINAL
+==================================================*/
+
+/* CONTENEDOR DE LAS DOS TARJETAS */
+
+.dashboard-grid{
+
+    width:100% !important;
+
+    display:grid !important;
+
+    grid-template-columns:
+        minmax(0,1fr)
+        minmax(0,1fr) !important;
+
+    gap:14px !important;
+
+    box-sizing:border-box !important;
+
+    margin-bottom:18px !important;
+}
+
+
+/*==================================================
+  TARJETA
+==================================================*/
+
+.dashboard-grid .dashboard-card{
+
+    width:100% !important;
+
+    min-width:0 !important;
+
+    height:145px !important;
+
+    padding:18px !important;
+
+    box-sizing:border-box !important;
+
+    display:block !important;
+
+    overflow:hidden !important;
+}
+
+
+/*==================================================
+  CONTENIDO DE LA TARJETA
+==================================================*/
+
+.dashboard-kpi{
+
+    width:100% !important;
+
+    height:100% !important;
+
+    display:grid !important;
+
+    grid-template-columns:
+        58px
+        1px
+        minmax(0,1fr) !important;
+
+    align-items:center !important;
+
+    column-gap:20px !important;
+
+    box-sizing:border-box !important;
+}
+
+
+/*==================================================
+  ICONO
+==================================================*/
+
+.dashboard-kpi-icon{
+
+    width:48px !important;
+
+    height:48px !important;
+
+    display:flex !important;
+
+    align-items:center !important;
+
+    justify-content:center !important;
+
+    color:#FFFFFF !important;
+
+    grid-column:1 !important;
+
+    grid-row:1 !important;
+
+    flex-shrink:0 !important;
+}
+
+
+.dashboard-kpi-icon svg{
+
+    width:42px !important;
+
+    height:42px !important;
+
+    stroke-width:1.8 !important;
+}
+
+
+/*==================================================
+  LINEA BLANCA
+==================================================*/
+
+.dashboard-kpi-linea{
+
+    width:1px !important;
+
+    height:58px !important;
+
+    background:
+        rgba(255,255,255,.80) !important;
+
+    grid-column:2 !important;
+
+    grid-row:1 !important;
+
+    justify-self:center !important;
+}
+
+
+/*==================================================
+  BLOQUE NUMERO + TEXTO
+==================================================*/
+
+.dashboard-kpi-info{
+
+    min-width:0 !important;
+
+    width:100% !important;
+
+    display:flex !important;
+
+    flex-direction:column !important;
+
+    justify-content:center !important;
+
+    align-items:flex-start !important;
+
+    grid-column:3 !important;
+
+    grid-row:1 !important;
+}
+
+
+/*==================================================
+  NUMERO
+==================================================*/
+
+.dashboard-kpi-numero{
+
+    margin:0 !important;
+
+    padding:0 !important;
+
+    font-size:36px !important;
+
+    line-height:1 !important;
+
+    font-weight:800 !important;
+
+    color:#FFFFFF !important;
+
+    white-space:nowrap !important;
+}
+
+
+/*==================================================
+  TEXTO
+==================================================*/
+
+.dashboard-kpi-texto{
+
+    margin:
+        7px 0 0 0 !important;
+
+    padding:0 !important;
+
+    font-size:13px !important;
+
+    line-height:1.2 !important;
+
+    font-weight:500 !important;
+
+    color:#DCEAF7 !important;
+
+    white-space:nowrap !important;
+}
+
+
+/*==================================================
+  LOS 4 ESTADOS
+==================================================*/
+
+.dashboard-estados{
+
+    width:100% !important;
+
+    display:grid !important;
+
+    grid-template-columns:
+        repeat(4,minmax(0,1fr)) !important;
+
+    gap:10px !important;
+
+    box-sizing:border-box !important;
+}
     
   </style>
 </head>
