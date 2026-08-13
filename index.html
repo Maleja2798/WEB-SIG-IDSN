@@ -6775,29 +6775,20 @@ function activarAnio(anio){
     }
 
 
-    /*
-     * Centrar mapa
-     */
+   /*
+ * VISTA GENERAL DEL AÑO
+ * No centrar en el primer punto.
+ * Mantener todo Nariño visible.
+ */
 
-    const firstLayer =
-        capa &&
-        capa.getLayers &&
-        capa.getLayers()[0];
+map.setView(
+    [1.25, -77.50],
+    7
+);
 
-
-    if(firstLayer){
-
-        const latlng =
-            firstLayer.getLatLng();
-
-
-        map.setView(
-            latlng,
-            10
-        );
-
-    }
-
+setTimeout(() => {
+    map.invalidateSize();
+}, 350);
 
     /*
      * Limpiar buscador
@@ -7124,32 +7115,114 @@ function aplicarFiltrosMapa(
      * Ajustar mapa cuando cambia municipio
      */
 
-    if(
+  if(
     ajustarVista &&
-    coordenadasVisibles.length
+    municipioFiltroActivo !== "TODOS"
 ){
 
     setTimeout(() => {
 
         map.invalidateSize();
 
-        map.fitBounds(
-            coordenadasVisibles,
-            {
-                padding:[45,45],
+        /*
+         * Buscar el polígono del municipio seleccionado
+         */
+        let municipioLayer = null;
 
-                maxZoom:13,
+        if(geojsonLayer){
 
-                animate:true
+            geojsonLayer.eachLayer(layer => {
 
-            }
-        );
+                const nombre =
+                    layer.feature &&
+                    layer.feature.properties &&
+                    layer.feature.properties.NOMBRE_ENT;
+
+                if(
+                    nombre &&
+                    nombre.toUpperCase() ===
+                    municipioFiltroActivo.toUpperCase()
+                ){
+
+                    municipioLayer = layer;
+
+                }
+
+            });
+
+        }
+
+        /*
+         * Si encontramos el municipio,
+         * centrar el mapa en su territorio.
+         */
+        if(municipioLayer){
+
+          /*
+ * Resaltar municipio seleccionado
+ */
+
+geojsonLayer.eachLayer(layer => {
+
+    geojsonLayer.resetStyle(layer);
+
+});
+
+municipioLayer.setStyle({
+
+    weight:3,
+
+    color:"#FFFFFF",
+
+    fillOpacity:0.35
+
+});
+
+municipioLayer.bringToFront();
+          
+            map.fitBounds(
+                municipioLayer.getBounds(),
+                {
+                    padding:[
+                        90,
+                        90
+                    ],
+
+                    maxZoom:10,
+
+                    animate:true
+                }
+            );
+
+        }
+
+        /*
+         * Si por alguna razón no existe
+         * el polígono, usamos los puntos.
+         */
+        else if(coordenadasVisibles.length){
+
+            map.fitBounds(
+                coordenadasVisibles,
+                {
+                    padding:[
+                        100,
+                        100
+                    ],
+
+                    maxZoom:9,
+
+                    animate:true
+                }
+            );
+
+        }
 
     },350);
 
 }
-
-}  
+}
+  
 function filtrarMarcadoresEstado(estado){
 
     if(!anioActivo){
