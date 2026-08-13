@@ -4246,6 +4246,328 @@ CENTRO DE CONTROL - VERSION FINAL
 
     box-sizing:border-box !important;
 }
+
+/*==================================================
+  AÑOS — CUADRÍCULA VITRADA PROFESIONAL
+==================================================*/
+
+.anios-grid{
+
+    width:100% !important;
+
+    display:grid !important;
+
+    grid-template-columns:
+        repeat(3, minmax(0,1fr)) !important;
+
+    gap:14px !important;
+
+    padding:4px 2px 18px 2px !important;
+
+    box-sizing:border-box !important;
+}
+
+
+/*==================================================
+  TARJETA DE AÑO
+==================================================*/
+
+.anio-card{
+
+    position:relative !important;
+
+    min-height:135px !important;
+
+    padding:18px !important;
+
+    box-sizing:border-box !important;
+
+    display:flex !important;
+
+    flex-direction:column !important;
+
+    justify-content:space-between !important;
+
+    border-radius:18px !important;
+
+    cursor:pointer !important;
+
+    overflow:hidden !important;
+
+
+    /* EFECTO VIDRIO */
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(31,72,108,.72),
+            rgba(12,40,65,.68)
+        ) !important;
+
+    backdrop-filter:
+        blur(14px) !important;
+
+    -webkit-backdrop-filter:
+        blur(14px) !important;
+
+
+    border:
+        1px solid
+        rgba(255,255,255,.16) !important;
+
+
+    box-shadow:
+
+        inset 0 1px 0
+        rgba(255,255,255,.08),
+
+        0 8px 22px
+        rgba(0,0,0,.18) !important;
+
+
+    transition:
+        transform .18s ease,
+        border-color .18s ease,
+        background .18s ease,
+        box-shadow .18s ease !important;
+}
+
+
+/*==================================================
+  BRILLO SUPERIOR
+==================================================*/
+
+.anio-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.38),
+            transparent
+        );
+
+    pointer-events:none;
+}
+
+
+/*==================================================
+  ICONO
+==================================================*/
+
+.anio-icono{
+
+    width:38px;
+
+    height:38px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#8FD2FF !important;
+}
+
+
+.anio-icono svg{
+
+    width:27px !important;
+
+    height:27px !important;
+
+    stroke-width:1.8 !important;
+}
+
+
+/*==================================================
+  CONTENIDO
+==================================================*/
+
+.anio-contenido{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:5px;
+
+    min-width:0;
+}
+
+
+/*==================================================
+  AÑO
+==================================================*/
+
+.anio-numero{
+
+    font-size:30px !important;
+
+    line-height:1 !important;
+
+    font-weight:800 !important;
+
+    letter-spacing:-.5px;
+
+    color:#FFFFFF !important;
+}
+
+
+/*==================================================
+  DESCRIPCIÓN
+==================================================*/
+
+.anio-descripcion{
+
+    font-size:12px !important;
+
+    line-height:1.2 !important;
+
+    font-weight:500 !important;
+
+    color:
+        rgba(218,234,247,.72) !important;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+}
+
+
+/*==================================================
+  FLECHA
+==================================================*/
+
+.anio-flecha{
+
+    position:absolute;
+
+    right:16px;
+
+    bottom:16px;
+
+    width:28px;
+
+    height:28px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border-radius:50%;
+
+    color:#BFE5FF !important;
+
+    background:
+        rgba(255,255,255,.06);
+
+    border:
+        1px solid
+        rgba(255,255,255,.10);
+}
+
+
+.anio-flecha svg{
+
+    width:18px !important;
+
+    height:18px !important;
+}
+
+
+/*==================================================
+  HOVER
+==================================================*/
+
+.anio-card:hover{
+
+    transform:
+        translateY(-3px) !important;
+
+    border-color:
+        rgba(93,190,255,.48) !important;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(36,86,127,.82),
+            rgba(13,47,76,.78)
+        ) !important;
+
+    box-shadow:
+
+        inset 0 1px 0
+        rgba(255,255,255,.12),
+
+        0 12px 28px
+        rgba(0,0,0,.25),
+
+        0 0 18px
+        rgba(55,175,255,.08) !important;
+}
+
+
+/*==================================================
+  AÑO ACTIVO
+==================================================*/
+
+.anio-card.anio-activo{
+
+    border-color:
+        rgba(62,175,255,.80) !important;
+
+    box-shadow:
+
+        inset 0 1px 0
+        rgba(255,255,255,.12),
+
+        0 0 20px
+        rgba(62,175,255,.12) !important;
+}
+
+
+/*==================================================
+  RESPONSIVE
+==================================================*/
+
+@media (max-width:700px){
+
+    .anios-grid{
+
+        grid-template-columns:
+            repeat(2,minmax(0,1fr)) !important;
+
+    }
+
+}
+
+
+@media (max-width:480px){
+
+    .anios-grid{
+
+        grid-template-columns:
+            1fr !important;
+
+    }
+
+}
     
   </style>
 </head>
