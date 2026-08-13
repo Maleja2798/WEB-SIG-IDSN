@@ -4535,6 +4535,174 @@ CENTRO DE CONTROL - VERSION FINAL
     }
 
 }
+
+/*==================================================
+  PANEL + MAPA LADO A LADO
+==================================================*/
+
+#panel-content{
+
+    left:325px !important;
+
+    top:140px !important;
+
+    width:600px !important;
+
+    height:calc(100vh - 160px) !important;
+
+    z-index:1400 !important;
+}
+
+
+/*==================================================
+  CUANDO HAY UN PANEL ABIERTO
+  EL MAPA SE MUEVE A LA DERECHA
+==================================================*/
+
+body.panel-mapa-activo #map{
+
+    left:945px !important;
+
+    right:0 !important;
+
+    transition:
+        left .35s ease !important;
+}
+
+
+/*==================================================
+  MAPA NORMAL — INICIO
+==================================================*/
+
+body:not(.panel-mapa-activo) #map{
+
+    left:0 !important;
+
+    right:0 !important;
+
+    transition:
+        left .35s ease !important;
+}
+
+
+/*==================================================
+  ESPACIO ENTRE PANEL Y MAPA
+==================================================*/
+
+body.panel-mapa-activo #map{
+
+    border-left:
+        18px solid
+        transparent !important;
+}
+
+
+/*==================================================
+  AJUSTE PARA PANTALLAS MEDIANAS
+==================================================*/
+
+@media (max-width:1450px){
+
+    #panel-content{
+
+        left:315px !important;
+
+        width:540px !important;
+
+    }
+
+    body.panel-mapa-activo #map{
+
+        left:875px !important;
+
+    }
+
+}
+
+/*==================================================
+  MOSTRAR TODOS LOS PUNTOS DEL AÑO
+==================================================*/
+
+function mostrarTodosLosPuntosMapa(){
+
+    if(!anioActivo){
+
+        return;
+
+    }
+
+
+    const capa =
+        markersPorAnio[anioActivo];
+
+
+    if(!capa){
+
+        return;
+
+    }
+
+
+    /* Mostrar todos los puntos */
+
+    capa.eachLayer(marker => {
+
+        marker.setOpacity(1);
+
+    });
+
+
+    /* Reiniciar filtros */
+
+    municipioFiltroActivo =
+        "TODOS";
+
+    estadoFiltroActivo =
+        "TODOS";
+
+
+    /* Crear límites */
+
+    const bounds =
+        L.latLngBounds([]);
+
+
+    capa.eachLayer(marker => {
+
+        if(
+            marker.getLatLng &&
+            marker.options.opacity !== 0
+        ){
+
+            bounds.extend(
+                marker.getLatLng()
+            );
+
+        }
+
+    });
+
+
+    /* Ajustar mapa */
+
+    setTimeout(() => {
+
+        map.invalidateSize();
+
+        if(bounds.isValid()){
+
+            map.fitBounds(
+                bounds,
+                {
+                    padding:[35,35]
+                }
+            );
+
+        }
+
+    },400);
+
+}
     
   </style>
 </head>
@@ -6961,18 +7129,27 @@ function aplicarFiltrosMapa(
      */
 
     if(
-        ajustarVista &&
-        coordenadasVisibles.length
-    ){
+    ajustarVista &&
+    coordenadasVisibles.length
+){
+
+    setTimeout(() => {
+
+        map.invalidateSize();
 
         map.fitBounds(
             coordenadasVisibles,
             {
-                padding:[30,30]
+                padding:[45,45],
+
+                maxZoom:13,
+
+                animate:true
+
             }
         );
 
-    }
+    },350);
 
 }
 
@@ -7229,33 +7406,111 @@ const panelBody=document.getElementById("panel-body");
 
 const cerrar=document.getElementById("cerrar-panel");
 
-cerrar.onclick=()=>{
+cerrar.onclick = () => {
 
-panel.classList.remove("show");
+    panel.classList.remove("show");
 
-}
+    document.body.classList.remove(
+        "panel-mapa-activo"
+    );
+
+    setTimeout(() => {
+
+        map.invalidateSize();
+
+    }, 350);
+
+};
 
 function abrirPanel(titulo,contenido){
 
-panelTitle.innerHTML=titulo;
+    panelTitle.innerHTML = titulo;
 
-panelBody.innerHTML=contenido;
+    panelBody.innerHTML = contenido;
 
-panel.classList.add("show");
+    panel.classList.add("show");
+
+    /* Activar modo panel + mapa */
+
+    document.body.classList.add(
+        "panel-mapa-activo"
+    );
+
+    /* Recalcular tamaño del mapa */
+
+    setTimeout(() => {
+
+        map.invalidateSize();
+
+    }, 350);
 
 }
 
-//====================================
-// INICIO
-//====================================
+/*==================================================
+  INICIO — MAPA LIMPIO
+==================================================*/
 
 function mostrarInicio(){
 
-panel.classList.remove("show");
+    /* Cerrar panel */
 
-// Volver al zoom general del departamento
+    panel.classList.remove("show");
 
-map.setView([1.289,-77.29],8);
+    /* Volver a mapa completo */
+
+    document.body.classList.remove(
+        "panel-mapa-activo"
+    );
+
+
+    /* Reiniciar filtros */
+
+    municipioFiltroActivo =
+        "TODOS";
+
+    estadoFiltroActivo =
+        "TODOS";
+
+
+    /* Ocultar todos los puntos */
+
+    Object.keys(markersPorAnio)
+        .forEach(clave => {
+
+            const capa =
+                markersPorAnio[clave];
+
+            if(
+                capa &&
+                typeof capa.eachLayer === "function"
+            ){
+
+                capa.eachLayer(marker => {
+
+                    marker.setOpacity(0);
+
+                });
+
+            }
+
+        });
+
+
+    /* Mapa general de Nariño */
+
+    map.setView(
+        [1.289,-77.29],
+        8
+    );
+
+
+    /* Recalcular tamaño */
+
+    setTimeout(() => {
+
+        map.invalidateSize();
+
+    }, 350);
 
 }
 /*=====================================
@@ -9846,6 +10101,12 @@ function seleccionarAnio(anio){
     activarAnio(anio);
 
     mostrarDashboard();
+
+    setTimeout(() => {
+
+        mostrarTodosLosPuntosMapa();
+
+    },450);
 
 }
     
