@@ -4251,6 +4251,10 @@ CENTRO DE CONTROL - VERSION FINAL
   AÑOS — CUADRÍCULA VITRADA PROFESIONAL
 ==================================================*/
 
+/*==================================================
+  AÑOS — CUADRÍCULA VITRADA
+==================================================*/
+
 .anios-grid{
 
     width:100% !important;
@@ -4258,7 +4262,7 @@ CENTRO DE CONTROL - VERSION FINAL
     display:grid !important;
 
     grid-template-columns:
-        repeat(3, minmax(0,1fr)) !important;
+        repeat(3,minmax(0,1fr)) !important;
 
     gap:14px !important;
 
@@ -4276,9 +4280,11 @@ CENTRO DE CONTROL - VERSION FINAL
 
     position:relative !important;
 
-    min-height:135px !important;
+    height:118px !important;
 
-    padding:18px !important;
+    min-height:118px !important;
+
+    padding:16px !important;
 
     box-sizing:border-box !important;
 
@@ -4295,7 +4301,7 @@ CENTRO DE CONTROL - VERSION FINAL
     overflow:hidden !important;
 
 
-    /* EFECTO VIDRIO */
+    /* VIDRIO AZUL */
 
     background:
         linear-gradient(
@@ -4321,7 +4327,7 @@ CENTRO DE CONTROL - VERSION FINAL
         inset 0 1px 0
         rgba(255,255,255,.08),
 
-        0 8px 22px
+        0 8px 20px
         rgba(0,0,0,.18) !important;
 
 
@@ -4333,9 +4339,7 @@ CENTRO DE CONTROL - VERSION FINAL
 }
 
 
-/*==================================================
-  BRILLO SUPERIOR
-==================================================*/
+/* BRILLO SUPERIOR */
 
 .anio-card::before{
 
@@ -4362,20 +4366,20 @@ CENTRO DE CONTROL - VERSION FINAL
 
 
 /*==================================================
-  ICONO
+  ICONO CALENDARIO
 ==================================================*/
 
 .anio-icono{
 
-    width:38px;
+    width:32px !important;
 
-    height:38px;
+    height:32px !important;
 
-    display:flex;
+    display:flex !important;
 
-    align-items:center;
+    align-items:center !important;
 
-    justify-content:center;
+    justify-content:center !important;
 
     color:#8FD2FF !important;
 }
@@ -4383,27 +4387,11 @@ CENTRO DE CONTROL - VERSION FINAL
 
 .anio-icono svg{
 
-    width:27px !important;
+    width:28px !important;
 
-    height:27px !important;
+    height:28px !important;
 
     stroke-width:1.8 !important;
-}
-
-
-/*==================================================
-  CONTENIDO
-==================================================*/
-
-.anio-contenido{
-
-    display:flex;
-
-    flex-direction:column;
-
-    gap:5px;
-
-    min-width:0;
 }
 
 
@@ -4419,32 +4407,13 @@ CENTRO DE CONTROL - VERSION FINAL
 
     font-weight:800 !important;
 
-    letter-spacing:-.5px;
+    letter-spacing:-.5px !important;
 
     color:#FFFFFF !important;
-}
 
+    margin:0 !important;
 
-/*==================================================
-  DESCRIPCIÓN
-==================================================*/
-
-.anio-descripcion{
-
-    font-size:12px !important;
-
-    line-height:1.2 !important;
-
-    font-weight:500 !important;
-
-    color:
-        rgba(218,234,247,.72) !important;
-
-    white-space:nowrap;
-
-    overflow:hidden;
-
-    text-overflow:ellipsis;
+    padding:0 !important;
 }
 
 
@@ -4454,32 +4423,32 @@ CENTRO DE CONTROL - VERSION FINAL
 
 .anio-flecha{
 
-    position:absolute;
+    position:absolute !important;
 
-    right:16px;
+    right:14px !important;
 
-    bottom:16px;
+    bottom:14px !important;
 
-    width:28px;
+    width:30px !important;
 
-    height:28px;
+    height:30px !important;
 
-    display:flex;
+    display:flex !important;
 
-    align-items:center;
+    align-items:center !important;
 
-    justify-content:center;
+    justify-content:center !important;
 
-    border-radius:50%;
+    border-radius:50% !important;
 
     color:#BFE5FF !important;
 
     background:
-        rgba(255,255,255,.06);
+        rgba(255,255,255,.06) !important;
 
     border:
         1px solid
-        rgba(255,255,255,.10);
+        rgba(255,255,255,.12) !important;
 }
 
 
@@ -4498,7 +4467,7 @@ CENTRO DE CONTROL - VERSION FINAL
 .anio-card:hover{
 
     transform:
-        translateY(-3px) !important;
+        translateY(-2px) !important;
 
     border-color:
         rgba(93,190,255,.48) !important;
@@ -4515,10 +4484,10 @@ CENTRO DE CONTROL - VERSION FINAL
         inset 0 1px 0
         rgba(255,255,255,.12),
 
-        0 12px 28px
+        0 10px 24px
         rgba(0,0,0,.25),
 
-        0 0 18px
+        0 0 16px
         rgba(55,175,255,.08) !important;
 }
 
@@ -4537,11 +4506,9 @@ CENTRO DE CONTROL - VERSION FINAL
         inset 0 1px 0
         rgba(255,255,255,.12),
 
-        0 0 20px
+        0 0 18px
         rgba(62,175,255,.12) !important;
 }
-
-
 /*==================================================
   RESPONSIVE
 ==================================================*/
