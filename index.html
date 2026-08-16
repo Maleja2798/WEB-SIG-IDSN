@@ -4657,26 +4657,6 @@ body.panel-mapa-activo #panel-content{
 
 }
 
-
-/*==================================================
-   MAPA EN PANTALLAS MEDIANAS
-==================================================*/
-
-@media (max-width:1450px){
-
-    body.panel-mapa-activo #map{
-        left:0 !important;
-        right:0 !important;
-    }
-
-    body.panel-mapa-activo #panel-content{
-        left:315px !important;
-        width:540px !important;
-        max-width:540px !important;
-    }
-
-}
-
 /*==================================================
    PANTALLAS PEQUEÑAS
 ==================================================*/
@@ -4694,6 +4674,120 @@ body.panel-mapa-activo #panel-content{
 
         width:calc(100vw - 285px) !important;
 
+        max-width:calc(100vw - 285px) !important;
+
+    }
+
+}
+
+/*==================================================
+  VISTA FINAL: PANEL SOBRE EL MAPA
+==================================================*/
+
+/*-----------------------------------------------
+  MAPA SIEMPRE A PANTALLA COMPLETA
+-----------------------------------------------*/
+
+#map,
+body.panel-mapa-activo #map,
+body:not(.panel-mapa-activo) #map{
+
+    position:absolute !important;
+
+    top:0 !important;
+    left:0 !important;
+    right:0 !important;
+    bottom:0 !important;
+
+    width:100% !important;
+    height:100vh !important;
+
+    border-left:none !important;
+
+    z-index:1 !important;
+
+    transition:none !important;
+}
+
+
+/*-----------------------------------------------
+  PANEL CUANDO ESTÁ ABIERTO
+-----------------------------------------------*/
+
+body.panel-mapa-activo #panel-content{
+
+    position:absolute !important;
+
+    left:325px !important;
+    top:140px !important;
+
+    width:600px !important;
+    max-width:600px !important;
+
+    height:calc(100vh - 160px) !important;
+
+    z-index:1400 !important;
+
+}
+
+
+/*-----------------------------------------------
+  ASEGURAR QUE EL MAPA QUEDE DETRÁS
+  DEL PANEL PERO COMPLETAMENTE VISIBLE
+-----------------------------------------------*/
+
+body.panel-mapa-activo .leaflet-container{
+
+    width:100% !important;
+    height:100% !important;
+
+}
+
+
+/*-----------------------------------------------
+  ELIMINAR CUALQUIER ESPACIO TRANSPARENTE
+  CREADO PARA "SEPARAR" PANEL Y MAPA
+-----------------------------------------------*/
+
+body.panel-mapa-activo #map{
+
+    margin:0 !important;
+    padding:0 !important;
+
+    border:0 !important;
+
+}
+
+
+/*-----------------------------------------------
+  PANTALLAS MEDIANAS
+-----------------------------------------------*/
+
+@media (max-width:1450px){
+
+    body.panel-mapa-activo #panel-content{
+
+        left:315px !important;
+
+        width:540px !important;
+        max-width:540px !important;
+
+    }
+
+}
+
+
+/*-----------------------------------------------
+  PANTALLAS PEQUEÑAS
+-----------------------------------------------*/
+
+@media (max-width:900px){
+
+    body.panel-mapa-activo #panel-content{
+
+        left:270px !important;
+
+        width:calc(100vw - 285px) !important;
         max-width:calc(100vw - 285px) !important;
 
     }
