@@ -4536,195 +4536,65 @@ CENTRO DE CONTROL - VERSION FINAL
 
 }
 
-/*==================================================
-   CONFIGURACIÓN FINAL — MAPA + PANEL
-==================================================*/
+/* ==================================================
+   MAPA — FONDO COMPLETO
+   ================================================== */
 
+#map {
+    position: absolute !important;
 
-/*--------------------------------------------------
-   MAPA
-   SIEMPRE OCUPA TODA LA PANTALLA
---------------------------------------------------*/
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
 
-#map{
+    width: 100% !important;
+    height: 100vh !important;
 
-    position:absolute !important;
+    margin: 0 !important;
+    padding: 0 !important;
 
-    top:0 !important;
-    left:0 !important;
-    right:0 !important;
-    bottom:0 !important;
+    border: 0 !important;
 
-    width:100% !important;
-    height:100vh !important;
-
-    margin:0 !important;
-    padding:0 !important;
-
-    border:0 !important;
-
-    z-index:1 !important;
+    z-index: 1 !important;
 }
 
 
-/*--------------------------------------------------
-   PANEL DE CONTROL
---------------------------------------------------*/
+/* ==================================================
+   LEAFLET
+   ================================================== */
 
-#panel-content{
-
-    box-sizing:border-box !important;
-
-    position:absolute !important;
-
-    left:280px !important;
-    top:105px !important;
-
-    width:520px !important;
-    max-width:520px !important;
-
-    height:calc(100vh - 135px) !important;
-
-    z-index:2000 !important;
+#map .leaflet-container {
+    width: 100% !important;
+    height: 100% !important;
 }
 
 
-/*--------------------------------------------------
-   CUANDO EL PANEL ESTÁ ABIERTO
---------------------------------------------------*/
+/* ==================================================
+   PANEL — NO CAMBIAR SU POSICIÓN
+   ================================================== */
 
-body.panel-mapa-activo #panel-content{
+body.panel-mapa-activo #panel-content {
+    left: 280px !important;
+    top: 105px !important;
 
-    left:280px !important;
-    top:105px !important;
+    width: 520px !important;
+    max-width: 520px !important;
 
-    width:520px !important;
-    max-width:520px !important;
+    height: calc(100vh - 135px) !important;
 
-    height:calc(100vh - 135px) !important;
-
-    z-index:2000 !important;
+    z-index: 2000 !important;
 }
 
 
-/*--------------------------------------------------
-   EL MAPA NO SE MUEVE CUANDO ABRIMOS EL PANEL
---------------------------------------------------*/
+/* ==================================================
+   CONTROLES DEL MAPA
+   SIEMPRE ENCIMA
+   ================================================== */
 
-body.panel-mapa-activo #map{
-
-    position:absolute !important;
-
-    top:0 !important;
-    left:0 !important;
-    right:0 !important;
-    bottom:0 !important;
-
-    width:100% !important;
-    height:100vh !important;
-
-    z-index:1 !important;
-}
-
-
-/*--------------------------------------------------
-   CONTENEDOR INTERNO DE LEAFLET
---------------------------------------------------*/
-
-#map .leaflet-container{
-
-    width:100% !important;
-    height:100% !important;
-
-}
-
-
-/*--------------------------------------------------
-   HERRAMIENTAS DEL MAPA
---------------------------------------------------*/
-
-.mapa-herramientas{
-
-    position:absolute !important;
-
-    top:118px !important;
-    right:18px !important;
-
-    z-index:3000 !important;
-}
-
-
-/*--------------------------------------------------
-   ZOOM
---------------------------------------------------*/
-
-.mapa-zoom{
-
-    position:absolute !important;
-
-    top:540px !important;
-    right:18px !important;
-
-    z-index:3000 !important;
-}
-
-
-/*--------------------------------------------------
-   LEYENDA
---------------------------------------------------*/
-
-.leyenda-estados{
-
-    z-index:3000 !important;
-
-}
-
-
-/*--------------------------------------------------
-   ROSA DE LOS VIENTOS
---------------------------------------------------*/
-
-.rosa-norte{
-
-    z-index:3000 !important;
-
-}
-
-
-/*--------------------------------------------------
-   MINI MAPA
---------------------------------------------------*/
-
-.leaflet-control-minimap{
-
-    z-index:3000 !important;
-
-}
-
-
-/*--------------------------------------------------
-   CONTROLES LEAFLET
---------------------------------------------------*/
-
-.leaflet-top,
-.leaflet-bottom{
-
-    z-index:3000 !important;
-
-}
-
-
-/*--------------------------------------------------
-   TRANSICIÓN DEL PANEL
---------------------------------------------------*/
-
-#panel-content{
-
-    transition:
-        left .35s ease,
-        opacity .35s ease,
-        transform .35s ease !important;
-
+#map .leaflet-top,
+#map .leaflet-bottom {
+    z-index: 3000 !important;
 }
     
   </style>
@@ -7556,12 +7426,9 @@ function abrirPanel(titulo,contenido){
          * Vista geográfica original.
          */
         map.setView(
-            [1.25, -77.55],
-            7,
-            {
-                animate:false
-            }
-        );
+    [1.25, -79.20],
+    7
+);
 
         /*
          * Desplazar SOLO la vista geográfica
