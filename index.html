@@ -4537,143 +4537,13 @@ CENTRO DE CONTROL - VERSION FINAL
 }
 
 /*==================================================
-  PANEL + MAPA LADO A LADO
-==================================================*/
-
-#panel-content{
-
-    left:325px !important;
-
-    top:140px !important;
-
-    width:600px !important;
-
-    height:calc(100vh - 160px) !important;
-
-    z-index:1400 !important;
-}
-
-/*==================================================
-  MAPA NORMAL — INICIO
-==================================================*/
-
-body:not(.panel-mapa-activo) #map{
-
-    left:0 !important;
-
-    right:0 !important;
-
-    transition:
-        left .35s ease !important;
-}
-
-
-/*==================================================
-  ESPACIO ENTRE PANEL Y MAPA
-==================================================*/
-
-body.panel-mapa-activo #map{
-
-    border-left:
-        18px solid
-        transparent !important;
-}
-
-
-/*==================================================
-  AJUSTE PARA PANTALLAS MEDIANAS
-==================================================*/
-
-@media (max-width:1450px){
-
-    #panel-content{
-
-        left:315px !important;
-
-        width:540px !important;
-
-    }
-
-    body.panel-mapa-activo #map{
-
-        left:875px !important;
-
-    }
-
-}
-
-/*==================================================
-   DISTRIBUCIÓN PANEL + MAPA
-==================================================*/
-
-/* MAPA NORMAL */
-
-#map{
-
-    position:absolute !important;
-    top:0 !important;
-    left:0 !important;
-    right:0 !important;
-    bottom:0 !important;
-
-    width:auto !important;
-    height:100vh !important;
-
-    z-index:1;
-
-}
-
-/*==================================================
-   PANEL
-==================================================*/
-
-body.panel-mapa-activo #panel-content{
-
-    left:315px !important;
-
-    top:140px !important;
-
-    width:600px !important;
-
-    max-width:600px !important;
-
-    height:calc(100vh - 160px) !important;
-
-    z-index:1400 !important;
-
-}
-
-/*==================================================
-   PANTALLAS PEQUEÑAS
-==================================================*/
-
-@media (max-width:900px){
-
-    body.panel-mapa-activo #map{
-        left:0 !important;
-        right:0 !important;
-    }
-
-    body.panel-mapa-activo #panel-content{
-
-        left:270px !important;
-
-        width:calc(100vw - 285px) !important;
-
-        max-width:calc(100vw - 285px) !important;
-
-    }
-
-}
-
-/*==================================================
-   DISTRIBUCIÓN FINAL CORREGIDA
-   MAPA SIEMPRE A PANTALLA COMPLETA
+   CONFIGURACIÓN FINAL — MAPA + PANEL
 ==================================================*/
 
 
 /*--------------------------------------------------
-   MAPA BASE — SIEMPRE PANTALLA COMPLETA
+   MAPA
+   SIEMPRE OCUPA TODA LA PANTALLA
 --------------------------------------------------*/
 
 #map{
@@ -4694,17 +4564,51 @@ body.panel-mapa-activo #panel-content{
     border:0 !important;
 
     z-index:1 !important;
+}
 
+
+/*--------------------------------------------------
+   PANEL DE CONTROL
+--------------------------------------------------*/
+
+#panel-content{
+
+    box-sizing:border-box !important;
+
+    position:absolute !important;
+
+    left:280px !important;
+    top:105px !important;
+
+    width:520px !important;
+    max-width:520px !important;
+
+    height:calc(100vh - 135px) !important;
+
+    z-index:2000 !important;
 }
 
 
 /*--------------------------------------------------
    CUANDO EL PANEL ESTÁ ABIERTO
+--------------------------------------------------*/
 
-   IMPORTANTE:
-   El mapa NO se mueve físicamente.
+body.panel-mapa-activo #panel-content{
 
-   Sigue ocupando toda la pantalla.
+    left:280px !important;
+    top:105px !important;
+
+    width:520px !important;
+    max-width:520px !important;
+
+    height:calc(100vh - 135px) !important;
+
+    z-index:2000 !important;
+}
+
+
+/*--------------------------------------------------
+   EL MAPA NO SE MUEVE CUANDO ABRIMOS EL PANEL
 --------------------------------------------------*/
 
 body.panel-mapa-activo #map{
@@ -4719,41 +4623,12 @@ body.panel-mapa-activo #map{
     width:100% !important;
     height:100vh !important;
 
-    margin:0 !important;
-    padding:0 !important;
-
-    border:0 !important;
-
     z-index:1 !important;
-
 }
 
 
 /*--------------------------------------------------
-   PANEL
-
-   MANTENEMOS LA POSICIÓN QUE YA TE GUSTÓ
---------------------------------------------------*/
-
-body.panel-mapa-activo #panel-content{
-
-    position:absolute !important;
-
-    left:380px !important;
-    top:42px !important;
-
-    width:750px !important;
-    max-width:750px !important;
-
-    height:calc(100vh - 84px) !important;
-
-    z-index:2000 !important;
-
-}
-
-
-/*--------------------------------------------------
-   LEAFLET
+   CONTENEDOR INTERNO DE LEAFLET
 --------------------------------------------------*/
 
 #map .leaflet-container{
@@ -4764,126 +4639,39 @@ body.panel-mapa-activo #panel-content{
 }
 
 
-/*==================================================
-   ROSA DE LOS VIENTOS
-==================================================*/
-
-/*
-   Como ahora el mapa vuelve a ocupar toda la pantalla,
-   el control t lef t de Leaflet volvería a la izquierda.
-
-   Lo llevamos nuevamente al sector derecho del mapa.
-*/
-
-body.panel-mapa-activo
-.leaflet-top.leaflet-left{
-
-    left:calc(100vw - 220px) !important;
-
-}
-
-
-/* Quitamos el desplazamiento antiguo */
-
-body.panel-mapa-activo
-.rosa-norte{
-
-    margin-left:0 !important;
-
-    margin-top:113px !important;
-
-}
-
-
-/*==================================================
-   MINI MAPA
-==================================================*/
-
-/*
-   El minimapa originalmente está en bottomleft.
-   Lo llevamos visualmente al extremo derecho.
-*/
-
-body.panel-mapa-activo
-.leaflet-bottom.leaflet-left{
-
-    left:calc(100vw - 160px) !important;
-
-}
-
-
-/*
-   Mantener tamaño y apariencia original
-*/
-
-body.panel-mapa-activo
-.leaflet-control-minimap{
-
-    margin-left:0 !important;
-
-    margin-bottom:10px !important;
-
-    width:120px !important;
-    height:105px !important;
-
-    z-index:1100 !important;
-
-}
-
-
-/*==================================================
-   HERRAMIENTAS DERECHA
-==================================================*/
-
-/*
-   Estas ya son position:absolute respecto a la pantalla,
-   por eso NO las desplazamos.
-*/
+/*--------------------------------------------------
+   HERRAMIENTAS DEL MAPA
+--------------------------------------------------*/
 
 .mapa-herramientas{
 
     position:absolute !important;
 
+    top:118px !important;
     right:18px !important;
 
-    top:118px !important;
-
     z-index:3000 !important;
-
 }
 
 
-/*==================================================
-   ZOOM PERSONALIZADO
-==================================================*/
+/*--------------------------------------------------
+   ZOOM
+--------------------------------------------------*/
 
 .mapa-zoom{
 
     position:absolute !important;
 
+    top:540px !important;
     right:18px !important;
 
-    top:540px !important;
-
     z-index:3000 !important;
-
 }
 
 
-/*==================================================
-   ESCALA
-==================================================*/
-
-.leaflet-control-scale{
-
-    z-index:3000 !important;
-
-}
-
-
-/*==================================================
+/*--------------------------------------------------
    LEYENDA
-==================================================*/
+--------------------------------------------------*/
 
 .leyenda-estados{
 
@@ -4892,41 +4680,50 @@ body.panel-mapa-activo
 }
 
 
-/*==================================================
-   PANTALLAS MEDIANAS
-==================================================*/
+/*--------------------------------------------------
+   ROSA DE LOS VIENTOS
+--------------------------------------------------*/
 
-@media (max-width:1450px){
+.rosa-norte{
 
-    body.panel-mapa-activo #panel-content{
+    z-index:3000 !important;
 
-        left:315px !important;
-
-        top:42px !important;
-
-        width:620px !important;
-
-        max-width:620px !important;
-
-        height:calc(100vh - 84px) !important;
-
-    }
+}
 
 
-    body.panel-mapa-activo
-    .leaflet-top.leaflet-left{
+/*--------------------------------------------------
+   MINI MAPA
+--------------------------------------------------*/
 
-        left:calc(100vw - 190px) !important;
+.leaflet-control-minimap{
 
-    }
+    z-index:3000 !important;
+
+}
 
 
-    body.panel-mapa-activo
-    .leaflet-bottom.leaflet-left{
+/*--------------------------------------------------
+   CONTROLES LEAFLET
+--------------------------------------------------*/
 
-        left:calc(100vw - 145px) !important;
+.leaflet-top,
+.leaflet-bottom{
 
-    }
+    z-index:3000 !important;
+
+}
+
+
+/*--------------------------------------------------
+   TRANSICIÓN DEL PANEL
+--------------------------------------------------*/
+
+#panel-content{
+
+    transition:
+        left .35s ease,
+        opacity .35s ease,
+        transform .35s ease !important;
 
 }
     
