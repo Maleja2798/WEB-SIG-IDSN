@@ -4623,20 +4623,6 @@ body.panel-mapa-activo #map{
 
 }
 
-
-/*==================================================
-   PANEL ABIERTO
-==================================================*/
-
-body.panel-mapa-activo #map{
-
-    left:0 !important;
-    right:0 !important;
-    width:auto !important;
-
-}
-
-
 /*==================================================
    PANEL
 ==================================================*/
@@ -4681,16 +4667,17 @@ body.panel-mapa-activo #panel-content{
 }
 
 /*==================================================
-  VISTA FINAL: PANEL SOBRE EL MAPA
+   DISTRIBUCIÓN FINAL:
+   SIDEBAR | PANEL | MAPA
 ==================================================*/
 
-/*-----------------------------------------------
-  MAPA SIEMPRE A PANTALLA COMPLETA
------------------------------------------------*/
 
-#map,
-body.panel-mapa-activo #map,
-body:not(.panel-mapa-activo) #map{
+/*--------------------------------------------------
+  MAPA NORMAL
+  Cuando no hay ningún panel abierto
+--------------------------------------------------*/
+
+#map{
 
     position:absolute !important;
 
@@ -4702,54 +4689,7 @@ body:not(.panel-mapa-activo) #map{
     width:100% !important;
     height:100vh !important;
 
-    border-left:none !important;
-
     z-index:1 !important;
-
-    transition:none !important;
-}
-
-
-/*-----------------------------------------------
-  PANEL CUANDO ESTÁ ABIERTO
------------------------------------------------*/
-
-body.panel-mapa-activo #panel-content{
-
-    position:absolute !important;
-
-    left:325px !important;
-    top:140px !important;
-
-    width:600px !important;
-    max-width:600px !important;
-
-    height:calc(100vh - 160px) !important;
-
-    z-index:1400 !important;
-
-}
-
-
-/*-----------------------------------------------
-  ASEGURAR QUE EL MAPA QUEDE DETRÁS
-  DEL PANEL PERO COMPLETAMENTE VISIBLE
------------------------------------------------*/
-
-body.panel-mapa-activo .leaflet-container{
-
-    width:100% !important;
-    height:100% !important;
-
-}
-
-
-/*-----------------------------------------------
-  ELIMINAR CUALQUIER ESPACIO TRANSPARENTE
-  CREADO PARA "SEPARAR" PANEL Y MAPA
------------------------------------------------*/
-
-body.panel-mapa-activo #map{
 
     margin:0 !important;
     padding:0 !important;
@@ -4759,9 +4699,130 @@ body.panel-mapa-activo #map{
 }
 
 
-/*-----------------------------------------------
-  PANTALLAS MEDIANAS
------------------------------------------------*/
+/*--------------------------------------------------
+  PANEL NORMAL
+--------------------------------------------------*/
+
+#panel-content{
+
+    box-sizing:border-box;
+
+}
+
+
+/*==================================================
+   PANEL ABIERTO
+==================================================*/
+
+/*
+   El panel ocupa el centro-izquierdo.
+   El mapa comienza exactamente donde termina
+   el panel.
+*/
+
+body.panel-mapa-activo #panel-content{
+
+    position:absolute !important;
+
+    left:380px !important;
+    top:42px !important;
+
+    width:750px !important;
+    max-width:750px !important;
+
+    height:calc(100vh - 84px) !important;
+
+    z-index:2000 !important;
+
+}
+
+
+/*--------------------------------------------------
+  MAPA A LA DERECHA DEL PANEL
+--------------------------------------------------*/
+
+body.panel-mapa-activo #map{
+
+    position:absolute !important;
+
+    top:0 !important;
+
+    /*
+      380px = inicio del panel
+      750px = ancho del panel
+      1130px = final del panel
+    */
+
+    left:1130px !important;
+
+    right:0 !important;
+
+    bottom:0 !important;
+
+    width:auto !important;
+
+    height:100vh !important;
+
+    z-index:1 !important;
+
+    margin:0 !important;
+
+    padding:0 !important;
+
+    border:0 !important;
+
+}
+
+
+/*--------------------------------------------------
+  CONTENEDOR LEAFLET
+--------------------------------------------------*/
+
+body.panel-mapa-activo #map .leaflet-container{
+
+    width:100% !important;
+    height:100% !important;
+
+}
+
+
+/*==================================================
+   EVITAR QUE EL MAPA GENERE ESPACIOS
+==================================================*/
+
+body.panel-mapa-activo #map{
+
+    overflow:hidden !important;
+
+}
+
+
+/*==================================================
+   TRANSICIÓN
+==================================================*/
+
+#map{
+
+    transition:
+        left .35s ease,
+        width .35s ease !important;
+
+}
+
+#panel-content{
+
+    transition:
+        left .35s ease,
+        width .35s ease,
+        opacity .35s ease,
+        transform .35s ease !important;
+
+}
+
+
+/*==================================================
+   PANTALLAS MEDIANAS
+==================================================*/
 
 @media (max-width:1450px){
 
@@ -4769,17 +4830,33 @@ body.panel-mapa-activo #map{
 
         left:315px !important;
 
-        width:540px !important;
-        max-width:540px !important;
+        top:42px !important;
+
+        width:620px !important;
+
+        max-width:620px !important;
+
+        height:calc(100vh - 84px) !important;
+
+    }
+
+
+    body.panel-mapa-activo #map{
+
+        left:935px !important;
+
+        right:0 !important;
+
+        width:auto !important;
 
     }
 
 }
 
 
-/*-----------------------------------------------
-  PANTALLAS PEQUEÑAS
------------------------------------------------*/
+/*==================================================
+   PANTALLAS PEQUEÑAS
+==================================================*/
 
 @media (max-width:900px){
 
@@ -4787,8 +4864,24 @@ body.panel-mapa-activo #map{
 
         left:270px !important;
 
-        width:calc(100vw - 285px) !important;
-        max-width:calc(100vw - 285px) !important;
+        top:20px !important;
+
+        width:calc(100vw - 300px) !important;
+
+        max-width:calc(100vw - 300px) !important;
+
+        height:calc(100vh - 40px) !important;
+
+    }
+
+
+    body.panel-mapa-activo #map{
+
+        left:calc(100vw - 30px) !important;
+
+        right:0 !important;
+
+        width:30px !important;
 
     }
 
