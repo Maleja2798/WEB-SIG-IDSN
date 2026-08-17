@@ -1873,17 +1873,15 @@ CENTRO DE CONTROL - VERSION FINAL
 /* CABECERA */
 
 .autorizacion-card-top{
-
     display:flex;
 
-    justify-content:space-between;
+    justify-content:flex-end;
 
     align-items:center;
 
     gap:10px;
 
-    margin-bottom:8px;
-
+    margin-bottom:0;
 }
 
 
@@ -1901,17 +1899,14 @@ CENTRO DE CONTROL - VERSION FINAL
 /* FUENTE */
 
 .autorizacion-fuente{
+    font-size:16px;
+    font-weight:800;
 
-    font-size:15px;
+    color:#ffffff;
 
-    font-weight:700;
-
-    color:#6fd0ff;
-
-    margin-bottom:12px;
+    margin-bottom:16px;
 
     text-transform:uppercase;
-
 }
 
 /* ==========================================
@@ -1921,27 +1916,42 @@ CENTRO DE CONTROL - VERSION FINAL
 .autorizacion-info{
     display:flex;
     flex-direction:column;
-    gap:5px;
+
+    /* POQUITO ESPACIO ENTRE LOS DATOS */
+    gap:4px;
+
+    margin:0;
 }
 
 .autorizacion-info div{
     display:block;
+
     line-height:1.25;
+
+    margin:0;
+    padding:0;
 }
 
 .autorizacion-info span{
     font-size:13px;
-    color:white;
-    font-weight:700;
+
+    color:#ffffff;
+
+    font-weight:800;
+
     letter-spacing:0;
+
     text-transform:none;
 }
 
 .autorizacion-info strong{
     font-size:13px;
+
     color:#9DB8D2;
+
     font-weight:500;
-    margin-left:3px;
+
+    margin-left:4px;
 }
 
 /* ESTADOS */
@@ -8229,41 +8239,29 @@ const listaAutorizaciones =
             </div>
 
 
-            <div class="autorizacion-info">
+           <div class="autorizacion-info">
 
-                <div>
+    <div>
+        <span>Municipio:</span>
+        <strong>${municipio || "Sin municipio"}</strong>
+    </div>
 
-                    <span>Municipio</span>
+    <div>
+        <span>Vereda:</span>
+        <strong>${vereda || "Sin vereda"}</strong>
+    </div>
 
-                    <strong>
-                        ${municipio || "Sin municipio"}
-                    </strong>
+    <div>
+        <span>No. autorización:</span>
+        <strong>${numero || "SIN NÚMERO"}</strong>
+    </div>
 
-                </div>
+    <div>
+        <span>Fecha autorización:</span>
+        <strong>${fecha || "Sin fecha"}</strong>
+    </div>
 
-
-                <div>
-
-                    <span>Vereda</span>
-
-                    <strong>
-                        ${vereda || "Sin vereda"}
-                    </strong>
-
-                </div>
-
-
-                <div>
-
-                    <span>Fecha de autorización</span>
-
-                    <strong>
-                        ${fecha || "Sin fecha"}
-                    </strong>
-
-                </div>
-
-            </div>
+</div>
 
 
             ${
@@ -10056,22 +10054,13 @@ function filtrarListaAutorizaciones(
             return `
     <div class="autorizacion-card estado-${estado}">
 
-                <div class="autorizacion-card-top">
+               <div class="autorizacion-card-top">
 
-                    <div class="autorizacion-numero">
+    <div class="autorizacion-estado estado-${estado}">
+        ${estadoTexto}
+    </div>
 
-                        ${numero || "SIN NÚMERO"}
-
-                    </div>
-
-                    <div class="autorizacion-estado estado-${estado}">
-
-                        ${estadoTexto}
-
-                    </div>
-
-                </div>
-
+</div>
 
                 <div class="autorizacion-fuente">
 
