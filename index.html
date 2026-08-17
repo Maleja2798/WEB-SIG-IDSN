@@ -8466,47 +8466,6 @@ if(selectorMunicipio){
 
 } 
 
-    /*----------------------------------------------
-      CAMBIO DE MUNICIPIO
-    ----------------------------------------------*/
-
-    const selectorMunicipio =
-        document.getElementById(
-            "alertas-municipio"
-        );
-
-
-    if(selectorMunicipio){
-
-        selectorMunicipio.onchange =
-        function(){
-
-            const anio =
-                document.getElementById(
-                    "alertas-anio"
-                ).value;
-
-
-            abrirPanel(
-
-                "Alertas",
-
-                construirPanel(
-                    anio,
-                    this.value
-                )
-
-            );
-
-
-            lucide.createIcons();
-
-        };
-
-    }
-
-};
-    
 /*==================================================
  RESUMEN DEL REPORTE
 ==================================================*/
