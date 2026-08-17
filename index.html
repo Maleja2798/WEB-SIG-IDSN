@@ -8213,26 +8213,15 @@ const listaAutorizaciones =
 
             <div class="autorizacion-card-top">
 
-                <div class="autorizacion-numero">
+    <div class="autorizacion-fuente">
+        ${fuente || "Fuente no registrada"}
+    </div>
 
-                    ${numero || "SIN NÚMERO"}
+    <div class="autorizacion-estado estado-${estado}">
+        ${estadoTexto}
+    </div>
 
-                </div>
-
-                <div class="autorizacion-estado estado-${estado}">
-
-                    ${estadoTexto}
-
-                </div>
-
-            </div>
-
-
-            <div class="autorizacion-fuente">
-
-                ${fuente || "Fuente no registrada"}
-
-            </div>
+</div>
 
 
            <div class="autorizacion-info">
