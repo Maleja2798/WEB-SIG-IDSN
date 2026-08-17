@@ -1814,22 +1814,24 @@ CENTRO DE CONTROL - VERSION FINAL
 }
 
 
-/* FILITO SEGÚN ESTADO */
+/* ==========================================
+   FILITO DE COLOR SEGÚN ESTADO
+   ========================================== */
 
 .autorizacion-card.estado-vigente{
-    border-left:4px solid #36D399;
+    border-left:4px solid #36D399 !important;
 }
 
 .autorizacion-card.estado-vencer{
-    border-left:4px solid #FFC13D;
+    border-left:4px solid #FFC13D !important;
 }
 
 .autorizacion-card.estado-vencida{
-    border-left:4px solid #FF4F61;
+    border-left:4px solid #FF4F61 !important;
 }
 
 .autorizacion-card.estado-tramite{
-    border-left:4px solid #3EAFFF;
+    border-left:4px solid #3EAFFF !important;
 }
 
 
@@ -1862,9 +1864,6 @@ CENTRO DE CONTROL - VERSION FINAL
 
 .autorizacion-card:hover{
     transform:translateY(-2px);
-
-    border-color:
-        rgba(120,200,255,.30);
 
     box-shadow:
         inset 0 1px 0 rgba(255,255,255,.08),
@@ -2068,51 +2067,6 @@ CENTRO DE CONTROL - VERSION FINAL
     box-shadow:
         0 0 7px rgba(62,175,255,.85);
 }
-
-
-.estado-vigente{
-
-    background:rgba(54,211,153,.16);
-
-    color:#62e6ad;
-
-    border:1px solid rgba(54,211,153,.35);
-
-}
-
-
-.estado-vencer{
-
-    background:rgba(255,193,61,.16);
-
-    color:#ffd15c;
-
-    border:1px solid rgba(255,193,61,.35);
-
-}
-
-
-.estado-vencida{
-
-    background:rgba(255,79,97,.16);
-
-    color:#ff6979;
-
-    border:1px solid rgba(255,79,97,.35);
-
-}
-
-
-.estado-tramite{
-
-    background:rgba(62,175,255,.16);
-
-    color:#67c5ff;
-
-    border:1px solid rgba(62,175,255,.35);
-
-}
-
 
 .btn-ver-mapa{
     width:100%;
@@ -10120,8 +10074,7 @@ function filtrarListaAutorizaciones(
 
 
             return `
-
-            <div class="autorizacion-card">
+    <div class="autorizacion-card estado-${estado}">
 
                 <div class="autorizacion-card-top">
 
