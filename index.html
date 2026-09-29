@@ -5809,9 +5809,6 @@ new L.Control.MiniMap(
 
         crearBotonesAnios();
         crearCapasPorAnio();
-        // activar primer año disponible automáticamente
-        const primeros = Object.keys(datosPorAnio).sort();
-        if (primeros.length) activarAnio(primeros[0]);
       },
       error: err => {
         console.error("Error cargando CSV:", err);
@@ -7530,60 +7527,91 @@ function abrirPanel(titulo,contenido){
 
 function mostrarInicio(){
 
-    /* Cerrar panel */
-
+    /*-----------------------------------------------
+      1. CERRAR CUALQUIER PANEL
+    ------------------------------------------------*/
     panel.classList.remove("show");
-
-    /* Volver a mapa completo */
 
     document.body.classList.remove(
         "panel-mapa-activo"
     );
 
 
-    /* Reiniciar filtros */
-
-    municipioFiltroActivo =
-        "TODOS";
-
-    estadoFiltroActivo =
-        "TODOS";
+    /*-----------------------------------------------
+      2. CERRAR CUALQUIER POPUP DEL MAPA
+    ------------------------------------------------*/
+    map.closePopup();
 
 
-    /* Ocultar todos los puntos */
+    /*-----------------------------------------------
+      3. REINICIAR TODOS LOS FILTROS
+    ------------------------------------------------*/
+    anioActivo = null;
 
-    Object.keys(markersPorAnio)
-        .forEach(clave => {
+    municipioFiltroActivo = "TODOS";
 
-            const capa =
-                markersPorAnio[clave];
+    estadoFiltroActivo = "TODOS";
 
-            if(
-                capa &&
-                typeof capa.eachLayer === "function"
-            ){
 
-                capa.eachLayer(marker => {
+    /*-----------------------------------------------
+      4. QUITAR TODAS LAS CAPAS DE FUENTES
+    ------------------------------------------------*/
+    Object.keys(markersPorAnio).forEach(anio => {
 
-                    marker.setOpacity(0);
+        const capa = markersPorAnio[anio];
 
-                });
+        if(
+            capa &&
+            map.hasLayer(capa)
+        ){
 
-            }
+            map.removeLayer(capa);
+
+        }
+
+    });
+
+
+    /*-----------------------------------------------
+      5. QUITAR ESTADO VISUAL DE LOS BOTONES DE AÑO
+    ------------------------------------------------*/
+    document
+        .querySelectorAll(".boton-anio")
+        .forEach(boton => {
+
+            boton.classList.remove("activo");
 
         });
 
 
-    /* Mapa general de Nariño */
+    /*-----------------------------------------------
+      6. RESTAURAR LA DIVISIÓN POLÍTICA
+    ------------------------------------------------*/
+    if(geojsonLayer){
 
+        geojsonLayer.eachLayer(layer => {
+
+            geojsonLayer.resetStyle(layer);
+
+        });
+
+        geojsonLayer.bringToBack();
+
+    }
+
+
+    /*-----------------------------------------------
+      7. VOLVER A LA VISTA GENERAL DE NARIÑO
+    ------------------------------------------------*/
     map.setView(
-        [1.289,-77.29],
+        [1.289, -77.29],
         8
     );
 
 
-    /* Recalcular tamaño */
-
+    /*-----------------------------------------------
+      8. ACTUALIZAR EL TAMAÑO DEL MAPA
+    ------------------------------------------------*/
     setTimeout(() => {
 
         map.invalidateSize();
@@ -7591,6 +7619,7 @@ function mostrarInicio(){
     }, 350);
 
 }
+    
 /*=====================================
 CENTRO DE CONTROL
 =====================================*/
