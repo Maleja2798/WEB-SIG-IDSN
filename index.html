@@ -4638,9 +4638,8 @@ body.panel-mapa-activo #panel-content {
 }
 
 body.panel-mapa-activo #map .leaflet-municipios-pane {
-    transform: translate(250px, -70px);
+    transform: none;
 }
-
 /* ==================================================
    CONTROLES DEL MAPA
    SIEMPRE ENCIMA
@@ -7491,17 +7490,12 @@ cerrar.onclick = () => {
         /*
          * Devolver el mapa a su posición normal.
          */
-        const desplazamiento =
-            Math.round(
-                800
-            );
-
-        map.panBy(
-            [-desplazamiento, 0],
-            {
-                animate:false
-            }
-        );
+map.panBy(
+    [-750, 70],
+    {
+        animate:false
+    }
+);
 
     }, 350);
 
@@ -7532,7 +7526,12 @@ function abrirPanel(titulo,contenido){
     [2.00, -78.45],
     7.5
 );
-
+map.panBy(
+    [750, -70],
+    {
+        animate:false
+    }
+);
         /*
          * Desplazar SOLO la vista geográfica
          * hacia la derecha.
