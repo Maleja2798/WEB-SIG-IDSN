@@ -6780,70 +6780,106 @@ setTimeout(() => {
 
 }
 
-    //====================================
+//====================================
 // BUSCADOR
 //====================================
 
-const btnBuscar = document.getElementById("btn-buscar");
+const inputBuscar = document.getElementById("input-buscar");
 
-if(btnBuscar){
+if(inputBuscar){
 
-btnBuscar.addEventListener("click",function(){
+    inputBuscar.addEventListener("keydown", function(e){
 
-const q=document.getElementById("input-buscar").value.trim().toLowerCase();
+        if(e.key !== "Enter"){
+            return;
+        }
 
-if(!q){
+        const q = this.value.trim().toLowerCase();
 
-alert("Escribe un municipio o una fuente.");
+        if(!q){
+            return;
+        }
 
-return;
+        let filas = [];
+
+        // Si hay un año seleccionado,
+        // buscar solamente en ese año
+        if(anioActivo){
+
+            filas = datosPorAnio[anioActivo] || [];
+
+        }else{
+
+            // Si no hay año seleccionado,
+            // buscar en todos los años
+            Object.values(datosPorAnio).forEach(datos => {
+
+                if(Array.isArray(datos)){
+                    filas = filas.concat(datos);
+                }
+
+            });
+
+        }
+
+        const coincidencias = filas.filter(r => {
+
+            const municipio =
+                String(r["MUNICIPIO"] || "")
+                .toLowerCase();
+
+            const fuente =
+                String(r["FUENTE"] || "")
+                .toLowerCase();
+
+            return (
+                municipio.includes(q) ||
+                fuente.includes(q)
+            );
+
+        });
+
+        if(!coincidencias.length){
+
+            alert("No se encontraron resultados.");
+
+            return;
+
+        }
+
+        const r = coincidencias[0];
+
+        const lat = parseFloat(
+            String(r["LATITUD DECIMAL"] || "")
+            .replace(",", ".")
+        );
+
+        const lon = parseFloat(
+            String(r["LONGITUD DECIMAL"] || "")
+            .replace(",", ".")
+        );
+
+        if(!isNaN(lat) && !isNaN(lon)){
+
+            map.setView(
+                [lat, lon],
+                13,
+                {
+                    animate: true
+                }
+            );
+
+        }else{
+
+            alert(
+                "El registro encontrado no tiene coordenadas."
+            );
+
+        }
+
+    });
 
 }
-
-if(!anioActivo){
-
-return;
-
-}
-
-const filas=datosPorAnio[anioActivo] || [];
-
-const coincidencias=filas.filter(r=>{
-
-const muni=(r["MUNICIPIO"]||"").toLowerCase();
-
-const fuente=(r["FUENTE"]||"").toLowerCase();
-
-return muni.includes(q)||fuente.includes(q);
-
-});
-
-if(!coincidencias.length){
-
-alert("No se encontraron resultados.");
-
-return;
-
-}
-
-const r=coincidencias[0];
-
-const lat=parseFloat((r["LATITUD DECIMAL"]||"").replace(",","."));
-
-const lon=parseFloat((r["LONGITUD DECIMAL"]||"").replace(",","."));
-
-if(!isNaN(lat)&&!isNaN(lon)){
-
-map.setView([lat,lon],13);
-
-}
-
-});
-
-}
-
-
-
 //====================================
 // RESET
 //====================================
