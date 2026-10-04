@@ -7144,17 +7144,19 @@ municipioLayer.setStyle({
 
 });
 
-municipioLayer.bringToFront();
+setTimeout(() => {
+    map.invalidateSize();
 
-map.fitBounds(
-    municipioLayer.getBounds(),
-    {
-        paddingTopLeft: [280, 220],
-        paddingBottomRight: [80, 80],
-        maxZoom: 10,
-        animate: true
-    }
-);
+    map.fitBounds(
+        municipioLayer.getBounds(),
+        {
+            paddingTopLeft: [280, 220],
+            paddingBottomRight: [80, 80],
+            maxZoom: 10,
+            animate: true
+        }
+    );
+}, 100);
 
         /*
          * Si por alguna razón no existe
