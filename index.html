@@ -7144,19 +7144,14 @@ municipioLayer.setStyle({
 
 });
 
-setTimeout(() => {
-    map.invalidateSize();
-
-    map.fitBounds(
-        municipioLayer.getBounds(),
-        {
-            paddingTopLeft: [280, 220],
-            paddingBottomRight: [80, 80],
-            maxZoom: 10,
-            animate: true
-        }
-    );
-}, 100);
+map.fitBounds(
+    municipioLayer.getBounds(),
+    {
+        padding: [100, 100],
+        maxZoom: 10,
+        animate: true
+    }
+);
 
         /*
          * Si por alguna razón no existe
@@ -7596,25 +7591,40 @@ function mostrarInicio(){
     }
 
 
-    /*-----------------------------------------------
-      7. VOLVER A LA VISTA GENERAL DE NARIÑO
-    ------------------------------------------------*/
-    map.setView(
-        [1.289, -77.29],
-        8
+/*-----------------------------------------------
+  7. VOLVER A LA VISTA GENERAL DE NARIÑO
+------------------------------------------------*/
+
+map.setView(
+    [1.289, -77.29],
+    8,
+    {
+        animate: false
+    }
+);
+
+
+/*-----------------------------------------------
+  8. RECALCULAR EL MAPA
+------------------------------------------------*/
+
+setTimeout(() => {
+
+    map.invalidateSize();
+
+    /*
+     * Mover visualmente el mapa hacia abajo.
+     * No movemos #map, solo la vista geográfica.
+     */
+
+    map.panBy(
+        [0, 80],
+        {
+            animate: false
+        }
     );
 
-
-    /*-----------------------------------------------
-      8. ACTUALIZAR EL TAMAÑO DEL MAPA
-    ------------------------------------------------*/
-    setTimeout(() => {
-
-        map.invalidateSize();
-
-    }, 350);
-
-}
+}, 350);
     
 /*=====================================
 CENTRO DE CONTROL
