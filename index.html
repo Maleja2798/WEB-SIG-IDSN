@@ -7522,24 +7522,19 @@ function abrirPanel(titulo,contenido){
         /*
          * Vista geográfica original.
          */
-       map.setView(
+map.setView(
     [2.00, -78.45],
     7.5
 );
+
 map.panBy(
-    [750, -70],
+    [250, -70],
     {
         animate:false
     }
 );
-        /*
-         * Desplazar SOLO la vista geográfica
-         * hacia la derecha.
-         *
-         * NO movemos #map.
-         */
 
-    }, 350);
+}, 350);
 
 }
 
