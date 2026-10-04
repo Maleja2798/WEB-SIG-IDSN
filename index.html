@@ -4637,12 +4637,9 @@ body.panel-mapa-activo #panel-content {
     z-index: 2000 !important;
 }
 
-body.panel-mapa-activo #map {
-    left: 800px !important;
-    right: 0 !important;
-    width: calc(100% - 800px) !important;
+body.panel-mapa-activo #map .leaflet-overlay-pane svg {
+    transform: translateX(300px);
 }
-
 
 /* ==================================================
    CONTROLES DEL MAPA
@@ -7502,15 +7499,6 @@ function abrirPanel(titulo,contenido){
          *
          * NO movemos #map.
          */
-const desplazamiento =
-    800;
-
-map.panBy(
-    [desplazamiento, 0],
-    {
-        animate:false
-    }
-);
 
     }, 350);
 
