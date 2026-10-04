@@ -370,14 +370,14 @@ color:#7F98B8;
 ==================================================*/
 
 #map{
-
     position:absolute;
 
-    top:0;
+    top:100px;
     left:0;
+    right:0;
 
     width:100%;
-    height:100vh;
+    height:calc(100vh - 100px);
 
     z-index:1;
 }
@@ -7616,13 +7616,6 @@ setTimeout(() => {
      * Mover visualmente el mapa hacia abajo.
      * No movemos #map, solo la vista geográfica.
      */
-
-    map.panBy(
-        [0, 80],
-        {
-            animate: false
-        }
-    );
 
 }, 350);
 
