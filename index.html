@@ -4687,6 +4687,13 @@ body.panel-mapa-activo #map .leaflet-municipios-pane {
 
     font-weight:800;
 }
+
+.leaflet-tile-pane {
+    filter:
+        brightness(0.55)
+        saturate(1.25)
+        hue-rotate(170deg);
+}
     
   </style>
 </head>
@@ -5076,7 +5083,7 @@ norteControl.addTo(map);
 const baseMaps = {
 
     "Mapa azul oscuro": L.tileLayer(
-        "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+       "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
         {
             attribution:
                 '&copy; OpenStreetMap contributors &copy; CARTO',
