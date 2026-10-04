@@ -5066,6 +5066,9 @@ norteControl.addTo(map);
     map.createPane("marcadores");
     map.getPane("marcadores").style.zIndex = 650;
 
+    map.createPane("municipios");
+    map.getPane("municipios").style.zIndex = 400;
+
 /*==================================================
  CAPAS BASE DEL MAPA
 ==================================================*/
@@ -7398,8 +7401,9 @@ if(enTramite){
     fetch("https://raw.githubusercontent.com/Maleja2798/WEB-SIG-IDSN/main/Municipios_Nari%C3%B1o.geojson")
       .then(response => response.json())
       .then(data => {
-        geojsonLayer = L.geoJson(data, {
-          style: function(feature) {
+       geojsonLayer = L.geoJson(data, {
+          pane: "municipios",
+           style: function(feature) {
             // color aleatorio en base al nombre (mantener tu lógica)
             const nombre = feature.properties.NOMBRE_ENT || "";
             let hash = 0; for (let i=0;i<nombre.length;i++) hash = nombre.charCodeAt(i)+((hash<<5)-hash);
