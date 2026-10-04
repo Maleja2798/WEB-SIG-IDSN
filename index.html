@@ -7514,28 +7514,28 @@ function abrirPanel(titulo,contenido){
 
     setTimeout(() => {
 
-        /*
-         * El mapa ocupa toda la pantalla.
-         */
-        map.invalidateSize();
+    map.invalidateSize();
 
-        /*
-         * Vista geográfica original.
-         */
-map.setView(
-    [2.00, -78.45],
-    7.5
-);
+    requestAnimationFrame(() => {
 
-map.panBy(
-    [-150, 70],
-    {
-        animate:false
-    }
-);
+        map.setView(
+            [2.00, -78.45],
+            7.5,
+            {
+                animate:false
+            }
+        );
+
+        map.panBy(
+            [-150, 70],
+            {
+                animate:false
+            }
+        );
+
+    });
 
 }, 350);
-
 }
 
 /*==================================================
