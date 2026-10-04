@@ -7424,7 +7424,7 @@ if(enTramite){
             layer.on({ mouseover: function(e){ e.target.setStyle({ weight:3, color:'#FFFF00', fillOpacity:0.7}); e.target.bringToFront(); }, mouseout: function(e){ geojsonLayer.resetStyle(e.target); }, click: function(e){ layer.openPopup(); map.fitBounds(layer.getBounds()); } });
           }
         }).addTo(map);
-        geojsonLayer.bringToBack();
+       geojsonLayer.bringToFront();
       })
       .catch(err => console.error("Error cargando GeoJSON:", err));
 
