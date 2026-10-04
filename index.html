@@ -7153,27 +7153,27 @@ map.fitBounds(
     }
 );
 
-        /*
-         * Si por alguna razón no existe
-         * el polígono, usamos los puntos.
-         */
-        else if(coordenadasVisibles.length){
+/*
+ * Si por alguna razón no existe
+ * el polígono, usamos los puntos.
+ */
+} else if(coordenadasVisibles.length){
 
-            map.fitBounds(
-                coordenadasVisibles,
-                {
-                    padding:[
-                        100,
-                        100
-                    ],
+    map.fitBounds(
+        coordenadasVisibles,
+        {
+            padding: [
+                100,
+                100
+            ],
 
-                    maxZoom:9,
+            maxZoom: 9,
 
-                    animate:true
-                }
-            );
-
+            animate: true
         }
+    );
+
+}
 
     },350);
 
@@ -7625,6 +7625,8 @@ setTimeout(() => {
     );
 
 }, 350);
+
+}
     
 /*=====================================
 CENTRO DE CONTROL
