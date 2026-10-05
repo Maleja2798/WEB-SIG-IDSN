@@ -5712,7 +5712,100 @@ body.panel-mapa-activo #map .leaflet-municipios-pane {
 <body>
  <header class="topbar">
 
-    <div class="header-water-bg"></div>
+   <div class="header-water-bg">
+
+    <svg viewBox="0 0 1200 100"
+         preserveAspectRatio="none"
+         aria-hidden="true">
+
+        <defs>
+
+            <linearGradient id="aguaFondo" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#061827"/>
+                <stop offset="28%" stop-color="#073C4A"/>
+                <stop offset="48%" stop-color="#0A6570"/>
+                <stop offset="63%" stop-color="#0B4D50"/>
+                <stop offset="82%" stop-color="#073A35"/>
+                <stop offset="100%" stop-color="#061D23"/>
+            </linearGradient>
+
+            <radialGradient id="brilloAgua">
+                <stop offset="0%" stop-color="#B9FFFF" stop-opacity=".55"/>
+                <stop offset="35%" stop-color="#4CD8DB" stop-opacity=".22"/>
+                <stop offset="100%" stop-color="#4CD8DB" stop-opacity="0"/>
+            </radialGradient>
+
+            <linearGradient id="reflejoAgua" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#D8FFFF" stop-opacity=".18"/>
+                <stop offset="100%" stop-color="#D8FFFF" stop-opacity="0"/>
+            </linearGradient>
+
+            <filter id="desenfoque">
+                <feGaussianBlur stdDeviation="7"/>
+            </filter>
+
+        </defs>
+
+        <!-- fondo -->
+        <rect width="1200" height="100"
+              fill="url(#aguaFondo)"/>
+
+        <!-- manchas de agua -->
+        <ellipse cx="520" cy="30"
+                 rx="260" ry="80"
+                 fill="url(#brilloAgua)"
+                 filter="url(#desenfoque)"/>
+
+        <ellipse cx="830" cy="65"
+                 rx="230" ry="55"
+                 fill="#2BA6A3"
+                 opacity=".16"
+                 filter="url(#desenfoque)"/>
+
+        <!-- reflejos -->
+        <path d="M380 0
+                 C450 18 500 5 560 22
+                 S690 42 760 12
+                 S900 5 990 25
+                 L990 100
+                 L380 100 Z"
+              fill="url(#reflejoAgua)"
+              opacity=".55"/>
+
+        <!-- ondas -->
+        <path d="M250 65
+                 C350 35 410 85 510 55
+                 S690 30 790 58
+                 S980 78 1100 40"
+              fill="none"
+              stroke="#8DECEF"
+              stroke-opacity=".22"
+              stroke-width="2"/>
+
+        <path d="M350 82
+                 C440 58 500 95 600 70
+                 S760 48 850 72
+                 S1010 87 1130 62"
+              fill="none"
+              stroke="#A7FFFF"
+              stroke-opacity=".13"
+              stroke-width="1.5"/>
+
+        <!-- pequeñas partículas -->
+        <g fill="#D9FFFF" opacity=".20">
+
+            <circle cx="470" cy="25" r="2"/>
+            <circle cx="535" cy="60" r="1.5"/>
+            <circle cx="620" cy="20" r="2"/>
+            <circle cx="710" cy="70" r="1.5"/>
+            <circle cx="810" cy="30" r="2"/>
+            <circle cx="900" cy="62" r="1.5"/>
+
+        </g>
+
+    </svg>
+
+</div>
 
     <div class="header-left">
 
