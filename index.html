@@ -5227,42 +5227,47 @@ body.panel-mapa-activo #map .leaflet-municipios-pane {
 ========================================================= */
 
 .header-water-bg{
-
     position:absolute !important;
-
     inset:0 !important;
+
+    width:100% !important;
+    height:100% !important;
+
+    overflow:hidden !important;
 
     z-index:0 !important;
 
     pointer-events:none !important;
 
-    opacity:.75 !important;
-
-    background:
-
-        radial-gradient(
-            ellipse at 42% 45%,
-            rgba(104,219,223,.28) 0%,
-            rgba(38,150,164,.12) 22%,
-            transparent 48%
-        ),
-
-        radial-gradient(
-            ellipse at 72% 30%,
-            rgba(71,170,129,.22) 0%,
-            transparent 32%
-        ),
-
-        linear-gradient(
-            115deg,
-            transparent 0%,
-            rgba(43,177,190,.13) 36%,
-            rgba(101,210,210,.20) 49%,
-            rgba(20,117,111,.13) 61%,
-            transparent 80%
-        );
+    opacity:1 !important;
 }
 
+.header-water-bg svg{
+    width:100% !important;
+    height:100% !important;
+
+    display:block !important;
+}
+
+
+/* oscurece ligeramente la fotografía/agua */
+.header-water-bg::after{
+    content:"";
+
+    position:absolute;
+    inset:0;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(2,18,29,.94) 0%,
+            rgba(3,29,40,.72) 32%,
+            rgba(2,54,60,.28) 58%,
+            rgba(3,31,30,.72) 100%
+        );
+
+    pointer-events:none;
+}
 
 /* ONDAS SUAVES */
 
@@ -5809,9 +5814,58 @@ body.panel-mapa-activo #map .leaflet-municipios-pane {
 
     <div class="header-left">
 
-        <div class="logo-circle">
-            <i data-lucide="droplets"></i>
-        </div>
+<div class="logo-circle">
+
+    <svg viewBox="0 0 64 64"
+         aria-hidden="true">
+
+        <defs>
+            <linearGradient id="logoAgua"
+                            x1="0"
+                            y1="0"
+                            x2="1"
+                            y2="1">
+
+                <stop offset="0%"
+                      stop-color="#5BE8F0"/>
+
+                <stop offset="55%"
+                      stop-color="#1CC7D8"/>
+
+                <stop offset="100%"
+                      stop-color="#0876A2"/>
+
+            </linearGradient>
+        </defs>
+
+        <!-- gota principal -->
+
+        <path
+            d="M32 5
+               C32 5 16 24 16 35
+               C16 46 23 53 32 53
+               C41 53 48 46 48 35
+               C48 24 32 5 32 5Z"
+            fill="none"
+            stroke="url(#logoAgua)"
+            stroke-width="4"
+            stroke-linejoin="round"/>
+
+        <!-- onda -->
+
+        <path
+            d="M13 39
+               C17 35 21 35 25 39
+               C29 43 34 43 38 39
+               C42 35 46 35 50 39"
+            fill="none"
+            stroke="#58E7EA"
+            stroke-width="3"
+            stroke-linecap="round"/>
+
+    </svg>
+
+</div>
 
         <div class="header-title">
 
