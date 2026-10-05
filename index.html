@@ -4687,16 +4687,30 @@ body.panel-mapa-activo #map .leaflet-municipios-pane {
     font-weight:800;
 }
 
-/* ==================================================
-   ENCABEZADO — DISEÑO AGUA / NATURALEZA
-================================================== */
+/* ==========================================================
+   CORRECCIÓN FINAL DEL ENCABEZADO
+========================================================== */
 
 .topbar{
+    display:flex !important;
+    visibility:visible !important;
+    opacity:1 !important;
+
+    position:absolute !important;
+    top:0 !important;
+    left:0 !important;
+    right:0 !important;
 
     height:100px !important;
+    width:100% !important;
 
-    padding:
-        0 28px !important;
+    align-items:center !important;
+    justify-content:space-between !important;
+
+    padding:0 28px !important;
+    box-sizing:border-box !important;
+
+    overflow:hidden !important;
 
     background:
         linear-gradient(
@@ -4707,388 +4721,38 @@ body.panel-mapa-activo #map .leaflet-municipios-pane {
             #09251f 100%
         ) !important;
 
-    border-radius:
-        0 0 22px 22px !important;
-
-    border:
-        1px solid
-        rgba(92,210,202,.30) !important;
-
-    box-shadow:
-        0 12px 35px
-        rgba(0,0,0,.48) !important;
-
-    overflow:hidden;
-
-    position:absolute;
-
+    z-index:5000 !important;
 }
 
 
-/* LÍNEA DE AGUA DECORATIVA */
+/* TODO EL CONTENIDO DEL ENCABEZADO */
 
-.topbar::after{
-
-    content:"";
-
-    position:absolute;
-
-    left:0;
-    right:0;
-
-    bottom:-34px;
-
-    height:75px;
-
-    background:
-        radial-gradient(
-            ellipse at 50% 0%,
-            rgba(53,196,211,.30),
-            transparent 62%
-        );
-
-    border-top:
-        1px solid
-        rgba(58,203,215,.22);
-
-    transform:
-        rotate(-1deg);
-
-    pointer-events:none;
-
-}
-
-
-/* CONTENIDO DEL ENCABEZADO */
-
-.logo-area{
-
-    position:relative;
-
-    z-index:2;
-
-    display:flex;
-
-    align-items:center;
-
-    gap:18px;
-
+.topbar > *{
+    position:relative !important;
+    z-index:20 !important;
 }
 
 
 /* LOGO */
 
-.logo-circle{
-
-    width:58px !important;
-    height:58px !important;
-
-    border-radius:18px !important;
-
-    background:
-        linear-gradient(
-            145deg,
-            #0b6d83,
-            #06334e
-        ) !important;
-
-    border:
-        1px solid
-        rgba(89,220,216,.40);
-
-    box-shadow:
-        0 8px 25px
-        rgba(0,0,0,.35),
-        0 0 22px
-        rgba(38,190,207,.12);
-
-}
-
-
-/* ICONO TEMPORAL DE AGUA */
-
-.logo-circle svg{
-
-    width:32px !important;
-    height:32px !important;
-
-    color:#59dce0 !important;
-
-    stroke-width:1.8 !important;
-
-}
-
-
-/* TÍTULO */
-
-.titulo-sig{
-
-    font-size:25px !important;
-
-    font-weight:800 !important;
-
-    letter-spacing:.4px !important;
-
-    color:#ffffff !important;
-
-    line-height:1.05;
-
-}
-
-
-/* PALABRA SANITARIAS */
-
-.titulo-sig{
-
-    text-shadow:
-        0 2px 12px
-        rgba(0,0,0,.25);
-
-}
-
-
-/* SUBTÍTULO */
-
-.subtitulo-sig{
-
-    margin-top:6px !important;
-
-    font-size:13px !important;
-
-    color:#9bd7d8 !important;
-
-    letter-spacing:.2px;
-
-}
-
-
-/* BUSCADOR */
-
-.search-header{
-
-    position:relative;
-
-    z-index:3;
-
-    width:350px !important;
-
-    padding:
-        11px 17px !important;
-
-    background:
-        rgba(3,22,34,.72) !important;
-
-    border:
-        1px solid
-        rgba(110,222,220,.30) !important;
-
-    box-shadow:
-        inset 0 1px 0
-        rgba(255,255,255,.06),
-        0 8px 22px
-        rgba(0,0,0,.18);
-
-    transition:
-        .25s ease;
-
-}
-
-
-/* BUSCADOR AL PASAR EL MOUSE */
-
-.search-header:hover{
-
-    border-color:
-        rgba(92,218,216,.65) !important;
-
-    box-shadow:
-        0 0 20px
-        rgba(46,192,202,.12);
-
-}
-
-
-/* ICONO BUSCAR */
-
-.search-header svg{
-
-    color:#57d7dc !important;
-
-}
-
-
-/* TEXTO */
-
-.search-header input{
-
-    font-size:13px !important;
-
-}
-
-.search-header input::placeholder{
-
-    color:#83aeb8 !important;
-
-}
-
-/* ==========================================================
-   ENCABEZADO V2 — AGUA + NATURALEZA
-   TODO EMBEBIDO EN EL HTML
-========================================================== */
-
-.topbar{
-
-    position:absolute !important;
-
-    top:0 !important;
-    left:0 !important;
-    right:0 !important;
-
-    height:100px !important;
-
+.topbar .logo-area{
     display:flex !important;
     align-items:center !important;
-    justify-content:space-between !important;
-
-    padding:0 26px !important;
-
-    overflow:hidden !important;
-
-    background:
-        linear-gradient(
-            90deg,
-            #06131e 0%,
-            #071b29 32%,
-            #06333c 55%,
-            #062d2b 76%,
-            #071820 100%
-        ) !important;
-
-    border-radius:
-        0 0 22px 22px !important;
-
-    border:
-        1px solid
-        rgba(91,205,198,.28) !important;
-
-    box-shadow:
-        0 12px 35px
-        rgba(0,0,0,.48) !important;
-
-    z-index:1000 !important;
-}
-
-
-/* ==========================================================
-   FONDO VISUAL DE AGUA
-========================================================== */
-
-.topbar::before{
-
-    content:"";
-
-    position:absolute;
-
-    left:30%;
-    right:0;
-
-    top:0;
-    bottom:0;
-
-    opacity:.72;
-
-    background:
-
-        radial-gradient(
-            ellipse at 48% 65%,
-            rgba(0,184,203,.34) 0%,
-            rgba(0,125,145,.18) 22%,
-            transparent 52%
-        ),
-
-        radial-gradient(
-            ellipse at 70% 20%,
-            rgba(25,170,155,.18) 0%,
-            transparent 40%
-        ),
-
-        radial-gradient(
-            ellipse at 88% 75%,
-            rgba(20,113,94,.25) 0%,
-            transparent 42%
-        );
-
-    pointer-events:none;
-
-}
-
-
-/* ==========================================================
-   ONDAS DE AGUA
-========================================================== */
-
-.topbar::after{
-
-    content:"";
-
-    position:absolute;
-
-    left:24%;
-    right:-5%;
-
-    bottom:-48px;
-
-    height:90px;
-
-    border-radius:50%;
-
-    border-top:
-        2px solid
-        rgba(64,211,215,.24);
-
-    box-shadow:
-
-        0 -10px 0
-        rgba(63,192,193,.08),
-
-        0 -22px 0
-        rgba(48,161,171,.06);
-
-    transform:
-        rotate(-2deg);
-
-    pointer-events:none;
-}
-
-
-/* ==========================================================
-   CONTENIDO DEL ENCABEZADO
-========================================================== */
-
-.logo-area{
-
-    position:relative !important;
-
-    z-index:5 !important;
-
-    display:flex !important;
-
-    align-items:center !important;
-
     gap:18px !important;
-
+    visibility:visible !important;
+    opacity:1 !important;
 }
 
 
-/* ==========================================================
-   LOGO
-========================================================== */
+/* CÍRCULO DEL LOGO */
 
-.logo-circle{
+.topbar .logo-circle{
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
 
     width:58px !important;
     height:58px !important;
-
     min-width:58px !important;
 
     border-radius:18px !important;
@@ -5100,153 +4764,113 @@ body.panel-mapa-activo #map .leaflet-municipios-pane {
             #063b55
         ) !important;
 
-    border:
-        1px solid
-        rgba(91,224,220,.42) !important;
+    border:1px solid rgba(91,224,220,.42) !important;
 
-    box-shadow:
-        0 8px 22px
-        rgba(0,0,0,.38),
-
-        0 0 20px
-        rgba(38,190,202,.12) !important;
-
+    color:#65dce0 !important;
 }
 
 
-/* ÍCONO ACTUAL */
+/* ICONO DE GOTA */
 
-.logo-circle svg{
-
+.topbar .logo-circle svg{
+    display:block !important;
     width:32px !important;
     height:32px !important;
 
     color:#65dce0 !important;
-
-    stroke-width:1.8 !important;
-
+    stroke:#65dce0 !important;
 }
 
 
-/* ==========================================================
-   TÍTULO
-========================================================== */
+/* TÍTULO */
 
-.titulo-sig{
+.topbar .titulo-sig{
+    display:block !important;
 
-    position:relative;
-
-    z-index:5;
+    color:#ffffff !important;
 
     font-size:25px !important;
-
     font-weight:800 !important;
 
     letter-spacing:.35px !important;
 
-    color:#ffffff !important;
-
-    text-shadow:
-        0 2px 12px
-        rgba(0,0,0,.35);
-
+    visibility:visible !important;
+    opacity:1 !important;
 }
 
 
-/* ==========================================================
-   SUBTÍTULO
-========================================================== */
+/* SUBTÍTULO */
 
-.subtitulo-sig{
-
-    position:relative;
-
-    z-index:5;
+.topbar .subtitulo-sig{
+    display:block !important;
 
     margin-top:5px !important;
 
-    font-size:13px !important;
-
     color:#9ed5d5 !important;
 
+    font-size:13px !important;
+
+    visibility:visible !important;
+    opacity:1 !important;
 }
 
 
-/* ==========================================================
-   BUSCADOR
-========================================================== */
+/* BUSCADOR */
 
-.search-header{
+.topbar .search-header{
+    display:flex !important;
+    align-items:center !important;
 
-    position:relative !important;
-
-    z-index:8 !important;
+    visibility:visible !important;
+    opacity:1 !important;
 
     width:350px !important;
 
-    padding:
-        11px 17px !important;
+    padding:11px 17px !important;
 
-    background:
-        rgba(3,19,30,.70) !important;
+    box-sizing:border-box !important;
 
-    backdrop-filter:
-        blur(8px);
+    background:rgba(3,19,30,.82) !important;
 
-    border:
-        1px solid
-        rgba(99,214,211,.30) !important;
+    border:1px solid rgba(99,214,211,.35) !important;
 
     border-radius:30px !important;
-
-    box-shadow:
-        inset 0 1px 0
-        rgba(255,255,255,.06),
-
-        0 8px 25px
-        rgba(0,0,0,.22);
-
-    transition:
-        all .25s ease;
-
 }
 
 
-.search-header:hover{
+/* ICONO DEL BUSCADOR */
 
-    border-color:
-        rgba(90,222,218,.65) !important;
+.topbar .search-header svg{
+    display:block !important;
 
-    background:
-        rgba(4,27,39,.82) !important;
-
-    box-shadow:
-        0 0 22px
-        rgba(45,197,200,.13);
-
-}
-
-
-.search-header svg{
+    width:18px !important;
+    height:18px !important;
 
     color:#58d5da !important;
-
+    stroke:#58d5da !important;
 }
 
 
-.search-header input{
+/* TEXTO DEL BUSCADOR */
+
+.topbar .search-header input{
+    display:block !important;
+
+    width:100% !important;
+
+    background:transparent !important;
+    border:none !important;
+    outline:none !important;
+
+    color:white !important;
 
     font-size:13px !important;
-
 }
 
-
-.search-header input::placeholder{
-
+.topbar .search-header input::placeholder{
     color:#82aeb5 !important;
-
 }
-    
+
   </style>
 </head>
 <body>
