@@ -4686,6 +4686,250 @@ body.panel-mapa-activo #map .leaflet-municipios-pane {
 
     font-weight:800;
 }
+
+/* ==================================================
+   ENCABEZADO — DISEÑO AGUA / NATURALEZA
+================================================== */
+
+.topbar{
+
+    height:100px !important;
+
+    padding:
+        0 28px !important;
+
+    background:
+        linear-gradient(
+            90deg,
+            #06131f 0%,
+            #082033 42%,
+            #063a45 72%,
+            #09251f 100%
+        ) !important;
+
+    border-radius:
+        0 0 22px 22px !important;
+
+    border:
+        1px solid
+        rgba(92,210,202,.30) !important;
+
+    box-shadow:
+        0 12px 35px
+        rgba(0,0,0,.48) !important;
+
+    overflow:hidden;
+
+    position:absolute;
+
+}
+
+
+/* LÍNEA DE AGUA DECORATIVA */
+
+.topbar::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+    right:0;
+
+    bottom:-34px;
+
+    height:75px;
+
+    background:
+        radial-gradient(
+            ellipse at 50% 0%,
+            rgba(53,196,211,.30),
+            transparent 62%
+        );
+
+    border-top:
+        1px solid
+        rgba(58,203,215,.22);
+
+    transform:
+        rotate(-1deg);
+
+    pointer-events:none;
+
+}
+
+
+/* CONTENIDO DEL ENCABEZADO */
+
+.logo-area{
+
+    position:relative;
+
+    z-index:2;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+}
+
+
+/* LOGO */
+
+.logo-circle{
+
+    width:58px !important;
+    height:58px !important;
+
+    border-radius:18px !important;
+
+    background:
+        linear-gradient(
+            145deg,
+            #0b6d83,
+            #06334e
+        ) !important;
+
+    border:
+        1px solid
+        rgba(89,220,216,.40);
+
+    box-shadow:
+        0 8px 25px
+        rgba(0,0,0,.35),
+        0 0 22px
+        rgba(38,190,207,.12);
+
+}
+
+
+/* ICONO TEMPORAL DE AGUA */
+
+.logo-circle svg{
+
+    width:32px !important;
+    height:32px !important;
+
+    color:#59dce0 !important;
+
+    stroke-width:1.8 !important;
+
+}
+
+
+/* TÍTULO */
+
+.titulo-sig{
+
+    font-size:25px !important;
+
+    font-weight:800 !important;
+
+    letter-spacing:.4px !important;
+
+    color:#ffffff !important;
+
+    line-height:1.05;
+
+}
+
+
+/* PALABRA SANITARIAS */
+
+.titulo-sig{
+
+    text-shadow:
+        0 2px 12px
+        rgba(0,0,0,.25);
+
+}
+
+
+/* SUBTÍTULO */
+
+.subtitulo-sig{
+
+    margin-top:6px !important;
+
+    font-size:13px !important;
+
+    color:#9bd7d8 !important;
+
+    letter-spacing:.2px;
+
+}
+
+
+/* BUSCADOR */
+
+.search-header{
+
+    position:relative;
+
+    z-index:3;
+
+    width:350px !important;
+
+    padding:
+        11px 17px !important;
+
+    background:
+        rgba(3,22,34,.72) !important;
+
+    border:
+        1px solid
+        rgba(110,222,220,.30) !important;
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255,255,255,.06),
+        0 8px 22px
+        rgba(0,0,0,.18);
+
+    transition:
+        .25s ease;
+
+}
+
+
+/* BUSCADOR AL PASAR EL MOUSE */
+
+.search-header:hover{
+
+    border-color:
+        rgba(92,218,216,.65) !important;
+
+    box-shadow:
+        0 0 20px
+        rgba(46,192,202,.12);
+
+}
+
+
+/* ICONO BUSCAR */
+
+.search-header svg{
+
+    color:#57d7dc !important;
+
+}
+
+
+/* TEXTO */
+
+.search-header input{
+
+    font-size:13px !important;
+
+}
+
+.search-header input::placeholder{
+
+    color:#83aeb8 !important;
+
+}
  
   </style>
 </head>
