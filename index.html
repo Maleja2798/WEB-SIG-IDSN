@@ -6188,6 +6188,17 @@ norteControl.addTo(map);
     map.getPane("municipios").style.zIndex = 400;
 
 /*==================================================
+ MAPA BASE OSCURO
+==================================================*/
+
+map.createPane("baseDark");
+
+map.getPane("baseDark").style.zIndex = 200;
+
+map.getPane("baseDark").style.filter =
+    "invert(0.90) hue-rotate(180deg) brightness(0.68) contrast(1.10) saturate(0.70)";
+
+/*==================================================
  PANE PARA MAPA BASE OSCURO
 ==================================================*/
 
@@ -6203,31 +6214,36 @@ map.getPane("baseDark").style.filter =
 ==================================================*/
 
 const baseMaps = {
-"Mapa azul oscuro": L.tileLayer(
-    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-    {
-        attribution:
-            '&copy; OpenStreetMap contributors',
-        subdomains: "abc",
-        maxZoom: 19,
-        minZoom: 2,
-        pane: "baseDark"
-    }
-).addTo(map),
 
-    "Mapa estándar": L.tileLayer(
-        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    "Mapa azul oscuro": L.tileLayer(
+        "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
         {
             attribution:
-                "&copy; OpenStreetMap contributors"
+                '&copy; OpenStreetMap contributors',
+            maxZoom: 19,
+            minZoom: 2,
+            pane: "baseDark"
+        }
+    ).addTo(map),
+
+
+    "Mapa estándar": L.tileLayer(
+        "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+            attribution:
+                "&copy; OpenStreetMap contributors",
+            maxZoom: 19,
+            minZoom: 2
         }
     ),
+
 
     "Satélite": L.tileLayer(
         "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
         {
             attribution:
-                "Tiles &copy; Esri"
+                "Tiles &copy; Esri",
+            maxZoom: 19
         }
     ),
 
@@ -6236,11 +6252,21 @@ const baseMaps = {
         "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
         {
             attribution:
-                "&copy; OpenTopoMap contributors"
+                "&copy; OpenTopoMap contributors",
+            maxZoom: 17
         }
     )
 
 };
+
+L.control.layers(
+    baseMaps,
+    null,
+    {
+        position: "topright"
+    }
+).addTo(map);
+    
     L.control.layers(baseMaps, null, { position: "topright" }).addTo(map);
 
 /*==================================================
