@@ -6215,16 +6215,13 @@ map.getPane("baseDark").style.filter =
 
 const baseMaps = {
 
-    "Mapa azul oscuro": L.tileLayer(
-        "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-        {
-            attribution:
-                "&copy; OpenStreetMap contributors",
-            maxZoom: 19,
-            minZoom: 2,
-            pane: "baseDark"
-        }
-    ).addTo(map),
+"Mapa azul oscuro": L.tileLayer(
+    "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+    {
+        attribution: "&copy; OpenStreetMap contributors",
+        maxZoom: 19
+    }
+).addTo(map),
 
     "Mapa estándar": L.tileLayer(
         "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
