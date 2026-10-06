@@ -5627,6 +5627,738 @@ body.panel-mapa-activo #map .leaflet-municipios-pane {
 .topbar .logo-circle svg{
     display:none !important;
 }
+
+/* =========================================================
+   SIG IDSN — ENCABEZADO PREMIUM
+   CAPA FINAL DE DISEÑO
+========================================================= */
+
+/* ---------------------------------------------------------
+   ESTRUCTURA PRINCIPAL
+--------------------------------------------------------- */
+
+.topbar{
+    height:100px !important;
+    min-height:100px !important;
+
+    padding:
+        0 28px 0 18px !important;
+
+    box-sizing:border-box !important;
+
+    display:flex !important;
+    align-items:center !important;
+    justify-content:space-between !important;
+
+    position:absolute !important;
+
+    top:0 !important;
+    left:0 !important;
+    right:0 !important;
+
+    overflow:hidden !important;
+
+    background:
+        linear-gradient(
+            105deg,
+            #04121E 0%,
+            #061B2A 30%,
+            #073C48 58%,
+            #07545A 72%,
+            #061D28 100%
+        ) !important;
+
+    border:
+        1px solid
+        rgba(110,235,235,.22) !important;
+
+    border-radius:
+        0 0 18px 18px !important;
+
+    box-shadow:
+        0 12px 35px rgba(0,0,0,.48),
+        inset 0 1px 0 rgba(255,255,255,.12),
+        inset 0 -1px 0 rgba(48,210,214,.16) !important;
+
+    z-index:5000 !important;
+}
+
+
+/* ---------------------------------------------------------
+   BRILLO AMBIENTAL
+--------------------------------------------------------- */
+
+.topbar::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:520px;
+    height:160px;
+
+    left:34%;
+    top:-70px;
+
+    background:
+        radial-gradient(
+            ellipse,
+            rgba(53,221,222,.24) 0%,
+            rgba(24,155,164,.10) 38%,
+            transparent 72%
+        );
+
+    filter:blur(18px);
+
+    pointer-events:none;
+
+    z-index:1;
+}
+
+
+/* ---------------------------------------------------------
+   LÍNEA INFERIOR DE LUZ
+--------------------------------------------------------- */
+
+.topbar::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+    right:0;
+
+    bottom:0;
+
+    height:1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(62,205,214,.10) 15%,
+            rgba(86,231,232,.55) 48%,
+            rgba(62,205,214,.12) 82%,
+            transparent 100%
+        );
+
+    box-shadow:
+        0 0 12px rgba(63,213,216,.25);
+
+    pointer-events:none;
+
+    z-index:30;
+}
+
+
+/* ---------------------------------------------------------
+   FONDO DE AGUA SVG
+--------------------------------------------------------- */
+
+.topbar .header-water-bg{
+
+    position:absolute !important;
+
+    inset:0 !important;
+
+    width:100% !important;
+    height:100% !important;
+
+    opacity:.62 !important;
+
+    pointer-events:none !important;
+
+    z-index:2 !important;
+
+    overflow:hidden !important;
+}
+
+
+.topbar .header-water-bg svg{
+
+    width:100% !important;
+    height:100% !important;
+
+    display:block !important;
+}
+
+
+/* ---------------------------------------------------------
+   CONTENIDO
+--------------------------------------------------------- */
+
+.topbar > *{
+
+    position:relative !important;
+
+    z-index:20 !important;
+}
+
+
+/* ---------------------------------------------------------
+   BLOQUE IZQUIERDO
+--------------------------------------------------------- */
+
+.topbar .header-left{
+
+    display:flex !important;
+
+    align-items:center !important;
+
+    gap:15px !important;
+
+    height:100% !important;
+
+    min-width:0 !important;
+
+    flex:1 1 auto !important;
+}
+
+
+/* ---------------------------------------------------------
+   LOGO
+--------------------------------------------------------- */
+
+.topbar .logo-circle{
+
+    width:60px !important;
+    height:60px !important;
+
+    min-width:60px !important;
+
+    flex:0 0 60px !important;
+
+    border-radius:17px !important;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(7,102,119,.90),
+            rgba(3,42,61,.96)
+        ) !important;
+
+    border:
+        1px solid
+        rgba(96,230,232,.46) !important;
+
+    box-shadow:
+        0 8px 22px rgba(0,0,0,.35),
+        inset 0 1px 0 rgba(255,255,255,.16),
+        0 0 20px rgba(33,202,208,.10) !important;
+
+    display:flex !important;
+
+    align-items:center !important;
+    justify-content:center !important;
+
+    overflow:hidden !important;
+}
+
+
+/* Mantener logo codificado dentro del HTML */
+
+.topbar .logo-circle{
+
+    background-size:cover !important;
+
+    background-position:center !important;
+
+    background-repeat:no-repeat !important;
+}
+
+
+/* ---------------------------------------------------------
+   TITULAR DEL SISTEMA
+--------------------------------------------------------- */
+
+.topbar .header-title{
+
+    display:flex !important;
+
+    flex-direction:column !important;
+
+    justify-content:center !important;
+
+    min-width:0 !important;
+
+    padding-top:1px !important;
+}
+
+
+.topbar .titulo-sig{
+
+    margin:0 !important;
+
+    white-space:nowrap !important;
+
+    color:#F7FDFF !important;
+
+    font-size:25px !important;
+
+    line-height:1.05 !important;
+
+    font-weight:800 !important;
+
+    letter-spacing:.25px !important;
+
+    text-shadow:
+        0 2px 12px rgba(0,0,0,.30) !important;
+}
+
+
+/* SANITARIAS */
+
+.topbar .titulo-sig span{
+
+    color:#36D8DA !important;
+
+    background:
+        linear-gradient(
+            90deg,
+            #30D6D8,
+            #7AE9E7
+        ) !important;
+
+    -webkit-background-clip:text !important;
+
+    background-clip:text !important;
+
+    -webkit-text-fill-color:transparent !important;
+
+    text-shadow:none !important;
+}
+
+
+/* ---------------------------------------------------------
+   SUBTÍTULO
+--------------------------------------------------------- */
+
+.topbar .subtitulo-sig{
+
+    margin-top:6px !important;
+
+    color:#A8C9CD !important;
+
+    font-size:12px !important;
+
+    line-height:1.2 !important;
+
+    font-weight:400 !important;
+
+    letter-spacing:.15px !important;
+}
+
+
+.topbar .subtitulo-sig b{
+
+    color:#4EDBDD !important;
+
+    margin:
+        0 7px !important;
+
+    font-weight:600 !important;
+}
+
+
+/* ---------------------------------------------------------
+   PARTE DERECHA
+--------------------------------------------------------- */
+
+.topbar .header-right{
+
+    display:flex !important;
+
+    align-items:center !important;
+
+    justify-content:flex-end !important;
+
+    gap:8px !important;
+
+    flex:0 0 auto !important;
+
+    height:100% !important;
+}
+
+
+/* separador visual */
+
+.topbar .header-right::before{
+
+    content:"";
+
+    width:1px;
+
+    height:32px;
+
+    margin-right:7px;
+
+    background:
+        linear-gradient(
+            180deg,
+            transparent,
+            rgba(125,225,226,.30),
+            transparent
+        );
+
+    opacity:.8;
+}
+
+
+/* ---------------------------------------------------------
+   BUSCADOR PREMIUM
+--------------------------------------------------------- */
+
+.topbar .search-header{
+
+    width:350px !important;
+
+    height:42px !important;
+
+    padding:
+        0 15px !important;
+
+    box-sizing:border-box !important;
+
+    display:flex !important;
+
+    align-items:center !important;
+
+    gap:10px !important;
+
+    margin:0 3px 0 0 !important;
+
+    border-radius:23px !important;
+
+    background:
+        rgba(2,19,29,.72) !important;
+
+    border:
+        1px solid
+        rgba(91,221,222,.27) !important;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.08),
+        0 5px 18px rgba(0,0,0,.20) !important;
+
+    backdrop-filter:blur(10px) !important;
+
+    -webkit-backdrop-filter:blur(10px) !important;
+
+    transition:
+        border-color .25s ease,
+        box-shadow .25s ease,
+        background .25s ease !important;
+}
+
+
+/* hover */
+
+.topbar .search-header:hover{
+
+    border-color:
+        rgba(91,221,222,.48) !important;
+
+    background:
+        rgba(3,25,36,.82) !important;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.09),
+        0 6px 22px rgba(0,0,0,.28),
+        0 0 18px rgba(42,210,214,.06) !important;
+}
+
+
+/* focus */
+
+.topbar .search-header:focus-within{
+
+    border-color:
+        rgba(77,224,226,.70) !important;
+
+    box-shadow:
+        0 0 0 3px rgba(52,216,218,.08),
+        0 7px 24px rgba(0,0,0,.30),
+        0 0 22px rgba(46,214,218,.10) !important;
+}
+
+
+/* icono búsqueda */
+
+.topbar .search-header svg{
+
+    width:18px !important;
+    height:18px !important;
+
+    flex:0 0 18px !important;
+
+    color:#4DDADD !important;
+
+    stroke:#4DDADD !important;
+}
+
+
+/* input */
+
+.topbar .search-header input{
+
+    width:100% !important;
+
+    height:100% !important;
+
+    min-width:0 !important;
+
+    padding:0 !important;
+
+    margin:0 !important;
+
+    border:none !important;
+
+    outline:none !important;
+
+    background:transparent !important;
+
+    color:#F4FFFF !important;
+
+    font-family:Poppins,sans-serif !important;
+
+    font-size:12px !important;
+
+    font-weight:400 !important;
+}
+
+
+.topbar .search-header input::placeholder{
+
+    color:#7FA7AC !important;
+
+    opacity:1 !important;
+}
+
+
+/* ---------------------------------------------------------
+   ICONOS
+--------------------------------------------------------- */
+
+.topbar .header-icon{
+
+    width:36px !important;
+    height:36px !important;
+
+    min-width:36px !important;
+
+    padding:0 !important;
+
+    margin:0 !important;
+
+    border-radius:50% !important;
+
+    display:flex !important;
+
+    align-items:center !important;
+    justify-content:center !important;
+
+    background:
+        rgba(3,26,37,.62) !important;
+
+    border:
+        1px solid
+        rgba(92,215,218,.24) !important;
+
+    color:#9BC7CA !important;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.07),
+        0 4px 12px rgba(0,0,0,.18) !important;
+
+    cursor:pointer !important;
+
+    transition:
+        all .22s ease !important;
+}
+
+
+.topbar .header-icon svg{
+
+    width:16px !important;
+    height:16px !important;
+
+    stroke-width:1.8 !important;
+}
+
+
+/* hover */
+
+.topbar .header-icon:hover{
+
+    color:#69E4E5 !important;
+
+    border-color:
+        rgba(91,225,226,.62) !important;
+
+    background:
+        rgba(13,100,106,.48) !important;
+
+    box-shadow:
+        0 5px 16px rgba(0,0,0,.25),
+        0 0 14px rgba(63,218,220,.12) !important;
+
+    transform:
+        translateY(-1px) !important;
+}
+
+
+/* ---------------------------------------------------------
+   USUARIO
+--------------------------------------------------------- */
+
+.topbar .header-user{
+
+    width:40px !important;
+    height:40px !important;
+
+    min-width:40px !important;
+
+    padding:0 !important;
+
+    margin-left:1px !important;
+
+    border-radius:50% !important;
+
+    display:flex !important;
+
+    align-items:center !important;
+    justify-content:center !important;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(20,139,145,.78),
+            rgba(3,56,63,.92)
+        ) !important;
+
+    border:
+        1px solid
+        rgba(100,233,233,.58) !important;
+
+    color:#7DEBEC !important;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.12),
+        0 5px 16px rgba(0,0,0,.30),
+        0 0 18px rgba(54,218,220,.08) !important;
+
+    cursor:pointer !important;
+
+    transition:
+        all .22s ease !important;
+}
+
+
+.topbar .header-user svg{
+
+    width:18px !important;
+    height:18px !important;
+
+    stroke-width:1.8 !important;
+}
+
+
+.topbar .header-user:hover{
+
+    transform:
+        translateY(-1px) scale(1.03) !important;
+
+    border-color:
+        rgba(127,245,245,.85) !important;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.15),
+        0 7px 20px rgba(0,0,0,.32),
+        0 0 22px rgba(57,224,226,.16) !important;
+}
+
+
+/* ---------------------------------------------------------
+   RESPONSIVE
+--------------------------------------------------------- */
+
+@media(max-width:1100px){
+
+    .topbar{
+        padding:
+            0 18px 0 14px !important;
+    }
+
+    .topbar .search-header{
+        width:270px !important;
+    }
+
+}
+
+
+@media(max-width:900px){
+
+    .topbar .search-header{
+        width:220px !important;
+    }
+
+    .topbar .titulo-sig{
+        font-size:20px !important;
+    }
+
+}
+
+
+@media(max-width:700px){
+
+    .topbar{
+        height:70px !important;
+        min-height:70px !important;
+    }
+
+    .topbar .header-left{
+        gap:9px !important;
+    }
+
+    .topbar .logo-circle{
+        width:44px !important;
+        height:44px !important;
+        min-width:44px !important;
+        flex-basis:44px !important;
+        border-radius:13px !important;
+    }
+
+    .topbar .titulo-sig{
+        font-size:14px !important;
+    }
+
+    .topbar .subtitulo-sig{
+        font-size:8px !important;
+    }
+
+    .topbar .search-header{
+        display:none !important;
+    }
+
+    .topbar .header-right::before{
+        display:none;
+    }
+
+    .topbar .header-icon{
+        width:31px !important;
+        height:31px !important;
+        min-width:31px !important;
+    }
+
+    .topbar .header-user{
+        width:34px !important;
+        height:34px !important;
+        min-width:34px !important;
+    }
+
+}    
+
     
   </style>
 </head>
@@ -5832,14 +6564,6 @@ body.panel-mapa-activo #map .leaflet-municipios-pane {
         <button class="header-user" title="Usuario">
             <i data-lucide="user-round"></i>
         </button>
-
-    </div>
-
-</header>
-
-        <input
-        id="input-buscar"
-        placeholder="Buscar municipio o fuente...">
 
     </div>
 
