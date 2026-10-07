@@ -5629,758 +5629,67 @@ body.panel-mapa-activo #map .leaflet-municipios-pane {
 }
 
 /* =========================================================
-   SIG IDSN — ENCABEZADO PREMIUM
-   CAPA FINAL DE DISEÑO
+   SIG IDSN — ENCABEZADO DEFINITIVO
+   AGUA + NATURALEZA
 ========================================================= */
 
-/* ---------------------------------------------------------
-   ESTRUCTURA PRINCIPAL
---------------------------------------------------------- */
-
 .topbar{
+    position:absolute !important;
+    top:0 !important;
+    left:0 !important;
+    right:0 !important;
+
+    width:100% !important;
     height:100px !important;
     min-height:100px !important;
 
-    padding:
-        0 28px 0 18px !important;
-
+    padding:0 24px 0 0 !important;
     box-sizing:border-box !important;
 
     display:flex !important;
     align-items:center !important;
     justify-content:space-between !important;
 
-    position:absolute !important;
-
-    top:0 !important;
-    left:0 !important;
-    right:0 !important;
-
     overflow:hidden !important;
 
     background:
         linear-gradient(
-            105deg,
-            #04121E 0%,
-            #061B2A 30%,
-            #073C48 58%,
-            #07545A 72%,
-            #061D28 100%
+            90deg,
+            #F4F8F7 0%,
+            #F4F8F7 27%,
+            #08717B 34%,
+            #087D84 52%,
+            #07515C 78%,
+            #062631 100%
         ) !important;
 
-    border:
-        1px solid
-        rgba(110,235,235,.22) !important;
-
-    border-radius:
-        0 0 18px 18px !important;
+    border:1px solid rgba(255,255,255,.30) !important;
+    border-radius:0 0 16px 16px !important;
 
     box-shadow:
-        0 12px 35px rgba(0,0,0,.48),
-        inset 0 1px 0 rgba(255,255,255,.12),
-        inset 0 -1px 0 rgba(48,210,214,.16) !important;
+        0 10px 30px rgba(0,0,0,.42),
+        inset 0 1px 0 rgba(255,255,255,.35) !important;
 
     z-index:5000 !important;
 }
 
 
-/* ---------------------------------------------------------
-   BRILLO AMBIENTAL
---------------------------------------------------------- */
-
-.topbar::before{
-
-    content:"";
-
-    position:absolute;
-
-    width:520px;
-    height:160px;
-
-    left:34%;
-    top:-70px;
-
-    background:
-        radial-gradient(
-            ellipse,
-            rgba(53,221,222,.24) 0%,
-            rgba(24,155,164,.10) 38%,
-            transparent 72%
-        );
-
-    filter:blur(18px);
-
-    pointer-events:none;
-
-    z-index:1;
-}
-
-
-/* ---------------------------------------------------------
-   LÍNEA INFERIOR DE LUZ
---------------------------------------------------------- */
-
-.topbar::after{
-
-    content:"";
-
-    position:absolute;
-
-    left:0;
-    right:0;
-
-    bottom:0;
-
-    height:1px;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent 0%,
-            rgba(62,205,214,.10) 15%,
-            rgba(86,231,232,.55) 48%,
-            rgba(62,205,214,.12) 82%,
-            transparent 100%
-        );
-
-    box-shadow:
-        0 0 12px rgba(63,213,216,.25);
-
-    pointer-events:none;
-
-    z-index:30;
-}
-
-
-/* ---------------------------------------------------------
-   FONDO DE AGUA SVG
---------------------------------------------------------- */
+/* =========================================================
+   FONDO DE AGUA
+========================================================= */
 
 .topbar .header-water-bg{
-
     position:absolute !important;
-
     inset:0 !important;
 
     width:100% !important;
     height:100% !important;
 
-    opacity:.62 !important;
+    opacity:1 !important;
 
+    overflow:hidden !important;
     pointer-events:none !important;
 
-    z-index:2 !important;
-
-    overflow:hidden !important;
-}
-
-
-.topbar .header-water-bg svg{
-
-    width:100% !important;
-    height:100% !important;
-
-    display:block !important;
-}
-
-
-/* ---------------------------------------------------------
-   CONTENIDO
---------------------------------------------------------- */
-
-.topbar > *{
-
-    position:relative !important;
-
-    z-index:20 !important;
-}
-
-
-/* ---------------------------------------------------------
-   BLOQUE IZQUIERDO
---------------------------------------------------------- */
-
-.topbar .header-left{
-
-    display:flex !important;
-
-    align-items:center !important;
-
-    gap:15px !important;
-
-    height:100% !important;
-
-    min-width:0 !important;
-
-    flex:1 1 auto !important;
-}
-
-
-/* ---------------------------------------------------------
-   LOGO
---------------------------------------------------------- */
-
-.topbar .logo-circle{
-
-    width:60px !important;
-    height:60px !important;
-
-    min-width:60px !important;
-
-    flex:0 0 60px !important;
-
-    border-radius:17px !important;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(7,102,119,.90),
-            rgba(3,42,61,.96)
-        ) !important;
-
-    border:
-        1px solid
-        rgba(96,230,232,.46) !important;
-
-    box-shadow:
-        0 8px 22px rgba(0,0,0,.35),
-        inset 0 1px 0 rgba(255,255,255,.16),
-        0 0 20px rgba(33,202,208,.10) !important;
-
-    display:flex !important;
-
-    align-items:center !important;
-    justify-content:center !important;
-
-    overflow:hidden !important;
-}
-
-
-/* Mantener logo codificado dentro del HTML */
-
-.topbar .logo-circle{
-
-    background-size:cover !important;
-
-    background-position:center !important;
-
-    background-repeat:no-repeat !important;
-}
-
-
-/* ---------------------------------------------------------
-   TITULAR DEL SISTEMA
---------------------------------------------------------- */
-
-.topbar .header-title{
-
-    display:flex !important;
-
-    flex-direction:column !important;
-
-    justify-content:center !important;
-
-    min-width:0 !important;
-
-    padding-top:1px !important;
-}
-
-
-.topbar .titulo-sig{
-
-    margin:0 !important;
-
-    white-space:nowrap !important;
-
-    color:#F7FDFF !important;
-
-    font-size:25px !important;
-
-    line-height:1.05 !important;
-
-    font-weight:800 !important;
-
-    letter-spacing:.25px !important;
-
-    text-shadow:
-        0 2px 12px rgba(0,0,0,.30) !important;
-}
-
-
-/* SANITARIAS */
-
-.topbar .titulo-sig span{
-
-    color:#36D8DA !important;
-
-    background:
-        linear-gradient(
-            90deg,
-            #30D6D8,
-            #7AE9E7
-        ) !important;
-
-    -webkit-background-clip:text !important;
-
-    background-clip:text !important;
-
-    -webkit-text-fill-color:transparent !important;
-
-    text-shadow:none !important;
-}
-
-
-/* ---------------------------------------------------------
-   SUBTÍTULO
---------------------------------------------------------- */
-
-.topbar .subtitulo-sig{
-
-    margin-top:6px !important;
-
-    color:#A8C9CD !important;
-
-    font-size:12px !important;
-
-    line-height:1.2 !important;
-
-    font-weight:400 !important;
-
-    letter-spacing:.15px !important;
-}
-
-
-.topbar .subtitulo-sig b{
-
-    color:#4EDBDD !important;
-
-    margin:
-        0 7px !important;
-
-    font-weight:600 !important;
-}
-
-
-/* ---------------------------------------------------------
-   PARTE DERECHA
---------------------------------------------------------- */
-
-.topbar .header-right{
-
-    display:flex !important;
-
-    align-items:center !important;
-
-    justify-content:flex-end !important;
-
-    gap:8px !important;
-
-    flex:0 0 auto !important;
-
-    height:100% !important;
-}
-
-
-/* separador visual */
-
-.topbar .header-right::before{
-
-    content:"";
-
-    width:1px;
-
-    height:32px;
-
-    margin-right:7px;
-
-    background:
-        linear-gradient(
-            180deg,
-            transparent,
-            rgba(125,225,226,.30),
-            transparent
-        );
-
-    opacity:.8;
-}
-
-
-/* ---------------------------------------------------------
-   BUSCADOR PREMIUM
---------------------------------------------------------- */
-
-.topbar .search-header{
-
-    width:350px !important;
-
-    height:42px !important;
-
-    padding:
-        0 15px !important;
-
-    box-sizing:border-box !important;
-
-    display:flex !important;
-
-    align-items:center !important;
-
-    gap:10px !important;
-
-    margin:0 3px 0 0 !important;
-
-    border-radius:23px !important;
-
-    background:
-        rgba(2,19,29,.72) !important;
-
-    border:
-        1px solid
-        rgba(91,221,222,.27) !important;
-
-    box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.08),
-        0 5px 18px rgba(0,0,0,.20) !important;
-
-    backdrop-filter:blur(10px) !important;
-
-    -webkit-backdrop-filter:blur(10px) !important;
-
-    transition:
-        border-color .25s ease,
-        box-shadow .25s ease,
-        background .25s ease !important;
-}
-
-
-/* hover */
-
-.topbar .search-header:hover{
-
-    border-color:
-        rgba(91,221,222,.48) !important;
-
-    background:
-        rgba(3,25,36,.82) !important;
-
-    box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.09),
-        0 6px 22px rgba(0,0,0,.28),
-        0 0 18px rgba(42,210,214,.06) !important;
-}
-
-
-/* focus */
-
-.topbar .search-header:focus-within{
-
-    border-color:
-        rgba(77,224,226,.70) !important;
-
-    box-shadow:
-        0 0 0 3px rgba(52,216,218,.08),
-        0 7px 24px rgba(0,0,0,.30),
-        0 0 22px rgba(46,214,218,.10) !important;
-}
-
-
-/* icono búsqueda */
-
-.topbar .search-header svg{
-
-    width:18px !important;
-    height:18px !important;
-
-    flex:0 0 18px !important;
-
-    color:#4DDADD !important;
-
-    stroke:#4DDADD !important;
-}
-
-
-/* input */
-
-.topbar .search-header input{
-
-    width:100% !important;
-
-    height:100% !important;
-
-    min-width:0 !important;
-
-    padding:0 !important;
-
-    margin:0 !important;
-
-    border:none !important;
-
-    outline:none !important;
-
-    background:transparent !important;
-
-    color:#F4FFFF !important;
-
-    font-family:Poppins,sans-serif !important;
-
-    font-size:12px !important;
-
-    font-weight:400 !important;
-}
-
-
-.topbar .search-header input::placeholder{
-
-    color:#7FA7AC !important;
-
-    opacity:1 !important;
-}
-
-
-
-.topbar .header-user:hover{
-
-    transform:
-        translateY(-1px) scale(1.03) !important;
-
-    border-color:
-        rgba(127,245,245,.85) !important;
-
-    box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.15),
-        0 7px 20px rgba(0,0,0,.32),
-        0 0 22px rgba(57,224,226,.16) !important;
-}
-
-
-/* ---------------------------------------------------------
-   RESPONSIVE
---------------------------------------------------------- */
-
-@media(max-width:1100px){
-
-    .topbar{
-        padding:
-            0 18px 0 14px !important;
-    }
-
-    .topbar .search-header{
-        width:270px !important;
-    }
-
-}
-
-
-@media(max-width:900px){
-
-    .topbar .search-header{
-        width:220px !important;
-    }
-
-    .topbar .titulo-sig{
-        font-size:20px !important;
-    }
-
-}
-
-
-@media(max-width:700px){
-
-    .topbar{
-        height:70px !important;
-        min-height:70px !important;
-    }
-
-    .topbar .header-left{
-        gap:9px !important;
-    }
-
-    .topbar .logo-circle{
-        width:44px !important;
-        height:44px !important;
-        min-width:44px !important;
-        flex-basis:44px !important;
-        border-radius:13px !important;
-    }
-
-    .topbar .titulo-sig{
-        font-size:14px !important;
-    }
-
-    .topbar .subtitulo-sig{
-        font-size:8px !important;
-    }
-
-    .topbar .search-header{
-        display:none !important;
-    }
-
-    .topbar .header-right::before{
-        display:none;
-    }
-
-}    
-
-/* =========================================================
-   ICONOS AMBIENTALES — AGUA / TERRITORIO / NATURALEZA
-========================================================= */
-
-.topbar .header-right{
-    display:flex !important;
-    align-items:center !important;
-    justify-content:flex-end !important;
-    gap:18px !important;
-    flex:0 0 auto !important;
-    min-width:0 !important;
-}
-
-/* Buscador */
-.topbar .search-header{
-    width:300px !important;
-    flex:0 0 300px !important;
-}
-
-/* Contenedor de los tres símbolos */
-.topbar .header-environment{
-    display:flex !important;
-    align-items:center !important;
-    justify-content:center !important;
-    gap:16px !important;
-    width:auto !important;
-    height:100% !important;
-    flex:0 0 auto !important;
-    padding-left:14px !important;
-    border-left:1px solid rgba(255,255,255,.18) !important;
-}
-
-/* Cada símbolo */
-.topbar .environment-icon{
-    width:30px !important;
-    height:30px !important;
-    min-width:30px !important;
-    display:flex !important;
-    align-items:center !important;
-    justify-content:center !important;
-    padding:0 !important;
-    margin:0 !important;
-
-    background:transparent !important;
-    border:none !important;
-    border-radius:0 !important;
-    box-shadow:none !important;
-
-    color:rgba(255,255,255,.76) !important;
-}
-
-/* SVG */
-.topbar .environment-icon svg{
-    width:21px !important;
-    height:21px !important;
-
-    display:block !important;
-
-    fill:none !important;
-    stroke:rgba(255,255,255,.76) !important;
-    stroke-width:1.5 !important;
-    stroke-linecap:round !important;
-    stroke-linejoin:round !important;
-
-    opacity:.88 !important;
-}
-
-/* Efecto muy discreto al pasar el mouse */
-.topbar .environment-icon:hover{
-    background:transparent !important;
-    transform:none !important;
-}
-
-.topbar .environment-icon:hover svg{
-    stroke:rgba(255,255,255,.95) !important;
-    opacity:1 !important;
-}
-
-/* =========================================================
-   ACABADO FINAL — ENCABEZADO IDSN
-========================================================= */
-
-/* ---------------------------------------------------------
-   1. BASE DEL ENCABEZADO
---------------------------------------------------------- */
-
-.topbar{
-    height:100px !important;
-    min-height:100px !important;
-
-    padding:0 18px !important;
-
-    position:relative !important;
-    overflow:hidden !important;
-
-    border-radius:0 0 14px 14px !important;
-
-    border:1px solid rgba(255,255,255,.18) !important;
-
-    background:
-        linear-gradient(
-            90deg,
-            #08242D 0%,
-            #0A5964 36%,
-            #087A82 57%,
-            #07505D 78%,
-            #061F2B 100%
-        ) !important;
-
-    box-shadow:
-        0 8px 28px rgba(0,0,0,.42) !important;
-}
-
-
-/* ---------------------------------------------------------
-   2. VEGETACIÓN SUTIL EN LOS EXTREMOS
---------------------------------------------------------- */
-
-.topbar::after{
-    content:"" !important;
-
-    position:absolute !important;
-
-    inset:0 !important;
-
-    pointer-events:none !important;
-
-    z-index:3 !important;
-
-    background:
-
-        radial-gradient(
-            ellipse at 3% -10%,
-            rgba(111,164,72,.62) 0%,
-            rgba(48,104,60,.28) 20%,
-            transparent 36%
-        ),
-
-        radial-gradient(
-            ellipse at 98% -8%,
-            rgba(91,139,66,.52) 0%,
-            rgba(40,91,54,.24) 19%,
-            transparent 34%
-        ),
-
-        radial-gradient(
-            ellipse at 53% 50%,
-            rgba(109,231,233,.14) 0%,
-            transparent 35%
-        );
-
-    mix-blend-mode:screen !important;
-}
-
-
-/* ---------------------------------------------------------
-   3. AGUA MÁS PROFUNDA
---------------------------------------------------------- */
-
-.topbar .header-water-bg{
-    opacity:1 !important;
     z-index:1 !important;
 }
 
@@ -6388,130 +5697,193 @@ body.panel-mapa-activo #map .leaflet-municipios-pane {
     width:100% !important;
     height:100% !important;
 
-    transform:
-        scale(1.04)
-        translateY(-1px) !important;
+    display:block !important;
+
+    transform:scale(1.03) !important;
 }
 
 
-/* ---------------------------------------------------------
-   4. VELO PARA UNIFICAR EL AGUA
---------------------------------------------------------- */
+/* =========================================================
+   VEGETACIÓN SUTIL
+========================================================= */
 
-.topbar .header-water-bg::after{
+.topbar::after{
     content:"" !important;
 
     position:absolute !important;
-
     inset:0 !important;
 
-    background:
-        linear-gradient(
-            90deg,
-            rgba(2,24,30,.38) 0%,
-            rgba(5,83,91,.10) 35%,
-            rgba(5,130,139,.06) 58%,
-            rgba(2,27,36,.32) 100%
-        ) !important;
-
     pointer-events:none !important;
+
+    z-index:3 !important;
+
+    background:
+        radial-gradient(
+            ellipse at 2% -20%,
+            rgba(91,145,65,.72) 0%,
+            rgba(67,112,59,.38) 15%,
+            transparent 30%
+        ),
+
+        radial-gradient(
+            ellipse at 99% -15%,
+            rgba(83,142,65,.68) 0%,
+            rgba(53,104,56,.30) 16%,
+            transparent 31%
+        ),
+
+        radial-gradient(
+            ellipse at 57% 50%,
+            rgba(114,240,238,.13) 0%,
+            transparent 38%
+        );
+
+    mix-blend-mode:screen !important;
 }
 
 
-/* ---------------------------------------------------------
-   5. PANEL DE IDENTIDAD
---------------------------------------------------------- */
+/* =========================================================
+   CONTENIDO
+========================================================= */
+
+.topbar > *{
+    position:relative !important;
+    z-index:20 !important;
+}
+
+
+/* =========================================================
+   PANEL BLANCO DE IDENTIDAD
+========================================================= */
 
 .topbar .header-left::before{
     content:"" !important;
 
     position:absolute !important;
 
-    left:-18px !important;
-    top:-1px !important;
+    left:0 !important;
+    top:0 !important;
 
-    width:445px !important;
-    height:102px !important;
+    width:455px !important;
+    height:100px !important;
 
     background:
         linear-gradient(
-            105deg,
-            rgba(248,251,250,.98) 0%,
-            rgba(241,248,247,.97) 72%,
-            rgba(221,239,237,.84) 100%
+            110deg,
+            #F8FBFA 0%,
+            #F4F9F8 72%,
+            #E2EFED 100%
         ) !important;
-
-    /*
-       Solo se redondea el extremo derecho.
-       No es una cápsula.
-    */
-    border-radius:
-        0 48px 48px 0 !important;
 
     clip-path:
         polygon(
             0 0,
-            94% 0,
-            100% 18%,
-            98% 50%,
-            100% 82%,
-            94% 100%,
+            91% 0,
+            97% 12%,
+            100% 30%,
+            99% 50%,
+            100% 70%,
+            97% 88%,
+            91% 100%,
             0 100%
         ) !important;
 
     box-shadow:
-        8px 0 20px rgba(0,0,0,.12) !important;
-
-    z-index:-1 !important;
+        8px 0 25px rgba(0,0,0,.12) !important;
 
     pointer-events:none !important;
+
+    z-index:-1 !important;
 }
 
 
-/* ---------------------------------------------------------
-   6. CONTENIDO IZQUIERDO
---------------------------------------------------------- */
+/* =========================================================
+   BLOQUE IZQUIERDO
+========================================================= */
 
 .topbar .header-left{
     position:relative !important;
 
-    z-index:25 !important;
-
     height:100% !important;
+    min-width:455px !important;
 
-    min-width:445px !important;
-
-    padding-left:18px !important;
-
-    gap:14px !important;
+    padding-left:38px !important;
 
     display:flex !important;
     align-items:center !important;
+
+    gap:15px !important;
+
+    z-index:25 !important;
 }
 
 
-/* ---------------------------------------------------------
-   7. LOGO
---------------------------------------------------------- */
+/* =========================================================
+   LOGO
+========================================================= */
 
 .topbar .header-left .logo-circle{
-    width:58px !important;
-    height:58px !important;
-    min-width:58px !important;
+    width:60px !important;
+    height:60px !important;
 
-    border-radius:15px !important;
+    min-width:60px !important;
+    flex:0 0 60px !important;
+
+    border-radius:16px !important;
+
+    background:
+        linear-gradient(
+            145deg,
+            #176C7B,
+            #073E55
+        ) !important;
+
+    border:
+        1px solid rgba(24,190,199,.48) !important;
 
     box-shadow:
-        0 4px 12px rgba(0,46,60,.18) !important;
+        0 5px 15px rgba(0,57,70,.20),
+        inset 0 1px 0 rgba(255,255,255,.18) !important;
+
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+
+    overflow:hidden !important;
 }
 
 
-/* ---------------------------------------------------------
-   8. TÍTULO
---------------------------------------------------------- */
+/* SVG DEL LOGO */
+
+.topbar .header-left .logo-circle svg{
+    display:block !important;
+
+    width:39px !important;
+    height:39px !important;
+}
+
+
+/* =========================================================
+   TÍTULO
+========================================================= */
+
+.topbar .header-left .header-title{
+    display:flex !important;
+    flex-direction:column !important;
+    justify-content:center !important;
+
+    min-width:0 !important;
+
+    padding:0 !important;
+}
+
 
 .topbar .header-left .titulo-sig{
-    color:#17363D !important;
+    margin:0 !important;
+
+    white-space:nowrap !important;
+
+    color:#17353C !important;
 
     font-size:23px !important;
     line-height:1.05 !important;
@@ -6523,122 +5895,350 @@ body.panel-mapa-activo #map .leaflet-municipios-pane {
     text-shadow:none !important;
 }
 
+
 .topbar .header-left .titulo-sig span{
-    color:#19B9BC !important;
+    color:#18B8BD !important;
 
     background:none !important;
 
     -webkit-background-clip:initial !important;
     background-clip:initial !important;
 
-    -webkit-text-fill-color:#19B9BC !important;
+    -webkit-text-fill-color:#18B8BD !important;
 
     text-shadow:none !important;
 }
 
 
-/* ---------------------------------------------------------
-   9. SUBTÍTULO
---------------------------------------------------------- */
+/* =========================================================
+   SUBTÍTULO
+========================================================= */
 
 .topbar .header-left .subtitulo-sig{
-    margin-top:5px !important;
+    margin-top:6px !important;
 
-    color:#60787C !important;
+    color:#60767A !important;
 
     font-size:10.5px !important;
+    line-height:1.2 !important;
 
     font-weight:500 !important;
+
+    letter-spacing:.05px !important;
 }
+
 
 .topbar .header-left .subtitulo-sig b{
-    color:#18AEB1 !important;
+    color:#19AEB2 !important;
 
-    margin:0 5px !important;
+    margin:0 6px !important;
 }
 
 
-/* ---------------------------------------------------------
-   10. BUSCADOR
---------------------------------------------------------- */
+/* =========================================================
+   PARTE DERECHA
+========================================================= */
+
+.topbar .header-right{
+    height:100% !important;
+
+    display:flex !important;
+    align-items:center !important;
+    justify-content:flex-end !important;
+
+    gap:16px !important;
+
+    flex:0 0 auto !important;
+
+    position:relative !important;
+    z-index:30 !important;
+}
+
+
+/* =========================================================
+   BUSCADOR
+========================================================= */
 
 .topbar .search-header{
-    position:relative !important;
-    z-index:40 !important;
-
     width:300px !important;
     height:43px !important;
+
+    flex:0 0 300px !important;
+
+    box-sizing:border-box !important;
+
+    display:flex !important;
+    align-items:center !important;
+
+    gap:10px !important;
+
+    padding:0 15px !important;
+    margin:0 !important;
 
     border-radius:23px !important;
 
     background:
-        rgba(2,20,29,.78) !important;
+        rgba(2,20,29,.84) !important;
 
     border:
-        1px solid rgba(117,231,232,.28) !important;
+        1px solid rgba(91,224,225,.34) !important;
 
     box-shadow:
-        inset 0 0 0 1px rgba(255,255,255,.025),
-        0 4px 15px rgba(0,0,0,.18) !important;
+        inset 0 1px 0 rgba(255,255,255,.08),
+        0 5px 18px rgba(0,0,0,.22) !important;
+
+    backdrop-filter:blur(8px) !important;
+    -webkit-backdrop-filter:blur(8px) !important;
 }
+
+
+/* icono búsqueda */
 
 .topbar .search-header svg{
-    color:#52D9DC !important;
-
     width:18px !important;
     height:18px !important;
+
+    flex:0 0 18px !important;
+
+    color:#45D8DB !important;
+    stroke:#45D8DB !important;
 }
 
 
-/* ---------------------------------------------------------
-   11. ICONOS AMBIENTALES
---------------------------------------------------------- */
+/* campo */
+
+.topbar .search-header input{
+    width:100% !important;
+    height:100% !important;
+
+    min-width:0 !important;
+
+    padding:0 !important;
+    margin:0 !important;
+
+    border:none !important;
+    outline:none !important;
+
+    background:transparent !important;
+
+    color:#F4FFFF !important;
+
+    font-family:Poppins,sans-serif !important;
+
+    font-size:11.5px !important;
+}
+
+
+.topbar .search-header input::placeholder{
+    color:#7EA8AD !important;
+    opacity:1 !important;
+}
+
+
+/* =========================================================
+   TRES ICONOS AMBIENTALES
+========================================================= */
 
 .topbar .header-environment{
     position:relative !important;
     z-index:40 !important;
 
-    gap:13px !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
 
-    padding-left:14px !important;
+    gap:17px !important;
+
+    width:auto !important;
+    height:100% !important;
+
+    padding-left:15px !important;
 
     border-left:
-        1px solid rgba(255,255,255,.16) !important;
+        1px solid rgba(255,255,255,.20) !important;
 }
+
+
+/* cada icono */
 
 .topbar .environment-icon{
-    width:28px !important;
-    height:28px !important;
+    width:25px !important;
+    height:30px !important;
 
-    min-width:28px !important;
+    min-width:25px !important;
 
-    color:
-        rgba(255,255,255,.72) !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+
+    padding:0 !important;
+    margin:0 !important;
+
+    background:transparent !important;
+    border:none !important;
+    border-radius:0 !important;
+
+    box-shadow:none !important;
+
+    color:rgba(255,255,255,.72) !important;
+
+    cursor:default !important;
 }
 
+
+/* SVG */
+
 .topbar .environment-icon svg{
-    width:19px !important;
-    height:19px !important;
+    width:20px !important;
+    height:20px !important;
+
+    display:block !important;
+
+    fill:none !important;
 
     stroke:
         rgba(255,255,255,.72) !important;
 
     stroke-width:1.45 !important;
+
+    stroke-linecap:round !important;
+    stroke-linejoin:round !important;
+
+    opacity:.88 !important;
 }
+
+
+/* hover discreto */
+
+.topbar .environment-icon:hover{
+    background:transparent !important;
+    transform:none !important;
+    box-shadow:none !important;
+}
+
 
 .topbar .environment-icon:hover svg{
     stroke:
         rgba(255,255,255,.90) !important;
+
+    opacity:1 !important;
 }
 
 
-/* ---------------------------------------------------------
-   12. ASEGURAR QUE NO APAREZCAN LOS BOTONES ANTIGUOS
---------------------------------------------------------- */
+/* =========================================================
+   ELIMINAR CUALQUIER RESTO DE BOTONES ANTIGUOS
+========================================================= */
 
 .topbar .header-icon,
-.topbar .header-user{
+.topbar .header-user,
+.topbar .header-notification,
+.topbar .header-settings,
+.topbar .header-help{
     display:none !important;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:1100px){
+
+    .topbar .header-left{
+        min-width:390px !important;
+    }
+
+    .topbar .header-left::before{
+        width:390px !important;
+    }
+
+    .topbar .search-header{
+        width:250px !important;
+        flex-basis:250px !important;
+    }
+
+    .topbar .header-environment{
+        gap:12px !important;
+    }
+}
+
+
+@media(max-width:900px){
+
+    .topbar .header-left{
+        min-width:350px !important;
+        padding-left:22px !important;
+    }
+
+    .topbar .header-left::before{
+        width:350px !important;
+    }
+
+    .topbar .titulo-sig{
+        font-size:19px !important;
+    }
+
+    .topbar .subtitulo-sig{
+        font-size:9px !important;
+    }
+
+    .topbar .search-header{
+        width:210px !important;
+        flex-basis:210px !important;
+    }
+}
+
+
+@media(max-width:700px){
+
+    .topbar{
+        height:78px !important;
+        min-height:78px !important;
+
+        padding-right:10px !important;
+    }
+
+    .topbar .header-left{
+        min-width:270px !important;
+        padding-left:15px !important;
+        gap:9px !important;
+    }
+
+    .topbar .header-left::before{
+        width:285px !important;
+        height:78px !important;
+    }
+
+    .topbar .logo-circle{
+        width:43px !important;
+        height:43px !important;
+        min-width:43px !important;
+        flex-basis:43px !important;
+        border-radius:12px !important;
+    }
+
+    .topbar .titulo-sig{
+        font-size:14px !important;
+    }
+
+    .topbar .subtitulo-sig{
+        font-size:7.5px !important;
+        margin-top:3px !important;
+    }
+
+    .topbar .search-header{
+        display:none !important;
+    }
+
+    .topbar .header-environment{
+        border-left:none !important;
+        padding-left:0 !important;
+        gap:8px !important;
+    }
+
+    .topbar .environment-icon{
+        width:22px !important;
+    }
 }
     
   </style>
