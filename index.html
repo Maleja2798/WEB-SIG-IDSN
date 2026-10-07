@@ -6220,6 +6220,83 @@ body.panel-mapa-activo #map .leaflet-municipios-pane {
 
 }    
 
+/* =========================================================
+   ICONOS AMBIENTALES — AGUA / TERRITORIO / NATURALEZA
+========================================================= */
+
+.topbar .header-right{
+    display:flex !important;
+    align-items:center !important;
+    justify-content:flex-end !important;
+    gap:18px !important;
+    flex:0 0 auto !important;
+    min-width:0 !important;
+}
+
+/* Buscador */
+.topbar .search-header{
+    width:300px !important;
+    flex:0 0 300px !important;
+}
+
+/* Contenedor de los tres símbolos */
+.topbar .header-environment{
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    gap:16px !important;
+    width:auto !important;
+    height:100% !important;
+    flex:0 0 auto !important;
+    padding-left:14px !important;
+    border-left:1px solid rgba(255,255,255,.18) !important;
+}
+
+/* Cada símbolo */
+.topbar .environment-icon{
+    width:30px !important;
+    height:30px !important;
+    min-width:30px !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    padding:0 !important;
+    margin:0 !important;
+
+    background:transparent !important;
+    border:none !important;
+    border-radius:0 !important;
+    box-shadow:none !important;
+
+    color:rgba(255,255,255,.76) !important;
+}
+
+/* SVG */
+.topbar .environment-icon svg{
+    width:21px !important;
+    height:21px !important;
+
+    display:block !important;
+
+    fill:none !important;
+    stroke:rgba(255,255,255,.76) !important;
+    stroke-width:1.5 !important;
+    stroke-linecap:round !important;
+    stroke-linejoin:round !important;
+
+    opacity:.88 !important;
+}
+
+/* Efecto muy discreto al pasar el mouse */
+.topbar .environment-icon:hover{
+    background:transparent !important;
+    transform:none !important;
+}
+
+.topbar .environment-icon:hover svg{
+    stroke:rgba(255,255,255,.95) !important;
+    opacity:1 !important;
+}
     
   </style>
 </head>
