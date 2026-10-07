@@ -6298,63 +6298,84 @@ body.panel-mapa-activo #map .leaflet-municipios-pane {
     opacity:1 !important;
 }
 
-    /* =========================================================
-   PANEL DE IDENTIDAD — ESTILO REFERENCIA 1
+/* =========================================================
+   ENCABEZADO — IDENTIDAD + AGUA
+   VERSION DEFINITIVA
 ========================================================= */
+
+/* ---------------------------------------------------------
+   ESTRUCTURA GENERAL
+--------------------------------------------------------- */
 
 .topbar{
     position:relative !important;
     overflow:hidden !important;
 }
 
-/* Panel claro de la izquierda */
-.topbar .header-left::before{
+/* ---------------------------------------------------------
+   PANEL CLARO DE IDENTIDAD
+--------------------------------------------------------- */
+
+.topbar::before{
     content:"" !important;
 
     position:absolute !important;
 
-    left:-16px !important;
-    top:-20px !important;
+    left:0 !important;
+    top:0 !important;
 
-    width:470px !important;
-    height:125px !important;
+    width:485px !important;
+    height:100% !important;
 
     background:
         linear-gradient(
-            105deg,
-            #F4F8F7 0%,
-            #EDF5F4 68%,
-            #DCECEB 100%
+            100deg,
+            #F7FAF9 0%,
+            #F3F8F7 72%,
+            #E8F2F1 100%
         ) !important;
 
-    clip-path:
-        polygon(
-            0 0,
-            100% 0,
-            91% 50%,
-            100% 100%,
-            0 100%
-        ) !important;
-
-    z-index:-1 !important;
+    /*
+       Borde derecho suave y curvado.
+       NO forma una punta triangular.
+    */
+    border-radius:
+        0 70px 70px 0 /
+        0 50% 50% 0 !important;
 
     box-shadow:
-        10px 0 24px rgba(0,0,0,.12) !important;
+        12px 0 28px rgba(0,0,0,.10) !important;
+
+    z-index:8 !important;
 
     pointer-events:none !important;
 }
 
-/* El contenido queda encima del panel */
+/* ---------------------------------------------------------
+   CONTENIDO DE IDENTIDAD
+--------------------------------------------------------- */
+
 .topbar .header-left{
     position:relative !important;
+
     z-index:30 !important;
 
-    min-width:470px !important;
+    display:flex !important;
+    align-items:center !important;
 
-    padding-left:18px !important;
+    gap:15px !important;
+
+    min-width:485px !important;
+
+    height:100% !important;
+
+    padding-left:20px !important;
 }
 
-/* Logo */
+/* ---------------------------------------------------------
+   LOGO
+--------------------------------------------------------- */
+
 .topbar .header-left .logo-circle{
     position:relative !important;
     z-index:2 !important;
@@ -6366,46 +6387,65 @@ body.panel-mapa-activo #map .leaflet-municipios-pane {
     border-radius:17px !important;
 
     box-shadow:
-        0 5px 14px rgba(0,65,80,.18) !important;
+        0 5px 15px rgba(0,60,75,.16) !important;
 }
 
-/* Título principal */
+/* ---------------------------------------------------------
+   TITULO
+--------------------------------------------------------- */
+
 .topbar .header-left .titulo-sig{
-    color:#12323A !important;
+    margin:0 !important;
+
+    color:#16343B !important;
 
     font-size:24px !important;
+    line-height:1.05 !important;
+
     font-weight:800 !important;
 
-    letter-spacing:-.4px !important;
+    letter-spacing:-.5px !important;
 
     text-shadow:none !important;
 }
 
 /* SANITARIAS */
+
 .topbar .header-left .titulo-sig span{
-    color:#18AEB2 !important;
+    color:#19B5B8 !important;
 
     background:none !important;
-    -webkit-text-fill-color:#18AEB2 !important;
+
+    -webkit-background-clip:initial !important;
+    background-clip:initial !important;
+
+    -webkit-text-fill-color:#19B5B8 !important;
 
     text-shadow:none !important;
 }
 
-/* Subtítulo */
+/* ---------------------------------------------------------
+   SUBTITULO
+--------------------------------------------------------- */
+
 .topbar .header-left .subtitulo-sig{
-    color:#527276 !important;
+    margin-top:5px !important;
+
+    color:#60797D !important;
 
     font-size:11px !important;
+
+    line-height:1.2 !important;
 
     font-weight:500 !important;
 
     text-shadow:none !important;
 }
 
-/* Punto separador */
 .topbar .header-left .subtitulo-sig b{
-    color:#18AEB2 !important;
-    margin:0 5px !important;
+    color:#20AEB1 !important;
+
+    margin:0 6px !important;
 }
     
   </style>
