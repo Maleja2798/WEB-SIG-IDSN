@@ -5627,6 +5627,653 @@ body.panel-mapa-activo #map .leaflet-municipios-pane {
 .topbar .logo-circle svg{
     display:none !important;
 }
+
+/* =========================================================
+   SIG IDSN — ENCABEZADO DEFINITIVO
+   AGUA + TERRITORIO + MEDIO AMBIENTE
+========================================================= */
+
+/* ---------------------------------------------------------
+   ENCABEZADO GENERAL
+--------------------------------------------------------- */
+
+.topbar{
+    position:absolute !important;
+    top:0 !important;
+    left:0 !important;
+    right:0 !important;
+
+    width:100% !important;
+    height:100px !important;
+
+    padding:0 28px !important;
+    box-sizing:border-box !important;
+
+    display:flex !important;
+    align-items:center !important;
+    justify-content:space-between !important;
+
+    overflow:hidden !important;
+
+    background:
+        linear-gradient(
+            90deg,
+            #061A24 0%,
+            #073E49 38%,
+            #087A86 62%,
+            #062D35 100%
+        ) !important;
+
+    border:0 !important;
+    border-bottom:1px solid rgba(255,255,255,.16) !important;
+
+    border-radius:0 0 18px 18px !important;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,.42) !important;
+
+    z-index:5000 !important;
+}
+
+
+/* ---------------------------------------------------------
+   FONDO DE AGUA
+--------------------------------------------------------- */
+
+.topbar .header-water-bg{
+    position:absolute !important;
+
+    inset:0 !important;
+
+    width:100% !important;
+    height:100% !important;
+
+    z-index:0 !important;
+
+    opacity:1 !important;
+
+    pointer-events:none !important;
+}
+
+.topbar .header-water-bg svg{
+    width:100% !important;
+    height:100% !important;
+
+    display:block !important;
+}
+
+
+/* ---------------------------------------------------------
+   PANEL CLARO DE IDENTIDAD
+   ESTE ES EL CAMBIO PRINCIPAL
+--------------------------------------------------------- */
+
+.topbar::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+    top:0;
+
+    width:455px;
+    height:100%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #F5FAF9 0%,
+            #EDF7F5 55%,
+            #E4F1EF 100%
+        );
+
+    border-radius:
+        0 52% 52% 0 /
+        0 50% 50% 0;
+
+    box-shadow:
+        10px 0 30px rgba(0,0,0,.08);
+
+    z-index:2;
+
+    pointer-events:none;
+}
+
+
+/* pequeña línea de transición del panel */
+
+.topbar::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:420px;
+    top:0;
+
+    width:80px;
+    height:100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,0),
+            rgba(255,255,255,.08),
+            rgba(255,255,255,0)
+        );
+
+    z-index:3;
+
+    pointer-events:none;
+}
+
+
+/* ---------------------------------------------------------
+   CONTENIDO IZQUIERDO
+--------------------------------------------------------- */
+
+.topbar .header-left{
+
+    position:relative !important;
+
+    z-index:20 !important;
+
+    display:flex !important;
+
+    align-items:center !important;
+
+    gap:14px !important;
+
+    flex:0 0 440px !important;
+
+    min-width:440px !important;
+
+    height:100% !important;
+}
+
+
+/* ---------------------------------------------------------
+   LOGO
+--------------------------------------------------------- */
+
+.topbar .logo-circle{
+
+    width:60px !important;
+    height:60px !important;
+
+    min-width:60px !important;
+
+    flex:0 0 60px !important;
+
+    display:flex !important;
+
+    align-items:center !important;
+    justify-content:center !important;
+
+    border-radius:17px !important;
+
+    background:
+        linear-gradient(
+            145deg,
+            #0B9DB4,
+            #08758C 55%,
+            #06445B
+        ) !important;
+
+    border:
+        1px solid rgba(37,190,205,.55) !important;
+
+    box-shadow:
+        0 7px 18px rgba(0,60,75,.28),
+        inset 0 1px 0 rgba(255,255,255,.22) !important;
+}
+
+
+/* IMPORTANTE:
+   vuelve a mostrar el SVG original de la gota */
+
+.topbar .logo-circle svg{
+
+    display:block !important;
+
+    width:32px !important;
+    height:32px !important;
+
+    color:#67E8EA !important;
+
+    stroke-width:1.8 !important;
+}
+
+
+/* ---------------------------------------------------------
+   TÍTULO
+--------------------------------------------------------- */
+
+.topbar .header-title{
+
+    position:relative;
+
+    z-index:21;
+
+    display:flex !important;
+
+    flex-direction:column !important;
+
+    justify-content:center !important;
+
+    min-width:0 !important;
+}
+
+
+.topbar .titulo-sig{
+
+    margin:0 !important;
+
+    white-space:nowrap !important;
+
+    color:#183640 !important;
+
+    font-size:21px !important;
+
+    line-height:1.05 !important;
+
+    font-weight:800 !important;
+
+    letter-spacing:.15px !important;
+
+    text-shadow:none !important;
+}
+
+
+.topbar .titulo-sig span{
+
+    color:#16AFC0 !important;
+
+    text-shadow:none !important;
+
+    background:none !important;
+}
+
+
+/* ---------------------------------------------------------
+   SUBTÍTULO
+--------------------------------------------------------- */
+
+.topbar .subtitulo-sig{
+
+    margin-top:7px !important;
+
+    white-space:nowrap !important;
+
+    color:#557278 !important;
+
+    font-size:9.5px !important;
+
+    line-height:1 !important;
+
+    font-weight:500 !important;
+
+    letter-spacing:.1px !important;
+}
+
+
+.topbar .subtitulo-sig b{
+
+    color:#16AFC0 !important;
+
+    margin:0 5px !important;
+}
+
+
+/* ---------------------------------------------------------
+   PARTE DERECHA
+--------------------------------------------------------- */
+
+.topbar .header-right{
+
+    position:relative !important;
+
+    z-index:30 !important;
+
+    display:flex !important;
+
+    align-items:center !important;
+
+    justify-content:flex-end !important;
+
+    gap:18px !important;
+
+    flex:1 1 auto !important;
+
+    height:100% !important;
+}
+
+
+/* ---------------------------------------------------------
+   BUSCADOR
+--------------------------------------------------------- */
+
+.topbar .search-header{
+
+    width:300px !important;
+
+    height:42px !important;
+
+    box-sizing:border-box !important;
+
+    display:flex !important;
+
+    align-items:center !important;
+
+    gap:9px !important;
+
+    padding:0 16px !important;
+
+    margin:0 !important;
+
+    border-radius:24px !important;
+
+    background:
+        rgba(2,20,29,.78) !important;
+
+    border:
+        1px solid rgba(116,224,225,.34) !important;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.08),
+        0 6px 18px rgba(0,0,0,.22) !important;
+}
+
+
+.topbar .search-header svg{
+
+    width:17px !important;
+    height:17px !important;
+
+    flex:0 0 17px !important;
+
+    color:#55DDE0 !important;
+}
+
+
+.topbar .search-header input{
+
+    width:100% !important;
+
+    min-width:0 !important;
+
+    padding:0 !important;
+    margin:0 !important;
+
+    border:0 !important;
+    outline:0 !important;
+
+    background:transparent !important;
+
+    color:white !important;
+
+    font-family:Poppins,sans-serif !important;
+
+    font-size:10px !important;
+}
+
+
+.topbar .search-header input::placeholder{
+
+    color:#91B4B8 !important;
+
+    opacity:1 !important;
+}
+
+
+/* ---------------------------------------------------------
+   ICONOS AMBIENTALES
+   GOTA — MONTAÑA — HOJA
+--------------------------------------------------------- */
+
+.topbar .header-environment{
+
+    display:flex !important;
+
+    align-items:center !important;
+
+    justify-content:center !important;
+
+    gap:17px !important;
+
+    height:42px !important;
+
+    padding-left:17px !important;
+
+    border-left:
+        1px solid rgba(255,255,255,.20) !important;
+}
+
+
+.topbar .environment-icon{
+
+    width:25px !important;
+    height:25px !important;
+
+    display:flex !important;
+
+    align-items:center !important;
+    justify-content:center !important;
+
+    padding:0 !important;
+
+    margin:0 !important;
+
+    background:transparent !important;
+
+    border:0 !important;
+
+    border-radius:0 !important;
+
+    color:rgba(255,255,255,.76) !important;
+
+    opacity:.88 !important;
+
+    transition:
+        opacity .2s ease,
+        transform .2s ease,
+        color .2s ease !important;
+
+    cursor:default !important;
+}
+
+
+.topbar .environment-icon svg{
+
+    width:22px !important;
+    height:22px !important;
+
+    display:block !important;
+
+    fill:none !important;
+
+    stroke:
+        currentColor !important;
+
+    stroke-width:1.45 !important;
+
+    stroke-linecap:round !important;
+
+    stroke-linejoin:round !important;
+}
+
+
+.topbar .environment-icon:hover{
+
+    color:#FFFFFF !important;
+
+    opacity:1 !important;
+
+    transform:translateY(-1px) !important;
+}
+
+
+/* ---------------------------------------------------------
+   GARANTIZAR QUE NO APAREZCAN LOS BOTONES ANTIGUOS
+--------------------------------------------------------- */
+
+.topbar .header-icon,
+.topbar .header-user{
+
+    display:none !important;
+}
+
+
+/* ---------------------------------------------------------
+   DETALLES DE AGUA SOBRE EL ENCABEZADO
+--------------------------------------------------------- */
+
+.topbar .header-water-bg::before{
+
+    opacity:.65 !important;
+}
+
+
+.topbar .header-water-bg::after{
+
+    opacity:.55 !important;
+}
+
+
+/* ---------------------------------------------------------
+   RESPONSIVE
+--------------------------------------------------------- */
+
+@media(max-width:1100px){
+
+    .topbar .header-left{
+
+        flex-basis:390px !important;
+        min-width:390px !important;
+    }
+
+    .topbar::before{
+
+        width:410px;
+    }
+
+    .topbar .search-header{
+
+        width:240px !important;
+    }
+}
+
+
+@media(max-width:850px){
+
+    .topbar{
+
+        height:88px !important;
+
+        padding:0 16px !important;
+    }
+
+    .topbar::before{
+
+        width:360px;
+    }
+
+    .topbar .header-left{
+
+        flex-basis:340px !important;
+        min-width:340px !important;
+
+        gap:10px !important;
+    }
+
+    .topbar .logo-circle{
+
+        width:52px !important;
+        height:52px !important;
+
+        min-width:52px !important;
+    }
+
+    .topbar .titulo-sig{
+
+        font-size:17px !important;
+    }
+
+    .topbar .subtitulo-sig{
+
+        font-size:8px !important;
+    }
+
+    .topbar .search-header{
+
+        width:190px !important;
+    }
+}
+
+
+@media(max-width:700px){
+
+    .topbar{
+
+        height:75px !important;
+    }
+
+    .topbar::before{
+
+        width:300px;
+    }
+
+    .topbar .header-left{
+
+        flex-basis:auto !important;
+        min-width:0 !important;
+    }
+
+    .topbar .logo-circle{
+
+        width:44px !important;
+        height:44px !important;
+
+        min-width:44px !important;
+    }
+
+    .topbar .logo-circle svg{
+
+        width:25px !important;
+        height:25px !important;
+    }
+
+    .topbar .titulo-sig{
+
+        font-size:14px !important;
+    }
+
+    .topbar .subtitulo-sig{
+
+        display:none !important;
+    }
+
+    .topbar .search-header{
+
+        display:none !important;
+    }
+
+    .topbar .header-environment{
+
+        border-left:0 !important;
+
+        padding-left:0 !important;
+
+        gap:9px !important;
+    }
+
+    .topbar .environment-icon{
+
+        width:22px !important;
+        height:22px !important;
+    }
+}
     
   </style>
 </head>
