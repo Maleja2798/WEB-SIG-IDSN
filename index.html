@@ -5307,390 +5307,114 @@ background:
 <body>
  <header class="topbar">
 
-<div class="header-water-bg">
 
+<div class="header-water-bg">
     <svg viewBox="0 0 1200 100"
          preserveAspectRatio="none"
          aria-hidden="true">
-
         <defs>
-
-            <!-- Fondo agua -->
-            <linearGradient id="aguaFondoFinal"
-                            x1="0" y1="0"
-                            x2="1" y2="0">
-
-                <stop offset="0%"
-                      stop-color="#071C25"/>
-
-                <stop offset="28%"
-                      stop-color="#083B47"/>
-
-                <stop offset="50%"
-                      stop-color="#087783"/>
-
-                <stop offset="72%"
-                      stop-color="#07515E"/>
-
-                <stop offset="100%"
-                      stop-color="#061D28"/>
-
+            <linearGradient id="aguaFondo" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#061A16"/>
+                <stop offset="30%" stop-color="#0B493B"/>
+                <stop offset="58%" stop-color="#16806C"/>
+                <stop offset="78%" stop-color="#0D5545"/>
+                <stop offset="100%" stop-color="#071F19"/>
             </linearGradient>
 
-
-            <!-- Brillo del agua -->
-            <radialGradient id="brilloAguaFinal">
-
-                <stop offset="0%"
-                      stop-color="#9EFFFF"
-                      stop-opacity=".42"/>
-
-                <stop offset="35%"
-                      stop-color="#4AD7DD"
-                      stop-opacity=".20"/>
-
-                <stop offset="100%"
-                      stop-color="#4AD7DD"
-                      stop-opacity="0"/>
-
-            </radialGradient>
-
-
-            <!-- Verde hojas -->
-            <linearGradient id="hojaFinal"
-                            x1="0" y1="0"
-                            x2="0" y2="1">
-
-                <stop offset="0%"
-                      stop-color="#83A958"/>
-
-                <stop offset="100%"
-                      stop-color="#315E3B"/>
-
+            <linearGradient id="aguaEspuma" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#65C9B1" stop-opacity=".05"/>
+                <stop offset="42%" stop-color="#A7E8D8" stop-opacity=".62"/>
+                <stop offset="68%" stop-color="#48BBA0" stop-opacity=".24"/>
+                <stop offset="100%" stop-color="#8ADCC8" stop-opacity=".08"/>
             </linearGradient>
 
-
-            <!-- Brillo -->
-            <filter id="blurFinal">
-
-                <feGaussianBlur stdDeviation="5"/>
-
+            <filter id="texturaAgua" x="-5%" y="-20%" width="110%" height="145%">
+                <feTurbulence type="fractalNoise"
+                    baseFrequency=".018 .12"
+                    numOctaves="2"
+                    seed="12"
+                    result="ruido"/>
+                <feDisplacementMap in="SourceGraphic"
+                    in2="ruido"
+                    scale="5"
+                    xChannelSelector="R"
+                    yChannelSelector="G"/>
             </filter>
 
+            <filter id="suavidadAgua">
+                <feGaussianBlur stdDeviation="1.2"/>
+            </filter>
         </defs>
 
-
-        <!-- =================================================
-             BASE
-        ================================================== -->
-
-        <rect
-            width="1200"
-            height="100"
-            fill="url(#aguaFondoFinal)"
-        />
-
-
-        <!-- =================================================
-             BRILLO CENTRAL DEL AGUA
-        ================================================== -->
-
-        <ellipse
-            cx="690"
-            cy="48"
-            rx="360"
-            ry="55"
-            fill="url(#brilloAguaFinal)"
-            filter="url(#blurFinal)"
-        />
-
-
-        <!-- =================================================
-             CORRIENTE DE AGUA CENTRAL
-        ================================================== -->
-
+        <!-- Masa principal de agua -->
         <path
-            d="
-            M250 72
-            C340 38 410 88 500 58
-            C590 28 665 78 755 48
-            C850 18 955 70 1080 42
-            C1130 30 1165 34 1200 28
-            L1200 100
-            L250 100 Z"
+            d="M0 0 H1200 V61
+               C1160 58 1150 76 1115 68
+               S1065 54 1038 70
+               S990 85 960 67
+               S910 55 880 70
+               S824 91 790 72
+               S738 55 706 70
+               S650 83 620 67
+               S565 55 532 72
+               S480 91 445 69
+               S390 55 360 70
+               S305 84 274 66
+               S220 57 190 73
+               S130 91 100 70
+               S45 61 0 75 Z"
+            fill="url(#aguaFondo)"
+            filter="url(#texturaAgua)"/>
 
-            fill="#159AA5"
-            opacity=".18"
-        />
-
-
-        <!-- =================================================
-             ONDA PRINCIPAL
-        ================================================== -->
-
+        <!-- Espuma irregular en el filo -->
         <path
-            d="
-            M180 61
-            C280 25 375 80 475 50
-            C580 18 670 77 770 45
-            C875 12 990 70 1120 39
-            C1150 32 1175 31 1200 29"
-
+            d="M0 58
+               C45 67 52 52 88 65
+               S140 81 173 63
+               S225 52 256 67
+               S310 78 344 60
+               S395 49 430 66
+               S484 84 515 63
+               S570 50 602 66
+               S653 79 686 61
+               S739 51 773 69
+               S827 85 858 63
+               S912 50 947 65
+               S1001 80 1034 61
+               S1090 53 1120 68
+               S1170 76 1200 60"
             fill="none"
+            stroke="url(#aguaEspuma)"
+            stroke-width="8"
+            filter="url(#suavidadAgua)"/>
 
-            stroke="#B8FFFF"
-            stroke-opacity=".38"
-
-            stroke-width="2"
-        />
-
-
-        <!-- =================================================
-             SEGUNDA ONDA
-        ================================================== -->
-
-        <path
-            d="
-            M270 82
-            C360 54 440 92 535 66
-            C630 40 720 87 820 59
-            C925 30 1030 82 1200 54"
-
-            fill="none"
-
-            stroke="#A8F9FC"
-            stroke-opacity=".22"
-
-            stroke-width="1.5"
-        />
-
-
-        <!-- =================================================
-             ONDA SUPERIOR
-        ================================================== -->
-
-        <path
-            d="
-            M400 27
-            C470 45 525 15 600 30
-            C675 45 740 20 820 34
-            C900 48 980 28 1080 39"
-
-            fill="none"
-
-            stroke="#D8FFFF"
-            stroke-opacity=".17"
-
-            stroke-width="1.2"
-        />
-
-
-        <!-- =================================================
-             REFLEJOS DEL AGUA
-        ================================================== -->
-
-        <path
-            d="
-            M420 8
-            C500 28 555 8 630 24
-            C710 40 775 15 850 28
-            C930 42 1000 25 1080 34"
-
-            fill="none"
-
-            stroke="#FFFFFF"
-            stroke-opacity=".09"
-
-            stroke-width="7"
-        />
-
-
-        <!-- =================================================
-             HOJAS — ESQUINA SUPERIOR IZQUIERDA
-        ================================================== -->
-
-        <g
-            fill="url(#hojaFinal)"
-            stroke="#A2C875"
-            stroke-opacity=".30"
-            stroke-width=".7">
-
-            <!-- hoja 1 -->
-            <path
-                d="
-                M0 7
-                C13 -3 28 -2 39 7
-                C28 14 13 14 0 7 Z"
-            />
-
-            <!-- hoja 2 -->
-            <path
-                d="
-                M28 4
-                C39 -5 55 -4 66 5
-                C54 12 39 12 28 4 Z"
-            />
-
-            <!-- hoja 3 -->
-            <path
-                d="
-                M62 8
-                C74 -2 91 -1 101 8
-                C88 15 74 15 62 8 Z"
-            />
-
-            <!-- hoja 4 -->
-            <path
-                d="
-                M98 4
-                C110 -5 127 -3 137 7
-                C124 13 110 13 98 4 Z"
-            />
-
+        <!-- Corrientes y reflejos -->
+        <g fill="none" stroke-linecap="round">
+            <path d="M-20 28 C130 8 190 48 330 25 S560 12 690 30 S930 47 1220 17"
+                  stroke="#8ADCC8" stroke-opacity=".22" stroke-width="2"/>
+            <path d="M-10 43 C150 27 235 57 385 39 S630 26 770 43 S1030 53 1210 34"
+                  stroke="#B4EBDD" stroke-opacity=".18" stroke-width="1.5"/>
+            <path d="M30 15 C160 4 250 28 360 16 S560 7 680 20"
+                  stroke="#D0F5EA" stroke-opacity=".12" stroke-width="1"/>
+            <path d="M570 48 C640 36 700 54 755 44 S860 38 930 48"
+                  stroke="#7FD8C1" stroke-opacity=".2" stroke-width="2"/>
         </g>
 
-
-        <!-- tallos izquierda -->
-
-        <path
-            d="
-            M0 13
-            C35 8 70 10 105 8
-            C130 7 150 4 175 0"
-
-            fill="none"
-
-            stroke="#789C59"
-            stroke-opacity=".50"
-
-            stroke-width="1.2"
-        />
-
-
-        <!-- =================================================
-             HOJAS — ESQUINA SUPERIOR DERECHA
-        ================================================== -->
-
-        <g
-            fill="url(#hojaFinal)"
-            stroke="#A2C875"
-            stroke-opacity=".28"
-            stroke-width=".7">
-
-            <path
-                d="
-                M1010 5
-                C1023 -4 1038 -3 1050 6
-                C1037 13 1022 13 1010 5 Z"
-            />
-
-            <path
-                d="
-                M1045 9
-                C1058 -2 1075 -1 1087 8
-                C1073 15 1058 16 1045 9 Z"
-            />
-
-            <path
-                d="
-                M1082 4
-                C1095 -6 1112 -3 1123 6
-                C1110 14 1094 14 1082 4 Z"
-            />
-
-            <path
-                d="
-                M1120 8
-                C1134 -2 1150 0 1162 9
-                C1149 16 1133 16 1120 8 Z"
-            />
-
-            <path
-                d="
-                M1160 4
-                C1173 -5 1190 -3 1200 6
-                L1200 14
-                C1187 14 1172 12 1160 4 Z"
-            />
-
+        <!-- Salpicaduras pequeñas -->
+        <g fill="#8ADCC8" opacity=".55">
+            <circle cx="74" cy="78" r="1.5"/>
+            <circle cx="112" cy="84" r="1"/>
+            <circle cx="285" cy="78" r="1.4"/>
+            <circle cx="410" cy="82" r="1"/>
+            <circle cx="535" cy="77" r="1.5"/>
+            <circle cx="720" cy="82" r="1"/>
+            <circle cx="865" cy="78" r="1.3"/>
+            <circle cx="1010" cy="83" r="1"/>
+            <circle cx="1152" cy="76" r="1.4"/>
         </g>
-
-
-        <!-- =================================================
-             RAMAS DERECHA
-        ================================================== -->
-
-        <path
-            d="
-            M1200 14
-            C1160 9 1125 11 1090 8
-            C1060 6 1030 4 1000 0"
-
-            fill="none"
-
-            stroke="#789C59"
-            stroke-opacity=".45"
-
-            stroke-width="1.2"
-        />
-
-
-        <!-- =================================================
-             PEQUEÑAS HOJAS LATERALES
-        ================================================== -->
-
-        <g
-            fill="#6E994F"
-            opacity=".72">
-
-            <ellipse
-                cx="185"
-                cy="18"
-                rx="15"
-                ry="5"
-                transform="rotate(22 185 18)"
-            />
-
-            <ellipse
-                cx="215"
-                cy="11"
-                rx="13"
-                ry="5"
-                transform="rotate(-18 215 11)"
-            />
-
-            <ellipse
-                cx="970"
-                cy="17"
-                rx="15"
-                ry="5"
-                transform="rotate(-24 970 17)"
-            />
-
-        </g>
-
-
-        <!-- =================================================
-             PARTÍCULAS DE AGUA
-        ================================================== -->
-
-        <g
-            fill="#D9FFFF"
-            opacity=".25">
-
-            <circle cx="505" cy="24" r="1.4"/>
-            <circle cx="570" cy="63" r="1.1"/>
-            <circle cx="650" cy="20" r="1.5"/>
-            <circle cx="735" cy="67" r="1.2"/>
-            <circle cx="825" cy="28" r="1.4"/>
-            <circle cx="910" cy="59" r="1.1"/>
-            <circle cx="995" cy="31" r="1.3"/>
-
-        </g>
-
     </svg>
-
 </div>
+
 
     <div class="header-left">
 
