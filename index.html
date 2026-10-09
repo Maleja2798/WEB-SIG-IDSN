@@ -4652,32 +4652,26 @@ body.panel-mapa-activo #map .leaflet-municipios-pane {
    FONDO DE AGUA
 ========================================================= */
 
+
 .topbar .header-water-bg{
     position:absolute !important;
-
     inset:0 !important;
-
     width:100% !important;
     height:100% !important;
-
-    opacity:.62 !important;
-
+    opacity:.90 !important;
     z-index:1 !important;
-
     pointer-events:none !important;
-
     overflow:hidden !important;
 }
 
-
-.topbar .header-water-bg svg{
+.topbar .header-water-bg .header-water-image{
+    position:absolute !important;
+    inset:0 !important;
     width:100% !important;
     height:100% !important;
-
     display:block !important;
-
-    transform:scale(1.02) !important;
 }
+
 
 
 /* =========================================================
@@ -4685,24 +4679,8 @@ body.panel-mapa-activo #map .leaflet-municipios-pane {
 ========================================================= */
 
 .topbar .header-water-bg::after{
-    content:"" !important;
-
-    position:absolute !important;
-
-    inset:0 !important;
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(3,19,27,.82) 0%,
-            rgba(3,28,37,.48) 34%,
-            rgba(3,52,61,.18) 58%,
-            rgba(3,22,31,.62) 100%
-        ) !important;
-
-    pointer-events:none !important;
+    display:none !important;
 }
-
 
 /* =========================================================
    CONTENIDO DEL HEADER
@@ -5307,114 +5285,160 @@ background:
 <body>
  <header class="topbar">
 
-
 <div class="header-water-bg">
-    <svg viewBox="0 0 1200 100"
+    <svg class="header-water-image"
+         viewBox="0 0 1440 120"
          preserveAspectRatio="none"
-         aria-hidden="true">
+         aria-hidden="true"
+         xmlns="http://www.w3.org/2000/svg">
+
         <defs>
-            <linearGradient id="aguaFondo" x1="0" y1="0" x2="1" y2="1">
+            <linearGradient id="waterBase" x1="0" y1="0" x2="1" y2="1">
                 <stop offset="0%" stop-color="#061A16"/>
                 <stop offset="30%" stop-color="#0B493B"/>
-                <stop offset="58%" stop-color="#16806C"/>
-                <stop offset="78%" stop-color="#0D5545"/>
-                <stop offset="100%" stop-color="#071F19"/>
+                <stop offset="60%" stop-color="#137965"/>
+                <stop offset="82%" stop-color="#0A4939"/>
+                <stop offset="100%" stop-color="#061A16"/>
             </linearGradient>
 
-            <linearGradient id="aguaEspuma" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stop-color="#65C9B1" stop-opacity=".05"/>
-                <stop offset="42%" stop-color="#A7E8D8" stop-opacity=".62"/>
-                <stop offset="68%" stop-color="#48BBA0" stop-opacity=".24"/>
-                <stop offset="100%" stop-color="#8ADCC8" stop-opacity=".08"/>
+            <linearGradient id="waterLight" x1="0" y1="0" x2="0.8" y2="1">
+                <stop offset="0%" stop-color="#B6F0DF" stop-opacity=".05"/>
+                <stop offset="45%" stop-color="#71D7BE" stop-opacity=".42"/>
+                <stop offset="75%" stop-color="#B7F3E2" stop-opacity=".68"/>
+                <stop offset="100%" stop-color="#258E75" stop-opacity=".08"/>
             </linearGradient>
 
-            <filter id="texturaAgua" x="-5%" y="-20%" width="110%" height="145%">
-                <feTurbulence type="fractalNoise"
+            <filter id="waterTexture" x="-5%" y="-10%" width="110%" height="125%">
+                <feTurbulence
+                    type="fractalNoise"
                     baseFrequency=".018 .12"
-                    numOctaves="2"
-                    seed="12"
-                    result="ruido"/>
-                <feDisplacementMap in="SourceGraphic"
-                    in2="ruido"
-                    scale="5"
+                    numOctaves="3"
+                    seed="17"
+                    result="noise"/>
+                <feDisplacementMap
+                    in="SourceGraphic"
+                    in2="noise"
+                    scale="9"
                     xChannelSelector="R"
                     yChannelSelector="G"/>
             </filter>
 
-            <filter id="suavidadAgua">
-                <feGaussianBlur stdDeviation="1.2"/>
+            <filter id="waterBlur">
+                <feGaussianBlur stdDeviation="2"/>
             </filter>
         </defs>
 
-        <!-- Masa principal de agua -->
+        <!-- Fondo profundo -->
         <path
-            d="M0 0 H1200 V61
-               C1160 58 1150 76 1115 68
-               S1065 54 1038 70
-               S990 85 960 67
-               S910 55 880 70
-               S824 91 790 72
-               S738 55 706 70
-               S650 83 620 67
-               S565 55 532 72
-               S480 91 445 69
-               S390 55 360 70
-               S305 84 274 66
-               S220 57 190 73
-               S130 91 100 70
-               S45 61 0 75 Z"
-            fill="url(#aguaFondo)"
-            filter="url(#texturaAgua)"/>
+            d="M0 0 H1440 V72
+               C1390 58 1370 91 1325 76
+               S1255 55 1210 79
+               S1140 93 1100 71
+               S1025 54 980 77
+               S900 94 855 72
+               S780 52 735 76
+               S655 93 610 71
+               S530 55 485 78
+               S405 94 360 71
+               S285 53 240 78
+               S160 91 115 70
+               S40 60 0 79 Z"
+            fill="url(#waterBase)"
+            filter="url(#waterTexture)"/>
 
-        <!-- Espuma irregular en el filo -->
+        <!-- Masa de agua translúcida -->
         <path
-            d="M0 58
-               C45 67 52 52 88 65
-               S140 81 173 63
-               S225 52 256 67
-               S310 78 344 60
-               S395 49 430 66
-               S484 84 515 63
-               S570 50 602 66
-               S653 79 686 61
-               S739 51 773 69
-               S827 85 858 63
-               S912 50 947 65
-               S1001 80 1034 61
-               S1090 53 1120 68
-               S1170 76 1200 60"
+            d="M0 22
+               C95 4 145 49 230 29
+               S365 12 445 35
+               S575 48 660 26
+               S805 13 880 34
+               S1020 47 1105 25
+               S1255 14 1325 33
+               S1400 39 1440 26
+               V70
+               C1390 58 1370 91 1325 76
+               S1255 55 1210 79
+               S1140 93 1100 71
+               S1025 54 980 77
+               S900 94 855 72
+               S780 52 735 76
+               S655 93 610 71
+               S530 55 485 78
+               S405 94 360 71
+               S285 53 240 78
+               S160 91 115 70
+               S40 60 0 79 Z"
+            fill="url(#waterLight)"
+            filter="url(#waterTexture)"/>
+
+        <!-- Espuma irregular -->
+        <path
+            d="M-10 65
+               C40 52 65 83 112 70
+               S180 57 222 76
+               S290 88 335 68
+               S405 56 450 76
+               S515 91 560 70
+               S630 57 675 77
+               S745 88 790 67
+               S860 54 905 76
+               S975 90 1020 69
+               S1090 57 1135 76
+               S1205 89 1250 68
+               S1320 55 1365 75
+               S1415 79 1450 65"
             fill="none"
-            stroke="url(#aguaEspuma)"
-            stroke-width="8"
-            filter="url(#suavidadAgua)"/>
+            stroke="#A9E9D7"
+            stroke-opacity=".7"
+            stroke-width="5"
+            filter="url(#waterBlur)"/>
 
-        <!-- Corrientes y reflejos -->
+        <!-- Corrientes de agua -->
         <g fill="none" stroke-linecap="round">
-            <path d="M-20 28 C130 8 190 48 330 25 S560 12 690 30 S930 47 1220 17"
-                  stroke="#8ADCC8" stroke-opacity=".22" stroke-width="2"/>
-            <path d="M-10 43 C150 27 235 57 385 39 S630 26 770 43 S1030 53 1210 34"
-                  stroke="#B4EBDD" stroke-opacity=".18" stroke-width="1.5"/>
-            <path d="M30 15 C160 4 250 28 360 16 S560 7 680 20"
-                  stroke="#D0F5EA" stroke-opacity=".12" stroke-width="1"/>
-            <path d="M570 48 C640 36 700 54 755 44 S860 38 930 48"
-                  stroke="#7FD8C1" stroke-opacity=".2" stroke-width="2"/>
+            <path
+                d="M-10 18 C120 2 205 38 325 19 S535 8 650 23 S850 37 970 18 S1190 7 1450 22"
+                stroke="#A1E8D6"
+                stroke-opacity=".24"
+                stroke-width="2"/>
+
+            <path
+                d="M-10 38 C130 22 240 51 365 35 S585 25 710 39 S930 50 1055 34 S1270 24 1450 38"
+                stroke="#D0F7EC"
+                stroke-opacity=".16"
+                stroke-width="1.5"/>
+
+            <path
+                d="M300 52 C360 38 410 57 465 47 S555 43 600 54"
+                stroke="#69D3B7"
+                stroke-opacity=".55"
+                stroke-width="2"/>
+
+            <path
+                d="M790 49 C850 37 900 59 955 47 S1050 42 1095 53"
+                stroke="#69D3B7"
+                stroke-opacity=".42"
+                stroke-width="2"/>
         </g>
 
-        <!-- Salpicaduras pequeñas -->
-        <g fill="#8ADCC8" opacity=".55">
-            <circle cx="74" cy="78" r="1.5"/>
-            <circle cx="112" cy="84" r="1"/>
-            <circle cx="285" cy="78" r="1.4"/>
-            <circle cx="410" cy="82" r="1"/>
-            <circle cx="535" cy="77" r="1.5"/>
-            <circle cx="720" cy="82" r="1"/>
-            <circle cx="865" cy="78" r="1.3"/>
-            <circle cx="1010" cy="83" r="1"/>
-            <circle cx="1152" cy="76" r="1.4"/>
+        <!-- Salpicaduras -->
+        <g fill="#A9E9D7" opacity=".75">
+            <circle cx="55" cy="83" r="1.8"/>
+            <circle cx="95" cy="91" r="1.2"/>
+            <circle cx="180" cy="84" r="1.5"/>
+            <circle cx="275" cy="96" r="1.3"/>
+            <circle cx="395" cy="86" r="1.8"/>
+            <circle cx="520" cy="98" r="1.2"/>
+            <circle cx="650" cy="88" r="1.5"/>
+            <circle cx="780" cy="99" r="1.7"/>
+            <circle cx="915" cy="87" r="1.2"/>
+            <circle cx="1050" cy="95" r="1.5"/>
+            <circle cx="1190" cy="85" r="1.7"/>
+            <circle cx="1320" cy="94" r="1.2"/>
+            <circle cx="1400" cy="82" r="1.6"/>
         </g>
     </svg>
 </div>
-
 
     <div class="header-left">
 
