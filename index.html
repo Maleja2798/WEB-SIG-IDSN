@@ -5436,7 +5436,138 @@ background:
         transform-origin:left center !important;
     }
 }
-   
+
+
+/* =========================================
+   CONTROLES COMPACTOS DEL MAPA — SIG IDSN
+========================================= */
+
+/* Barra superior derecha: solo iconos */
+#mapa-herramientas.mapa-herramientas{
+    position:absolute !important;
+    top:145px !important;
+    right:16px !important;
+    left:auto !important;
+    width:46px !important;
+    height:auto !important;
+    display:flex !important;
+    flex-direction:column !important;
+    align-items:center !important;
+    gap:6px !important;
+    padding:0 !important;
+    overflow:visible !important;
+    background:transparent !important;
+    border:0 !important;
+    border-radius:0 !important;
+    box-shadow:none !important;
+    backdrop-filter:none !important;
+    z-index:1200 !important;
+}
+
+/* Botones individuales */
+#mapa-herramientas .mapa-herramienta{
+    width:44px !important;
+    min-width:44px !important;
+    height:44px !important;
+    min-height:44px !important;
+    padding:0 !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    flex-direction:row !important;
+    gap:0 !important;
+    background:rgba(7,29,35,.94) !important;
+    color:#eefaf7 !important;
+    border:1px solid rgba(205,239,234,.48) !important;
+    border-radius:10px !important;
+    box-shadow:0 5px 16px rgba(0,0,0,.30) !important;
+    cursor:pointer !important;
+    transition:background .2s ease,
+               border-color .2s ease,
+               transform .2s ease !important;
+}
+
+/* Ocultar los textos: quedan solo los iconos */
+#mapa-herramientas .mapa-herramienta span{
+    display:none !important;
+}
+
+#mapa-herramientas .mapa-herramienta svg{
+    width:22px !important;
+    height:22px !important;
+    stroke-width:1.8 !important;
+}
+
+#mapa-herramientas .mapa-herramienta:hover{
+    background:rgba(15,72,65,.98) !important;
+    border-color:#83ddc8 !important;
+    transform:translateY(-1px) !important;
+}
+
+#mapa-herramientas .mapa-herramienta.activo{
+    background:rgba(17,91,76,.98) !important;
+    border-color:#83ddc8 !important;
+}
+
+/* Zoom compacto, debajo de los dos botones */
+.mapa-zoom{
+    position:absolute !important;
+    top:247px !important;
+    right:16px !important;
+    left:auto !important;
+    width:44px !important;
+    height:auto !important;
+    display:flex !important;
+    flex-direction:column !important;
+    padding:0 !important;
+    overflow:hidden !important;
+    background:rgba(7,29,35,.95) !important;
+    border:1px solid rgba(205,239,234,.48) !important;
+    border-radius:10px !important;
+    box-shadow:0 5px 16px rgba(0,0,0,.30) !important;
+    z-index:1200 !important;
+}
+
+.mapa-zoom-btn{
+    width:42px !important;
+    height:39px !important;
+    min-height:39px !important;
+    padding:0 !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    background:transparent !important;
+    color:#f2fbf8 !important;
+    border:0 !important;
+    border-radius:0 !important;
+    font-family:Arial,sans-serif !important;
+    font-size:24px !important;
+    font-weight:400 !important;
+    line-height:1 !important;
+    box-shadow:none !important;
+}
+
+.mapa-zoom-btn:first-child{
+    border-bottom:1px solid rgba(205,239,234,.20) !important;
+}
+
+.mapa-zoom-btn:hover{
+    background:rgba(15,72,65,.98) !important;
+}
+
+@media(max-width:700px){
+    #mapa-herramientas.mapa-herramientas{
+        top:125px !important;
+        right:10px !important;
+    }
+
+    .mapa-zoom{
+        top:227px !important;
+        right:10px !important;
+    }
+}
+
+    
   </style>
 </head>
 <body>
@@ -5668,70 +5799,34 @@ Bienvenido al Sistema de Información Geográfica de Autorizaciones Sanitarias d
 </div>
 
 
-<!--==================================================
- BARRA DE HERRAMIENTAS DEL MAPA
-==================================================-->
+<!-- BARRA COMPACTA DE HERRAMIENTAS DEL MAPA -->
 
-<div
-    id="mapa-herramientas"
-    class="mapa-herramientas"
->
+<div id="mapa-herramientas" class="mapa-herramientas">
 
+    <!-- CAPAS -->
     <button
         class="mapa-herramienta"
         id="btn-capas"
         onclick="abrirCapasMapa()"
-        title="Capas"
+        title="Capas del mapa"
+        aria-label="Capas del mapa"
     >
         <i data-lucide="layers"></i>
-        <span>Capas</span>
     </button>
 
-
+    <!-- VOLVER A LA VISTA GENERAL DE NARIÑO -->
     <button
         class="mapa-herramienta"
-        id="btn-filtro"
-        onclick="abrirFiltroMapa()"
-        title="Filtro"
+        id="btn-centrar-narino"
+        onclick="centrarNarino()"
+        title="Ver todo Nariño"
+        aria-label="Ver todo Nariño"
     >
-        <i data-lucide="funnel"></i>
-        <span>Filtro</span>
-    </button>
-
-
-    <button
-        class="mapa-herramienta"
-        id="btn-medir"
-        onclick="activarMedicion()"
-        title="Medir"
-    >
-        <i data-lucide="ruler"></i>
-        <span>Medir</span>
-    </button>
-
-
-    <button
-        class="mapa-herramienta"
-        id="btn-imprimir"
-        onclick="imprimirMapa()"
-        title="Imprimir"
-    >
-        <i data-lucide="printer"></i>
-        <span>Imprimir</span>
-    </button>
-
-
-    <button
-        class="mapa-herramienta"
-        id="btn-compartir"
-        onclick="compartirMapa()"
-        title="Compartir"
-    >
-        <i data-lucide="share-2"></i>
-        <span>Compartir</span>
+        <i data-lucide="crosshair"></i>
     </button>
 
 </div>
+
 
 <!--==================================================
  ZOOM DEL MAPA
@@ -10285,6 +10380,17 @@ function seleccionarMenu(elemento){
     }
 }
 
+
+function centrarNarino(){
+    if(typeof map === "undefined" || !map) return;
+
+    map.setView([1.289, -77.29], 8, {
+        animate: true,
+        duration: 0.8
+    });
+
+    map.invalidateSize();
+}
 
   </script>
 </body>
