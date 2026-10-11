@@ -4593,12 +4593,12 @@ body.panel-mapa-activo #map .leaflet-municipios-pane {
 ========================================================= */
 
 
+
 .topbar{
     position:absolute !important;
     top:0 !important;
     left:0 !important;
     right:0 !important;
-
     width:100% !important;
     height:125px !important;
     min-height:125px !important;
@@ -4609,61 +4609,31 @@ body.panel-mapa-activo #map .leaflet-municipios-pane {
     justify-content:space-between !important;
     padding:0 24px !important;
 
-    overflow:visible !important;
-    background:#0A2921 !important;
-
+    background:transparent !important;
     border:0 !important;
     border-radius:0 !important;
-    box-shadow:0 8px 25px rgba(0,0,0,.38) !important;
+    box-shadow:none !important;
 
-    
-clip-path: url(#bordeOnduladoHeader) !important;
-
-
+    overflow:visible !important;
     z-index:5000 !important;
 }
 
-
-/* =========================================================
-   FONDO DE AGUA
-========================================================= */
-
-.topbar .header-water-bg{
+.topbar .borde-ondas-header{
     position:absolute !important;
-    inset:0 !important;
+    top:0 !important;
+    left:0 !important;
     width:100% !important;
-    height:100% !important;
-    opacity:1 !important;
-    z-index:1 !important;
-    pointer-events:none !important;
-    overflow:hidden !important;
-}
-
-.topbar .header-water-bg .header-water-image{
-    position:absolute !important;
-    inset:0 !important;
-    width:100% !important;
-    height:100% !important;
+    height:160px !important;
     display:block !important;
+    z-index:0 !important;
+    pointer-events:none !important;
 }
-
-/* =========================================================
-   VELO OSCURO PARA INTEGRAR EL AGUA
-========================================================= */
-
-.topbar .header-water-bg::after{
-    display:none !important;
-}
-
-/* =========================================================
-   CONTENIDO DEL HEADER
-========================================================= */
 
 .topbar > *{
     position:relative !important;
-
     z-index:20 !important;
 }
+
 
 
 /* =========================================================
@@ -5258,6 +5228,37 @@ background:
 <body>
   
  <header class="topbar">
+
+   
+<svg class="borde-ondas-header"
+     viewBox="0 0 1440 160"
+     preserveAspectRatio="none"
+     aria-hidden="true"
+     xmlns="http://www.w3.org/2000/svg">
+
+    <path
+        fill="#0A2921"
+        d="
+            M0 0 H1440 V112
+            C1410 112 1400 130 1360 130
+            C1320 130 1310 108 1270 108
+            C1230 108 1215 145 1170 145
+            C1125 145 1110 119 1070 119
+            C1030 119 1010 135 970 135
+            C930 135 915 105 870 105
+            C825 105 810 140 765 140
+            C720 140 705 119 660 119
+            C615 119 600 151 555 151
+            C510 151 495 125 450 125
+            C405 125 390 108 345 108
+            C300 108 285 141 240 141
+            C195 141 180 120 135 120
+            C90 120 75 137 40 137
+            C20 137 10 126 0 126
+            Z
+        "/>
+</svg>
+
 
     <div class="header-left">
 
