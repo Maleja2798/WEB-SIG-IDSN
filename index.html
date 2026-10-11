@@ -5397,75 +5397,44 @@ background:
 
 </header>
 
-<div id="sidebar">
+<div id="sidebar" class="circular-sidebar">
 
-<div class="sidebar-header">
+    <button id="menu-toggle"
+            class="menu-toggle"
+            type="button"
+            aria-label="Abrir menú de navegación"
+            aria-expanded="false"
+            onclick="toggleCircularMenu()">
+        <i data-lucide="compass"></i>
+    </button>
 
-<div class="logo-circle">
+    <div class="menu circular-menu">
 
-<i data-lucide="droplets"></i>
+        <div class="menu-item active"
+             onclick="seleccionarMenu(this); mostrarInicio();">
+            <span class="menu-icon"><i data-lucide="house"></i></span>
+            <span class="menu-label">Inicio</span>
+        </div>
 
-</div>
+        <div class="menu-item"
+             onclick="seleccionarMenu(this); mostrarPanelAnios();">
+            <span class="menu-icon"><i data-lucide="calendar-days"></i></span>
+            <span class="menu-label">Años</span>
+        </div>
 
-<div>
+        <div class="menu-item"
+             onclick="seleccionarMenu(this); mostrarDashboard();">
+            <span class="menu-icon"><i data-lucide="layout-dashboard"></i></span>
+            <span class="menu-label">Dashboard</span>
+        </div>
 
-<div class="sidebar-title">
-SIG - IDSN
-</div>
+        <div class="menu-item"
+             onclick="seleccionarMenu(this); mostrarAutorizaciones();">
+            <span class="menu-icon"><i data-lucide="map-pinned"></i></span>
+            <span class="menu-label">Autorizaciones</span>
+        </div>
 
-<div class="sidebar-subtitle">
-Autorizaciones Sanitarias
-</div>
-
-</div>
-
-</div>
-
-<div class="menu">
-
-<div class="menu-item active" onclick="mostrarInicio()">
-
-<i data-lucide="house"></i>
-
-<span>Inicio</span>
-
-</div>
-
-<div class="menu-item" onclick="mostrarPanelAnios()">
-
-    <i data-lucide="calendar-days"></i>
-
-    <span>Años</span>
-
-</div>
-
-<div class="menu-item"
-
-onclick="mostrarDashboard()">
-
-<i data-lucide="layout-dashboard"></i>
-
-<span>Dashboard</span>
-
-</div>
-
-<div class="menu-item"
-  
-     onclick="mostrarAutorizaciones()">
-
-    <i data-lucide="map-pinned"></i>
-
-    <span>Autorizaciones</span>
-
-</div>
-
-</div>
-
-<div class="sidebar-footer">
-
-Versión 1.0
-
-</div>
+    </div>
 
 </div>
 
