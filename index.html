@@ -4594,109 +4594,139 @@ background:
     opacity:1 !important;
 }
 
-
+    
 /* =========================================================
-   GOTA — MONTAÑA — HOJA
+   MÓDULO CLIMA, FECHA Y HORA — SIG IDSN
 ========================================================= */
+
+.topbar .header-right{
+    display:flex !important;
+    align-items:center !important;
+    justify-content:flex-end !important;
+    gap:18px !important;
+    flex:1 1 auto !important;
+    min-width:0 !important;
+}
 
 .topbar .header-environment{
-
-    height:40px !important;
-
     display:flex !important;
-
     align-items:center !important;
-
-    justify-content:center !important;
-
-    gap:15px !important;
-
-    padding-left:15px !important;
-
-    border-left:
-        1px solid rgba(255,255,255,.15) !important;
+    justify-content:flex-end !important;
+    gap:18px !important;
+    height:60px !important;
+    flex:0 1 auto !important;
+    min-width:0 !important;
+    padding:0 16px !important;
+    border:1px solid rgba(61,215,218,.17) !important;
+    border-radius:16px !important;
+    background:rgba(0,17,22,.48) !important;
+    box-shadow:0 5px 18px rgba(0,0,0,.16) !important;
+    box-sizing:border-box !important;
 }
 
-
-.topbar .environment-icon{
-
-    width:25px !important;
-
-    height:25px !important;
-
-    min-width:25px !important;
-
-    display:flex !important;
-
-    align-items:center !important;
-
-    justify-content:center !important;
-
-    padding:0 !important;
-
-    margin:0 !important;
-
-    background:transparent !important;
-
-    border:0 !important;
-
-    border-radius:0 !important;
-
-    box-shadow:none !important;
-
-    color:
-        rgba(255,255,255,.68) !important;
-
-    opacity:.9 !important;
+.clima-idsn{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    min-width:145px;
 }
 
-
-.topbar .environment-icon svg{
-
-    width:19px !important;
-
-    height:19px !important;
-
-    display:block !important;
-
-    fill:none !important;
-
-    stroke:currentColor !important;
-
-    stroke-width:1.45 !important;
-
-    stroke-linecap:round !important;
-
-    stroke-linejoin:round !important;
+.clima-idsn > svg{
+    width:36px;
+    height:36px;
+    color:#F3FFFF;
+    stroke-width:1.7;
+    flex-shrink:0;
 }
 
-
-.topbar .environment-icon:hover{
-
-    color:
-        rgba(255,255,255,.92) !important;
-
-    transform:none !important;
-
-    background:transparent !important;
-
-    box-shadow:none !important;
+.clima-datos-idsn,
+.fecha-datos-idsn{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+    white-space:nowrap;
 }
 
-
-/* =========================================================
-   SEGURIDAD: OCULTAR ELEMENTOS ANTIGUOS
-========================================================= */
-
-.topbar .header-icon,
-.topbar .header-user,
-.topbar .header-notification,
-.topbar .header-settings,
-.topbar .header-help{
-
-    display:none !important;
+.clima-datos-idsn strong{
+    color:#F6FFFF;
+    font-size:20px;
+    font-weight:600;
 }
 
+.clima-datos-idsn span,
+.fecha-datos-idsn span{
+    color:#B5C9CC;
+    font-size:11px;
+}
+
+.separador-idsn{
+    width:1px;
+    height:36px;
+    background:rgba(47,220,216,.72);
+    flex-shrink:0;
+}
+
+.fecha-datos-idsn strong{
+    color:#E6F1F2;
+    font-size:12px;
+    font-weight:500;
+}
+
+.hora-idsn{
+    color:#F7FFFF;
+    font-size:20px;
+    font-weight:650;
+    white-space:nowrap;
+    min-width:105px;
+    text-align:center;
+}
+
+@media(max-width:1100px){
+    .topbar .header-environment{
+        gap:10px !important;
+        padding:0 10px !important;
+    }
+
+    .clima-idsn{
+        min-width:110px;
+        gap:7px;
+    }
+
+    .clima-datos-idsn strong,
+    .hora-idsn{
+        font-size:15px;
+    }
+
+    .fecha-datos-idsn span{
+        font-size:9px;
+    }
+}
+
+@media(max-width:800px){
+    .topbar .header-environment{
+        gap:8px !important;
+        height:48px !important;
+        padding:0 8px !important;
+    }
+
+    .clima-idsn > svg{
+        width:25px;
+        height:25px;
+    }
+
+    .fecha-datos-idsn{
+        display:none;
+    }
+
+    .separador-idsn{
+        display:none;
+    }
+
+    .hora-idsn{
+        min-width:auto;
+        font-size:13px;
+    }
+}
 
 /* =========================================================
    RESPONSIVE
@@ -9983,6 +10013,110 @@ function centrarNarino(){
     map.invalidateSize();
 }
 
+
+/* =========================================================
+   CLIMA, FECHA Y HORA — SIG IDSN
+========================================================= */
+
+(function iniciarModuloInformativo(){
+
+    const zona = "America/Bogota";
+
+    function actualizarFechaHora(){
+
+        const ahora = new Date();
+
+        document.getElementById("dia-idsn").textContent =
+            new Intl.DateTimeFormat("es-CO", {
+                weekday: "long",
+                timeZone: zona
+            }).format(ahora);
+
+        document.getElementById("fecha-idsn").textContent =
+            new Intl.DateTimeFormat("es-CO", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+                timeZone: zona
+            }).format(ahora);
+
+        document.getElementById("hora-idsn").textContent =
+            new Intl.DateTimeFormat("es-CO", {
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: true,
+                timeZone: zona
+            }).format(ahora).toLowerCase();
+    }
+
+    actualizarFechaHora();
+    setInterval(actualizarFechaHora, 30000);
+
+    async function actualizarClima(){
+
+        const temperatura =
+            document.getElementById("temperatura-idsn");
+
+        const icono =
+            document.getElementById("icono-clima-idsn");
+
+        try{
+
+            const respuesta = await fetch(
+                "https://api.open-meteo.com/v1/forecast" +
+                "?latitude=1.2136&longitude=-77.2811" +
+                "&current=temperature_2m,weather_code" +
+                "&timezone=America%2FBogota"
+            );
+
+            if(!respuesta.ok){
+                throw new Error("No fue posible consultar el clima");
+            }
+
+            const datos = await respuesta.json();
+            const actual = datos.current;
+
+            temperatura.textContent =
+                Math.round(actual.temperature_2m) + " °C";
+
+            const codigo = actual.weather_code;
+
+            let nombreIcono = "cloud-sun";
+
+            if(codigo === 0){
+                nombreIcono = "sun";
+            }else if([1,2,3].includes(codigo)){
+                nombreIcono = "cloud-sun";
+            }else if([45,48].includes(codigo)){
+                nombreIcono = "cloud-fog";
+            }else if(codigo >= 51 && codigo <= 67){
+                nombreIcono = "cloud-drizzle";
+            }else if(codigo >= 71 && codigo <= 77){
+                nombreIcono = "cloud-snow";
+            }else if(codigo >= 80 && codigo <= 82){
+                nombreIcono = "cloud-rain";
+            }else if(codigo >= 95){
+                nombreIcono = "cloud-lightning";
+            }
+
+            icono.setAttribute("data-lucide", nombreIcono);
+
+            if(window.lucide){
+                window.lucide.createIcons();
+            }
+
+        }catch(error){
+            temperatura.textContent = "-- °C";
+            console.warn("Clima no disponible:", error);
+        }
+    }
+
+    actualizarClima();
+    setInterval(actualizarClima, 15 * 60 * 1000);
+
+})();
+    
+    
   </script>
 </body>
 </html>
