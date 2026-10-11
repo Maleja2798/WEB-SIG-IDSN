@@ -4879,7 +4879,7 @@ flex:0 1 auto !important;
 
 
 /* =========================================
-   PANEL LATERAL — SIG IDSN
+   PANEL LATERAL DE NAVEGACIÓN — SIG IDSN
 ========================================= */
 
 #sidebar.circular-sidebar{
@@ -4889,16 +4889,18 @@ flex:0 1 auto !important;
     bottom:16px !important;
     width:355px !important;
     height:auto !important;
-    max-height:none !important;
-    padding:150px 12px 16px !important;
+    padding:14px 12px 16px !important;
     box-sizing:border-box !important;
-    overflow:visible !important;
+    display:flex !important;
+    flex-direction:column !important;
+    gap:20px !important;
+    overflow:hidden !important;
     background:linear-gradient(
-        160deg,
-        rgba(2,25,31,.97),
-        rgba(1,14,21,.96)
+        155deg,
+        rgba(2,24,30,.98),
+        rgba(1,13,20,.98)
     ) !important;
-    border:1px solid rgba(40,208,211,.22) !important;
+    border:1px solid rgba(36,205,210,.20) !important;
     border-radius:24px !important;
     box-shadow:
         0 12px 35px rgba(0,0,0,.32),
@@ -4908,13 +4910,76 @@ flex:0 1 auto !important;
     z-index:6000 !important;
 }
 
-/* Ocultar la brújula del menú radial */
+/* Ocultar el antiguo botón radial */
 #sidebar.circular-sidebar .menu-toggle{
     display:none !important;
 }
 
-/* Contenedor de las cuatro opciones */
-#sidebar.circular-sidebar .circular-menu{
+/* MARCA DEL PANEL */
+#sidebar .panel-marca{
+    display:flex !important;
+    align-items:center !important;
+    gap:13px !important;
+    min-height:110px !important;
+    padding:2px 3px 16px !important;
+    border-bottom:1px solid rgba(255,255,255,.08) !important;
+}
+
+#sidebar .panel-logo{
+    flex:0 0 88px !important;
+    width:88px !important;
+    height:88px !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    border:1px solid rgba(35,210,213,.35) !important;
+    border-radius:20px !important;
+    background:linear-gradient(
+        145deg,
+        #07343A,
+        #031820
+    ) !important;
+    box-shadow:inset 0 0 18px rgba(22,204,208,.06) !important;
+    color:#20D9D5 !important;
+}
+
+#sidebar .panel-logo svg{
+    width:48px !important;
+    height:48px !important;
+    stroke-width:1.65 !important;
+}
+
+#sidebar .panel-marca-texto{
+    min-width:0 !important;
+    display:flex !important;
+    flex-direction:column !important;
+    gap:4px !important;
+}
+
+#sidebar .panel-titulo{
+    color:#F6FFFF !important;
+    font-family:'Poppins',sans-serif !important;
+    font-size:18px !important;
+    font-weight:800 !important;
+    line-height:1.15 !important;
+    letter-spacing:.1px !important;
+}
+
+#sidebar .panel-titulo span{
+    display:block !important;
+    color:#23D8D2 !important;
+}
+
+#sidebar .panel-subtitulo{
+    color:#B4C9CE !important;
+    font-family:'Poppins',sans-serif !important;
+    font-size:11px !important;
+    line-height:1.35 !important;
+    font-weight:400 !important;
+}
+
+/* LISTA DE NAVEGACIÓN */
+#sidebar .circular-menu{
     position:relative !important;
     inset:auto !important;
     width:100% !important;
@@ -4922,8 +4987,8 @@ flex:0 1 auto !important;
     display:flex !important;
     flex-direction:column !important;
     gap:8px !important;
-    padding:0 !important;
     margin:0 !important;
+    padding:0 !important;
     overflow:visible !important;
     background:transparent !important;
     border:0 !important;
@@ -4934,38 +4999,34 @@ flex:0 1 auto !important;
     transform:none !important;
 }
 
-/* Quitar la curva del menú anterior */
-#sidebar.circular-sidebar .circular-menu::before{
+#sidebar .circular-menu::before{
     display:none !important;
 }
 
-/* Cada opción */
-#sidebar.circular-sidebar .circular-menu .menu-item{
+/* OPCIONES */
+#sidebar .circular-menu .menu-item{
     position:relative !important;
     inset:auto !important;
     width:100% !important;
     height:74px !important;
     min-height:74px !important;
-    box-sizing:border-box !important;
     display:flex !important;
     align-items:center !important;
-    gap:14px !important;
+    gap:13px !important;
+    box-sizing:border-box !important;
     padding:8px 12px !important;
     margin:0 !important;
-    color:#F3FBF8 !important;
-    background:rgba(3,28,33,.45) !important;
     border:1px solid rgba(255,255,255,.07) !important;
     border-radius:17px !important;
+    background:rgba(4,29,34,.62) !important;
+    color:#F5FFFF !important;
     box-shadow:none !important;
     cursor:pointer !important;
-    transition:
-        background .22s ease,
-        border-color .22s ease,
-        transform .22s ease !important;
+    transition:background .2s ease,border-color .2s ease !important;
 }
 
-/* Icono de cada opción */
-#sidebar.circular-sidebar .circular-menu .menu-icon{
+/* ICONOS */
+#sidebar .circular-menu .menu-icon{
     flex:0 0 58px !important;
     width:58px !important;
     height:58px !important;
@@ -4973,103 +5034,129 @@ flex:0 1 auto !important;
     align-items:center !important;
     justify-content:center !important;
     box-sizing:border-box !important;
-    border:1px solid rgba(40,208,211,.55) !important;
-    border-radius:16px !important;
+    border:1px solid rgba(35,210,213,.48) !important;
+    border-radius:15px !important;
     background:linear-gradient(
         145deg,
-        rgba(5,65,70,.92),
-        rgba(2,29,37,.98)
+        #073A40,
+        #031C25
     ) !important;
-    color:#F5FFFF !important;
-    box-shadow:0 5px 15px rgba(0,0,0,.2) !important;
+    color:#F1FFFF !important;
 }
 
-#sidebar.circular-sidebar .circular-menu .menu-icon svg{
-    width:26px !important;
-    height:26px !important;
+#sidebar .circular-menu .menu-icon svg{
+    width:25px !important;
+    height:25px !important;
     stroke-width:1.7 !important;
 }
 
-/* Texto de las opciones */
-#sidebar.circular-sidebar .circular-menu .menu-label{
-    display:flex !important;
-    align-items:center !important;
+/* TEXTOS PRINCIPALES Y SECUNDARIOS */
+#sidebar .circular-menu .menu-textos{
     flex:1 1 auto !important;
     min-width:0 !important;
-    min-height:0 !important;
-    padding:0 !important;
-    border:0 !important;
-    border-radius:0 !important;
-    background:transparent !important;
-    color:#F3FBF8 !important;
-    font-family:'Poppins',sans-serif !important;
-    font-size:15px !important;
-    font-weight:600 !important;
-    letter-spacing:.1px !important;
-    white-space:normal !important;
-    backdrop-filter:none !important;
+    display:flex !important;
+    flex-direction:column !important;
+    justify-content:center !important;
+    align-items:flex-start !important;
+    gap:4px !important;
 }
 
-/* Resaltar la opción seleccionada */
-#sidebar.circular-sidebar .circular-menu .menu-item.active{
+#sidebar .circular-menu .menu-textos strong{
+    color:#F4FFFF !important;
+    font-family:'Poppins',sans-serif !important;
+    font-size:14px !important;
+    line-height:1.2 !important;
+    font-weight:700 !important;
+}
+
+#sidebar .circular-menu .menu-textos small{
+    color:#B9CED2 !important;
+    font-family:'Poppins',sans-serif !important;
+    font-size:11px !important;
+    line-height:1.25 !important;
+    font-weight:400 !important;
+}
+
+/* FLECHA DE AÑOS */
+#sidebar .circular-menu .menu-flecha{
+    flex:0 0 20px !important;
+    width:20px !important;
+    height:20px !important;
+    color:#F4FFFF !important;
+}
+
+/* OPCIÓN ACTIVA */
+#sidebar .circular-menu .menu-item.active{
     background:linear-gradient(
         100deg,
-        rgba(0,125,119,.65),
-        rgba(0,73,77,.72)
+        rgba(0,128,121,.72),
+        rgba(0,77,78,.76)
     ) !important;
-    border-color:rgba(43,224,215,.65) !important;
+    border-color:rgba(34,222,214,.72) !important;
     box-shadow:
-        inset 3px 0 0 #19D8D0,
-        0 5px 18px rgba(0,0,0,.16) !important;
+        inset 3px 0 0 #21D8D2,
+        0 5px 18px rgba(0,0,0,.15) !important;
 }
 
-/* Interacción */
-#sidebar.circular-sidebar .circular-menu .menu-item:hover{
-    transform:translateX(3px) !important;
-    background:rgba(0,103,103,.32) !important;
-    border-color:rgba(43,224,215,.45) !important;
-}
-
-/* Icono de la opción activa */
-#sidebar.circular-sidebar .circular-menu .menu-item.active .menu-icon{
+#sidebar .circular-menu .menu-item.active .menu-icon{
     background:linear-gradient(
         145deg,
-        #087B77,
-        #064B4B
+        #087D79,
+        #064B4E
     ) !important;
-    border-color:#28D8D1 !important;
+    border-color:#24D9D3 !important;
 }
 
-/* Adaptación a pantallas pequeñas */
+#sidebar .circular-menu .menu-item:hover{
+    background:rgba(0,104,104,.32) !important;
+    border-color:rgba(35,210,213,.45) !important;
+}
+
+/* PANTALLAS PEQUEÑAS */
 @media(max-width:700px){
     #sidebar.circular-sidebar{
         left:8px !important;
         top:12px !important;
         bottom:12px !important;
-        width:280px !important;
-        padding:20px 8px !important;
+        width:285px !important;
+        padding:12px 9px !important;
+        gap:12px !important;
     }
 
-    #sidebar.circular-sidebar .circular-menu .menu-item{
-        height:62px !important;
-        min-height:62px !important;
-        gap:10px !important;
+    #sidebar .panel-logo{
+        flex-basis:64px !important;
+        width:64px !important;
+        height:64px !important;
+    }
+
+    #sidebar .panel-logo svg{
+        width:38px !important;
+        height:38px !important;
+    }
+
+    #sidebar .panel-titulo{
+        font-size:15px !important;
+    }
+
+    #sidebar .panel-subtitulo{
+        font-size:10px !important;
+    }
+
+    #sidebar .circular-menu .menu-item{
+        height:66px !important;
+        min-height:66px !important;
+        gap:9px !important;
         padding:6px !important;
     }
 
-    #sidebar.circular-sidebar .circular-menu .menu-icon{
-        flex-basis:46px !important;
-        width:46px !important;
-        height:46px !important;
-        border-radius:13px !important;
-    }
-
-    #sidebar.circular-sidebar .circular-menu .menu-label{
-        font-size:13px !important;
+    #sidebar .circular-menu .menu-icon{
+        flex-basis:48px !important;
+        width:48px !important;
+        height:48px !important;
     }
 }
 
-
+    
 /* =========================================
    CONTROLES COMPACTOS DEL MAPA — SIG IDSN
 ========================================= */
@@ -5199,6 +5286,10 @@ flex:0 1 auto !important;
     }
 }
 
+/* El logo y el título ahora están dentro del panel lateral */
+.topbar .header-left{
+    display:none !important;
+}
     
   </style>
 </head>
@@ -5320,41 +5411,92 @@ flex:0 1 auto !important;
 
 </header>
 
+
 <div id="sidebar" class="circular-sidebar">
 
-    <button id="menu-toggle"
-            class="menu-toggle"
-            type="button"
-            aria-label="Abrir menú de navegación"
-            aria-expanded="false"
-            onclick="toggleCircularMenu()">
-        <i data-lucide="compass"></i>
-    </button>
+    <!-- ENCABEZADO DEL PANEL -->
+    <div class="panel-marca">
 
+        <div class="panel-logo">
+            <i data-lucide="droplet"></i>
+        </div>
+
+        <div class="panel-marca-texto">
+            <div class="panel-titulo">
+                AUTORIZACIONES
+                <span>SANITARIAS</span>
+            </div>
+
+            <div class="panel-subtitulo">
+                Agua para consumo humano
+            </div>
+
+            <div class="panel-subtitulo">
+                Departamento de Nariño
+            </div>
+        </div>
+
+    </div>
+
+    <!-- NAVEGACIÓN -->
     <div class="menu circular-menu">
 
         <div class="menu-item active"
              onclick="seleccionarMenu(this); mostrarInicio();">
-            <span class="menu-icon"><i data-lucide="house"></i></span>
-            <span class="menu-label">Inicio</span>
+
+            <span class="menu-icon">
+                <i data-lucide="house"></i>
+            </span>
+
+            <span class="menu-textos">
+                <strong>Inicio</strong>
+                <small>Vista general</small>
+            </span>
+
         </div>
 
         <div class="menu-item"
              onclick="seleccionarMenu(this); mostrarPanelAnios();">
-            <span class="menu-icon"><i data-lucide="calendar-days"></i></span>
-            <span class="menu-label">Años</span>
+
+            <span class="menu-icon">
+                <i data-lucide="calendar-days"></i>
+            </span>
+
+            <span class="menu-textos">
+                <strong>Años</strong>
+                <small>Comparar periodos</small>
+            </span>
+
+            <i class="menu-flecha" data-lucide="chevron-right"></i>
+
         </div>
 
         <div class="menu-item"
              onclick="seleccionarMenu(this); mostrarDashboard();">
-            <span class="menu-icon"><i data-lucide="layout-dashboard"></i></span>
-            <span class="menu-label">Dashboard</span>
+
+            <span class="menu-icon">
+                <i data-lucide="layout-dashboard"></i>
+            </span>
+
+            <span class="menu-textos">
+                <strong>Dashboard</strong>
+                <small>Análisis y estadísticas</small>
+            </span>
+
         </div>
 
         <div class="menu-item"
              onclick="seleccionarMenu(this); mostrarAutorizaciones();">
-            <span class="menu-icon"><i data-lucide="map-pinned"></i></span>
-            <span class="menu-label">Autorizaciones</span>
+
+            <span class="menu-icon">
+                <i data-lucide="map-pinned"></i>
+            </span>
+
+            <span class="menu-textos">
+                <strong>Autorizaciones</strong>
+                <small>Consulta detallada</small>
+            </span>
+
         </div>
 
     </div>
