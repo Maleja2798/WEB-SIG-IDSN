@@ -4603,14 +4603,13 @@ body.panel-mapa-activo #map .leaflet-municipios-pane {
 
 .topbar{
     position:absolute !important;
-
     top:0 !important;
     left:0 !important;
     right:0 !important;
 
     width:100% !important;
-    height:92px !important;
-    min-height:92px !important;
+    height:100px !important;
+    min-height:100px !important;
 
     box-sizing:border-box !important;
 
@@ -4619,26 +4618,25 @@ body.panel-mapa-activo #map .leaflet-municipios-pane {
     justify-content:space-between !important;
 
     padding:0 24px !important;
-
     overflow:hidden !important;
 
-    background: transparent !important;
+    background:
+        linear-gradient(
+            100deg,
+            #061A16 0%,
+            #0B3025 35%,
+            #104737 65%,
+            #071F19 100%
+        ) !important;
 
-
-    border:0 !important;
-
-    border-bottom:
-        1px solid rgba(65,214,216,.28) !important;
-
-    border-radius:
-        0 0 14px 14px !important;
+    border:1px solid rgba(255,255,255,.42) !important;
+    border-radius:0 0 14px 14px !important;
 
     box-shadow:
         0 8px 25px rgba(0,0,0,.38) !important;
 
     z-index:5000 !important;
 }
-
 
 /* =========================================================
    FONDO DE AGUA
@@ -5274,9 +5272,54 @@ background:
 <body>
  <header class="topbar">
 
-<div class="header-water-bg">
 
+<div class="header-water-bg">
+    <svg class="header-water-image"
+         viewBox="0 0 1440 100"
+         preserveAspectRatio="none"
+         aria-hidden="true"
+         xmlns="http://www.w3.org/2000/svg">
+
+        <path
+            fill="#174D38"
+            fill-opacity=".78"
+            d="
+                M0 0 H1440 V70
+                L1400 67 1360 76 1320 62
+                1280 71 1240 55 1200 65
+                1160 76 1120 61 1080 69
+                1040 53 1000 64 960 75
+                920 60 880 51 840 67
+                800 59 760 74 720 57
+                680 48 640 64 600 74
+                560 59 520 66 480 51
+                440 61 400 73 360 58
+                320 65 280 50 240 61
+                200 73 160 58 120 65
+                80 51 40 61 0 55 Z"/>
+
+        <path
+            d="M0 55
+               L40 61 80 51 120 65
+               160 58 200 73 240 61
+               280 50 320 65 360 58
+               400 73 440 61 480 51
+               520 66 560 59 600 74
+               640 64 680 48 720 57
+               760 74 800 59 840 67
+               880 51 920 60 960 75
+               1000 64 1040 53 1080 69
+               1120 61 1160 76 1200 65
+               1240 55 1280 71 1320 62
+               1360 76 1400 67 1440 70"
+            fill="none"
+            stroke="#8DBB91"
+            stroke-opacity=".35"
+            stroke-width="1"/>
+
+    </svg>
 </div>
+
 
     <div class="header-left">
 
