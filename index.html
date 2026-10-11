@@ -5445,6 +5445,24 @@ background:
 }
 
     
+/* POSICIÓN DEL MENÚ: PEGADO A LA IZQUIERDA Y CENTRADO */
+
+#sidebar.circular-sidebar{
+    left:8px !important;
+    top:50% !important;
+    transform:translateY(-50%) !important;
+}
+
+@media(max-width:600px){
+    #sidebar.circular-sidebar{
+        left:5px !important;
+        top:50% !important;
+        transform:translateY(-50%) scale(.88) !important;
+        transform-origin:left center !important;
+    }
+}
+
+    
   </style>
 </head>
 <body>
