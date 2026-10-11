@@ -4878,216 +4878,194 @@ flex:0 1 auto !important;
 }
 
 
-
 /* =========================================
-   MENÚ RADIAL CONTROLADO — SIG IDSN
+   PANEL LATERAL — SIG IDSN
 ========================================= */
 
 #sidebar.circular-sidebar{
     position:fixed !important;
-    top:50% !important;
-    left:8px !important;
-    width:365px !important;
-    height:360px !important;
+    top:16px !important;
+    left:16px !important;
+    bottom:16px !important;
+    width:355px !important;
+    height:auto !important;
     max-height:none !important;
-    padding:0 !important;
-    margin:0 !important;
+    padding:150px 12px 16px !important;
+    box-sizing:border-box !important;
     overflow:visible !important;
-    background:transparent !important;
-    border:0 !important;
-    border-radius:0 !important;
-    box-shadow:none !important;
-    backdrop-filter:none !important;
-    transform:translateY(-50%) !important;
+    background:linear-gradient(
+        160deg,
+        rgba(2,25,31,.97),
+        rgba(1,14,21,.96)
+    ) !important;
+    border:1px solid rgba(40,208,211,.22) !important;
+    border-radius:24px !important;
+    box-shadow:
+        0 12px 35px rgba(0,0,0,.32),
+        inset 0 1px 0 rgba(255,255,255,.04) !important;
+    backdrop-filter:blur(16px) !important;
+    transform:none !important;
     z-index:6000 !important;
 }
 
-/* Botón principal */
+/* Ocultar la brújula del menú radial */
 #sidebar.circular-sidebar .menu-toggle{
-    position:absolute !important;
-    top:149px !important;
-    left:0 !important;
-    width:62px !important;
-    height:62px !important;
-    padding:0 !important;
-    display:flex !important;
-    align-items:center !important;
-    justify-content:center !important;
-    border:1.5px solid rgba(221,255,247,.92) !important;
-    border-radius:50% !important;
-    background:linear-gradient(145deg,#103a32,#071b19) !important;
-    color:#f3fffb !important;
-    box-shadow:0 0 0 5px rgba(93,214,185,.08),
-               0 10px 28px rgba(0,0,0,.42) !important;
-    cursor:pointer !important;
-    z-index:40 !important;
-    transition:transform .25s ease, box-shadow .25s ease !important;
+    display:none !important;
 }
 
-#sidebar.circular-sidebar .menu-toggle:hover{
-    transform:scale(1.05) !important;
-    border-color:#8debd5 !important;
-}
-
-#sidebar.circular-sidebar .menu-toggle svg{
-    width:27px !important;
-    height:27px !important;
-    stroke-width:1.7 !important;
-}
-
-/* Menú oculto por defecto */
+/* Contenedor de las cuatro opciones */
 #sidebar.circular-sidebar .circular-menu{
-    position:absolute !important;
-    inset:0 !important;
-    width:365px !important;
-    height:360px !important;
-    display:block !important;
+    position:relative !important;
+    inset:auto !important;
+    width:100% !important;
+    height:auto !important;
+    display:flex !important;
+    flex-direction:column !important;
+    gap:8px !important;
     padding:0 !important;
     margin:0 !important;
     overflow:visible !important;
     background:transparent !important;
     border:0 !important;
     box-shadow:none !important;
-    opacity:0 !important;
-    visibility:hidden !important;
-    pointer-events:none !important;
-    transform:translateX(-12px) scale(.97) !important;
-    transform-origin:36px 180px !important;
-    transition:opacity .24s ease, transform .28s ease,
-               visibility .24s ease !important;
-}
-
-/* Menú desplegado */
-#sidebar.circular-sidebar.menu-open .circular-menu{
     opacity:1 !important;
     visibility:visible !important;
     pointer-events:auto !important;
-    transform:translateX(0) scale(1) !important;
+    transform:none !important;
 }
 
-/* Curva de conexión */
+/* Quitar la curva del menú anterior */
 #sidebar.circular-sidebar .circular-menu::before{
-    content:"";
-    position:absolute;
-    left:12px;
-    top:43px;
-    width:105px;
-    height:260px;
-    border-right:1px solid rgba(205,255,244,.65);
-    border-radius:0 55% 55% 0;
-    transform:rotate(-7deg);
-    pointer-events:none;
+    display:none !important;
 }
 
-/* Opciones del menú */
+/* Cada opción */
 #sidebar.circular-sidebar .circular-menu .menu-item{
-    position:absolute !important;
-    width:300px !important;
-    height:62px !important;
-    min-height:62px !important;
+    position:relative !important;
+    inset:auto !important;
+    width:100% !important;
+    height:74px !important;
+    min-height:74px !important;
+    box-sizing:border-box !important;
     display:flex !important;
     align-items:center !important;
-    gap:12px !important;
-    padding:0 !important;
+    gap:14px !important;
+    padding:8px 12px !important;
     margin:0 !important;
-    color:#f3fbf8 !important;
-    background:transparent !important;
-    border:0 !important;
-    border-radius:0 !important;
+    color:#F3FBF8 !important;
+    background:rgba(3,28,33,.45) !important;
+    border:1px solid rgba(255,255,255,.07) !important;
+    border-radius:17px !important;
     box-shadow:none !important;
     cursor:pointer !important;
-    transition:transform .22s ease !important;
+    transition:
+        background .22s ease,
+        border-color .22s ease,
+        transform .22s ease !important;
 }
 
-#sidebar.circular-sidebar .circular-menu .menu-item:nth-child(1){
-    top:12px !important;
-    left:48px !important;
-}
-
-#sidebar.circular-sidebar .circular-menu .menu-item:nth-child(2){
-    top:91px !important;
-    left:72px !important;
-}
-
-#sidebar.circular-sidebar .circular-menu .menu-item:nth-child(3){
-    top:170px !important;
-    left:76px !important;
-}
-
-#sidebar.circular-sidebar .circular-menu .menu-item:nth-child(4){
-    top:249px !important;
-    left:52px !important;
-}
-
-/* Círculos de los iconos */
+/* Icono de cada opción */
 #sidebar.circular-sidebar .circular-menu .menu-icon{
-    flex:0 0 62px !important;
-    width:62px !important;
-    height:62px !important;
+    flex:0 0 58px !important;
+    width:58px !important;
+    height:58px !important;
     display:flex !important;
     align-items:center !important;
     justify-content:center !important;
     box-sizing:border-box !important;
-    border:1.5px solid rgba(240,255,250,.9) !important;
-    border-radius:50% !important;
-    background:linear-gradient(145deg,#0c2c28,#051717) !important;
-    color:#f6fffc !important;
-    box-shadow:0 7px 20px rgba(0,0,0,.3) !important;
-    transition:background .2s ease, border-color .2s ease,
-               box-shadow .2s ease !important;
+    border:1px solid rgba(40,208,211,.55) !important;
+    border-radius:16px !important;
+    background:linear-gradient(
+        145deg,
+        rgba(5,65,70,.92),
+        rgba(2,29,37,.98)
+    ) !important;
+    color:#F5FFFF !important;
+    box-shadow:0 5px 15px rgba(0,0,0,.2) !important;
 }
 
 #sidebar.circular-sidebar .circular-menu .menu-icon svg{
-    width:25px !important;
-    height:25px !important;
-    stroke-width:1.65 !important;
+    width:26px !important;
+    height:26px !important;
+    stroke-width:1.7 !important;
 }
 
-/* Etiquetas */
+/* Texto de las opciones */
 #sidebar.circular-sidebar .circular-menu .menu-label{
-    display:inline-flex !important;
+    display:flex !important;
     align-items:center !important;
-    min-height:40px !important;
-    box-sizing:border-box !important;
-    padding:0 16px !important;
-    border:1px solid rgba(221,255,247,.28) !important;
-    border-left:0 !important;
-    border-radius:0 22px 22px 0 !important;
-    background:linear-gradient(90deg,rgba(5,27,28,.96),rgba(8,35,32,.86)) !important;
-    color:#f3fbf8 !important;
+    flex:1 1 auto !important;
+    min-width:0 !important;
+    min-height:0 !important;
+    padding:0 !important;
+    border:0 !important;
+    border-radius:0 !important;
+    background:transparent !important;
+    color:#F3FBF8 !important;
     font-family:'Poppins',sans-serif !important;
-    font-size:13px !important;
-    font-weight:500 !important;
-    letter-spacing:.2px !important;
-    white-space:nowrap !important;
-    backdrop-filter:blur(10px) !important;
+    font-size:15px !important;
+    font-weight:600 !important;
+    letter-spacing:.1px !important;
+    white-space:normal !important;
+    backdrop-filter:none !important;
 }
 
-/* Interacción y opción seleccionada */
+/* Resaltar la opción seleccionada */
+#sidebar.circular-sidebar .circular-menu .menu-item.active{
+    background:linear-gradient(
+        100deg,
+        rgba(0,125,119,.65),
+        rgba(0,73,77,.72)
+    ) !important;
+    border-color:rgba(43,224,215,.65) !important;
+    box-shadow:
+        inset 3px 0 0 #19D8D0,
+        0 5px 18px rgba(0,0,0,.16) !important;
+}
+
+/* Interacción */
 #sidebar.circular-sidebar .circular-menu .menu-item:hover{
-    transform:translateX(4px) !important;
+    transform:translateX(3px) !important;
+    background:rgba(0,103,103,.32) !important;
+    border-color:rgba(43,224,215,.45) !important;
 }
 
-#sidebar.circular-sidebar .circular-menu .menu-item:hover .menu-icon,
+/* Icono de la opción activa */
 #sidebar.circular-sidebar .circular-menu .menu-item.active .menu-icon{
-    background:linear-gradient(145deg,#176253,#0a2921) !important;
-    border-color:#a4f0dc !important;
-    box-shadow:0 0 0 4px rgba(105,220,190,.1),
-               0 8px 22px rgba(0,0,0,.34) !important;
+    background:linear-gradient(
+        145deg,
+        #087B77,
+        #064B4B
+    ) !important;
+    border-color:#28D8D1 !important;
 }
 
-#sidebar.circular-sidebar .circular-menu .menu-item.active .menu-label{
-    border-color:rgba(164,240,220,.58) !important;
-    background:linear-gradient(90deg,rgba(10,48,42,.98),rgba(8,35,32,.90)) !important;
-}
-
-/* Ajuste para pantallas pequeñas */
+/* Adaptación a pantallas pequeñas */
 @media(max-width:700px){
     #sidebar.circular-sidebar{
-        left:4px !important;
-        width:330px !important;
-        transform:translateY(-50%) scale(.86) !important;
-        transform-origin:left center !important;
+        left:8px !important;
+        top:12px !important;
+        bottom:12px !important;
+        width:280px !important;
+        padding:20px 8px !important;
+    }
+
+    #sidebar.circular-sidebar .circular-menu .menu-item{
+        height:62px !important;
+        min-height:62px !important;
+        gap:10px !important;
+        padding:6px !important;
+    }
+
+    #sidebar.circular-sidebar .circular-menu .menu-icon{
+        flex-basis:46px !important;
+        width:46px !important;
+        height:46px !important;
+        border-radius:13px !important;
+    }
+
+    #sidebar.circular-sidebar .circular-menu .menu-label{
+        font-size:13px !important;
     }
 }
 
