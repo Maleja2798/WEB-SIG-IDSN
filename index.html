@@ -4811,7 +4811,8 @@ flex:0 1 auto !important;
     left:16px !important;
     bottom:auto !important;
     width:258px !important;
-    height:680px !important;
+    height:490px !important;
+    max-height:calc(100vh - 32px) !important;
     padding:14px 12px 16px !important;
     box-sizing:border-box !important;
     display:flex !important;
@@ -5039,6 +5040,8 @@ flex:0 1 auto !important;
 /* PANTALLAS PEQUEÑAS */
 @media(max-width:700px){
     #sidebar.circular-sidebar{
+      height:auto !important;
+      max-height:calc(100vh - 24px) !important;
         left:8px !important;
         top:12px !important;
         bottom:12px !important;
