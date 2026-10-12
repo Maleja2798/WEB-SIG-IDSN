@@ -6397,7 +6397,7 @@ const miniMapControl = new L.Control.MiniMap(
         position: "bottomleft",
         width: 258,
         height: 150,
-        zoomLevelOffset: -5,
+        zoomLevelFixed: 4,
         toggleDisplay: false,
         minimized: false,
         aimingRectOptions: {
@@ -6414,7 +6414,54 @@ const miniMapControl = new L.Control.MiniMap(
         }
     }
 ).addTo(map);
-    
+
+
+/* ==================================================
+   MINIMAPA POLITICO DE COLOMBIA Y NARIÑO
+================================================== */
+
+fetch("https://raw.githubusercontent.com/ytolosa/mapas-colombia/main/output/geojson/col_departamentos_inset_nacional.geojson")
+    .then(respuesta => {
+        if (!respuesta.ok) {
+            throw new Error("No se pudo cargar el mapa político");
+        }
+        return respuesta.json();
+    })
+    .then(datosDepartamentos => {
+
+        const capaDepartamentosMini = L.geoJSON(datosDepartamentos, {
+            interactive: false,
+
+            style: function(feature) {
+                const valores = Object.values(feature.properties || {})
+                    .filter(valor => typeof valor === "string")
+                    .join(" ")
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "")
+                    .toUpperCase();
+
+                const esNarino = valores.includes("NARINO");
+
+                return {
+                    color: esNarino ? "#7FFFF5" : "#5BABB3",
+                    weight: esNarino ? 1.8 : 0.7,
+                    opacity: esNarino ? 1 : 0.8,
+                    fillColor: esNarino ? "#08BDB5" : "#183B4A",
+                    fillOpacity: esNarino ? 0.9 : 0.72
+                };
+            }
+        }).addTo(miniMapControl._miniMap);
+
+        miniMapControl._miniMap.fitBounds(
+            capaDepartamentosMini.getBounds(),
+            { padding: [5, 5] }
+        );
+
+    })
+    .catch(error => {
+        console.error("Error en el minimapa político:", error);
+    });
+
     let geojsonLayer;
 
     // ---------- Variables de gestión ----------
@@ -8098,28 +8145,6 @@ if(enTramite){
         }).addTo(map);
        geojsonLayer.bringToFront();
 
-      
-/* DIBUJAR NARIÑO EN EL MINIMAPA */
-if (miniMapControl && miniMapControl._miniMap) {
-    const miniNariñoLayer = L.geoJSON(data, {
-        style: {
-            color: "#D9FFFF",
-            weight: 1,
-            opacity: 0.9,
-            fillColor: "#087F83",
-            fillOpacity: 0.55
-        },
-        interactive: false
-    }).addTo(miniMapControl._miniMap);
-
-    miniMapControl._miniMap.fitBounds(
-        miniNariñoLayer.getBounds(),
-        { padding: [8, 8] }
-    );
-}
-
-      })
-      .catch(err => console.error("Error cargando GeoJSON:", err));
 
     //====================================
 // PANEL MANAGER
