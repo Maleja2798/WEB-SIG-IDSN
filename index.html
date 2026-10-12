@@ -2627,19 +2627,33 @@ CENTRO DE CONTROL - VERSION FINAL
   7. MINI MAPA
 ==================================================*/
 
+
 .leaflet-control-minimap{
-
-    border:
-        1px solid
-        rgba(255,255,255,.48) !important;
-
-    border-radius:
-        12px !important;
-
-    box-shadow:
-        0 8px 25px
-        rgba(0,0,0,.45) !important;
+    position:fixed !important;
+    left:16px !important;
+    bottom:16px !important;
+    width:258px !important;
+    height:150px !important;
+    margin:0 !important;
+    padding:0 !important;
+    box-sizing:border-box !important;
+    overflow:hidden !important;
+    border:1px solid rgba(35,210,213,.55) !important;
+    border-radius:16px !important;
+    background:#06151A !important;
+    box-shadow:0 8px 24px rgba(0,0,0,.35) !important;
 }
+
+.leaflet-control-minimap .leaflet-container{
+    width:100% !important;
+    height:100% !important;
+    background:#06151A !important;
+}
+
+.leaflet-control-minimap .leaflet-tile{
+    filter:brightness(.65) saturate(.8);
+}
+
 
 
 /*==================================================
