@@ -2109,129 +2109,81 @@ CENTRO DE CONTROL - VERSION FINAL
  LEYENDA DE ESTADOS DEL MAPA
 ==================================================*/
 
+
 .leyenda-estados{
+    position:absolute !important;
+    left:50% !important;
+    bottom:24px !important;
+    transform:translateX(-50%) !important;
+    z-index:1000 !important;
 
-    position:absolute;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    gap:34px !important;
 
-    left:50%;
+    padding:17px 28px !important;
+    min-height:56px !important;
+    box-sizing:border-box !important;
 
-    bottom:18px;
-
-    transform:translateX(-50%);
-
-    z-index:1000;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    gap:28px;
-
-    padding:13px 22px;
-
-    background:rgba(7,24,40,.94);
-
-    border:1px solid
-        rgba(255,255,255,.08);
-
-    border-radius:11px;
+    background:rgba(1,18,25,.90) !important;
+    border:1px solid rgba(35,218,224,.38) !important;
+    border-radius:30px !important;
 
     box-shadow:
-        0 8px 25px
-        rgba(0,0,0,.35);
+        0 0 18px rgba(0,220,230,.10),
+        0 8px 25px rgba(0,0,0,.40),
+        inset 0 1px 0 rgba(255,255,255,.08) !important;
 
-    backdrop-filter:blur(10px);
+    backdrop-filter:blur(12px) !important;
+    -webkit-backdrop-filter:blur(12px) !important;
 
-    color:white;
-
-    font-family:'Poppins',sans-serif;
-
-    font-size:11px;
-
-    white-space:nowrap;
-
+    color:#F5FFFF !important;
+    font-family:'Poppins',sans-serif !important;
+    font-size:12px !important;
+    white-space:nowrap !important;
 }
-
 
 .leyenda-item{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:7px;
-
+    display:flex !important;
+    align-items:center !important;
+    gap:11px !important;
 }
-
 
 .leyenda-punto{
-
-    width:11px;
-
-    height:11px;
-
-    min-width:11px;
-
-    border-radius:50%;
-
-    display:inline-block;
-
-    box-shadow:
-        0 0 8px
-        currentColor;
-
+    width:20px !important;
+    height:20px !important;
+    min-width:20px !important;
+    border-radius:50% !important;
+    display:inline-block !important;
+    box-shadow:0 0 12px currentColor !important;
 }
-
-
-/*-----------------------------------------------
- COLORES
-------------------------------------------------*/
 
 .leyenda-punto.vigente{
-
-    background:#38D976;
-
-    color:#38D976;
-
+    background:#38D976 !important;
+    color:#38D976 !important;
 }
-
 
 .leyenda-punto.vencer{
-
-    background:#FFD54A;
-
-    color:#FFD54A;
-
+    background:#FFD54A !important;
+    color:#FFD54A !important;
 }
-
 
 .leyenda-punto.vencida{
-
-    background:#FF5A5A;
-
-    color:#FF5A5A;
-
+    background:#FF3348 !important;
+    color:#FF3348 !important;
 }
-
 
 .leyenda-punto.suspendida{
-
-    background:#9E6BFF;
-
-    color:#9E6BFF;
-
+    background:#9E6BFF !important;
+    color:#9E6BFF !important;
 }
-
 
 .leyenda-punto.tramite{
-
-    background:#3EAFFF;
-
-    color:#3EAFFF;
-
+    background:#079DFF !important;
+    color:#079DFF !important;
 }
+
 
 /*==================================================
  ESCALA DEL MAPA
@@ -2246,35 +2198,24 @@ CENTRO DE CONTROL - VERSION FINAL
 }
 
 
+
 .leaflet-control-scale-line{
+    background:rgba(1,18,25,.92) !important;
+    border:1px solid rgba(35,218,224,.38) !important;
+    color:#F5FFFF !important;
 
-    background:
-        rgba(13,36,55,.96) !important;
+    font-family:'Poppins',sans-serif !important;
+    font-size:12px !important;
+    font-weight:600 !important;
 
-    border:
-        1px solid
-        rgba(62,175,255,.30) !important;
-
-    color:#FFFFFF !important;
-
-    font-family:
-        'Poppins',
-        sans-serif;
-
-    font-size:10px;
-
-    font-weight:600;
-
-    padding:
-        4px 9px !important;
-
-    border-radius:6px;
+    padding:7px 12px 5px !important;
+    border-radius:12px !important;
 
     box-shadow:
-        0 4px 12px
-        rgba(0,0,0,.30);
-
+        0 0 14px rgba(0,220,230,.10),
+        0 5px 16px rgba(0,0,0,.35) !important;
 }
+
 
 /*==================================================
  PANEL PERSONALIZADO DE CAPAS
