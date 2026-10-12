@@ -12,9 +12,6 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
   <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 
-  <link rel="stylesheet" href="https://unpkg.com/leaflet-minimap/dist/Control.MiniMap.min.css" />
-  <script src="https://unpkg.com/leaflet-minimap/dist/Control.MiniMap.min.js"></script>
-
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
 
@@ -4804,6 +4801,7 @@ flex:0 1 auto !important;
    PANEL LATERAL DE NAVEGACIÓN — SIG IDSN
 ========================================= */
 
+
 #sidebar.circular-sidebar{
     position:fixed !important;
     top:16px !important;
@@ -4817,17 +4815,18 @@ flex:0 1 auto !important;
     flex-direction:column !important;
     gap:20px !important;
     overflow:hidden !important;
-    background:linear-gradient(
-        155deg,
-        rgba(2,24,30,.98),
-        rgba(1,13,20,.98)
-    ) !important;
-    border:1px solid rgba(36,205,210,.20) !important;
+
+    /* VIDRIO ESMERILADO */
+    background:rgba(2,20,25,.68) !important;
+    border:1px solid rgba(80,225,220,.22) !important;
     border-radius:24px !important;
     box-shadow:
-        0 12px 35px rgba(0,0,0,.32),
-        inset 0 1px 0 rgba(255,255,255,.04) !important;
-    backdrop-filter:blur(16px) !important;
+        0 12px 35px rgba(0,0,0,.28),
+        inset 0 1px 0 rgba(255,255,255,.08) !important;
+
+    backdrop-filter:blur(22px) saturate(125%) !important;
+    -webkit-backdrop-filter:blur(22px) saturate(125%) !important;
+
     transform:none !important;
     z-index:6000 !important;
 }
@@ -5363,8 +5362,8 @@ flex:0 1 auto !important;
     <!-- NAVEGACIÓN -->
     <div class="menu circular-menu">
 
-        <div class="menu-item active"
-             onclick="seleccionarMenu(this); mostrarInicio();">
+        <div class="menu-item"
+     onclick="seleccionarMenu(this); mostrarInicio();">
 
             <span class="menu-icon">
                 <i data-lucide="house"></i>
@@ -6363,34 +6362,6 @@ function compartirMapa(){
     
     L.control.zoom({ position: "topright" }).addTo(map);
     L.control.scale({ position: "bottomright", metric: true, imperial: false }).addTo(map);
-    // evitar error si no existe aún el icono
-new L.Control.MiniMap(
-
-    L.tileLayer(
-        "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
-        {
-            attribution:
-                '&copy; OpenStreetMap contributors &copy; CARTO',
-            subdomains: "abcd",
-            maxZoom: 20
-        }
-    ),
-
-    {
-        toggleDisplay: true,
-        position: "bottomleft",
-
-        width: 120,
-        height: 105,
-
-        zoomLevelOffset: -5,
-
-        zoomAnimation: true,
-
-        minimized: false
-    }
-
-).addTo(map);
 
     let geojsonLayer;
 
