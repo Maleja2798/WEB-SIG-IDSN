@@ -6384,7 +6384,7 @@ function compartirMapa(){
     L.control.scale({ position: "bottomright", metric: true, imperial: false }).addTo(map);
 
 // MINIMAPA INFERIOR DEL PANEL
-new L.Control.MiniMap(
+const miniMapControl = new L.Control.MiniMap(
     L.tileLayer(
         "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
         {
@@ -8097,6 +8097,27 @@ if(enTramite){
           }
         }).addTo(map);
        geojsonLayer.bringToFront();
+
+      
+/* DIBUJAR NARIÑO EN EL MINIMAPA */
+if (miniMapControl && miniMapControl._miniMap) {
+    const miniNariñoLayer = L.geoJSON(data, {
+        style: {
+            color: "#D9FFFF",
+            weight: 1,
+            opacity: 0.9,
+            fillColor: "#087F83",
+            fillOpacity: 0.55
+        },
+        interactive: false
+    }).addTo(miniMapControl._miniMap);
+
+    miniMapControl._miniMap.fitBounds(
+        miniNariñoLayer.getBounds(),
+        { padding: [8, 8] }
+    );
+}
+
       })
       .catch(err => console.error("Error cargando GeoJSON:", err));
 
