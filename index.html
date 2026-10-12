@@ -5231,6 +5231,180 @@ flex:0 1 auto !important;
 .topbar .header-left{
     display:none !important;
 }
+
+```css
+/* =========================================
+   BRÚJULA FUTURISTA — SIG IDSN
+   Sobrescribe el diseño anterior
+========================================= */
+
+.rosa-norte.rosa-futurista {
+    position: relative !important;
+    width: 112px !important;
+    height: 112px !important;
+    box-sizing: border-box !important;
+    margin-top: 113px !important;
+    margin-left: 260px !important;
+    padding: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    border: 1px solid rgba(75, 226, 235, .72) !important;
+    border-radius: 50% !important;
+
+    background: radial-gradient(
+        circle at 45% 40%,
+        rgba(11, 67, 79, .98),
+        rgba(3, 24, 35, .98) 72%
+    ) !important;
+
+    box-shadow:
+        0 0 0 4px rgba(20, 210, 220, .07),
+        0 0 22px rgba(0, 220, 230, .24),
+        inset 0 0 18px rgba(38, 220, 230, .16) !important;
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    overflow: visible !important;
+    z-index: 1000;
+}
+
+.rosa-norte.rosa-futurista .brujula-anillo {
+    position: absolute;
+    inset: 7px;
+    border: 1px solid rgba(104, 230, 237, .55);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.rosa-norte.rosa-futurista .brujula-anillo.interior {
+    inset: 18px;
+    border-color: rgba(72, 205, 218, .38);
+}
+
+.rosa-norte.rosa-futurista .cardinal {
+    position: absolute;
+    z-index: 5;
+    color: #F4FFFF;
+    font-family: 'Poppins', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1;
+    text-shadow: 0 0 8px rgba(0, 230, 240, .65);
+}
+
+.rosa-norte.rosa-futurista .cardinal-n {
+    top: 7px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.rosa-norte.rosa-futurista .cardinal-s {
+    bottom: 7px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.rosa-norte.rosa-futurista .cardinal-e {
+    right: 7px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.rosa-norte.rosa-futurista .cardinal-o {
+    left: 7px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.rosa-norte.rosa-futurista .marca {
+    position: absolute;
+    z-index: 4;
+    background: #35E8ED;
+    border-radius: 3px;
+    box-shadow: 0 0 7px rgba(53, 232, 237, .65);
+}
+
+.rosa-norte.rosa-futurista .marca-n,
+.rosa-norte.rosa-futurista .marca-s {
+    width: 2px;
+    height: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.rosa-norte.rosa-futurista .marca-n { top: 23px; }
+.rosa-norte.rosa-futurista .marca-s { bottom: 23px; }
+
+.rosa-norte.rosa-futurista .marca-e,
+.rosa-norte.rosa-futurista .marca-o {
+    width: 8px;
+    height: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.rosa-norte.rosa-futurista .marca-e { right: 23px; }
+.rosa-norte.rosa-futurista .marca-o { left: 23px; }
+
+.rosa-norte.rosa-futurista .brujula-aguja {
+    position: relative;
+    z-index: 3;
+    display: block;
+    width: 47px !important;
+    height: 57px !important;
+    overflow: visible;
+    filter: drop-shadow(0 0 7px rgba(0, 230, 240, .35));
+}
+
+.rosa-norte.rosa-futurista .estrella-brujula {
+    fill: rgba(31, 139, 164, .20);
+    stroke: rgba(91, 217, 232, .35);
+    stroke-width: 1;
+}
+
+.rosa-norte.rosa-futurista .aguja-base {
+    fill: #D9FFFF;
+    stroke: #FFFFFF;
+    stroke-width: 2;
+    stroke-linejoin: round;
+}
+
+.rosa-norte.rosa-futurista .aguja-norte {
+    fill: #17D8D9;
+    stroke: #8BFFFF;
+    stroke-width: 1;
+    stroke-linejoin: round;
+}
+
+.rosa-norte.rosa-futurista .aguja-sur {
+    fill: #0A5368;
+    stroke: #4ADBE5;
+    stroke-width: .8;
+    stroke-linejoin: round;
+}
+
+.rosa-norte.rosa-futurista .aguja-borde {
+    fill: none;
+    stroke: rgba(255, 255, 255, .9);
+    stroke-width: 1.5;
+    stroke-linejoin: round;
+    pointer-events: none;
+}
+
+.rosa-norte.rosa-futurista .brujula-centro {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    z-index: 6;
+    border-radius: 50%;
+    background: #FFFFFF;
+    box-shadow: 0 0 9px #26F6F4;
+    pointer-events: none;
+}
+```
     
   </style>
 </head>
@@ -5622,47 +5796,46 @@ const div = L.DomUtil.create('div');
 
 div.innerHTML=`
 
-<div class="rosa-norte">
+```html
+<div class="rosa-norte rosa-futurista">
+    <div class="brujula-anillo"></div>
+    <div class="brujula-anillo interior"></div>
 
-<svg viewBox="0 0 100 100">
+    <span class="cardinal cardinal-n">N</span>
+    <span class="cardinal cardinal-s">S</span>
+    <span class="cardinal cardinal-e">E</span>
+    <span class="cardinal cardinal-o">O</span>
 
-<polygon
-points="50,5 62,42 50,34 38,42"
-fill="#4FB7FF"/>
+    <span class="marca marca-n"></span>
+    <span class="marca marca-s"></span>
+    <span class="marca marca-e"></span>
+    <span class="marca marca-o"></span>
 
-<polygon
-points="50,95 38,58 50,66 62,58"
-fill="#0A3156"/>
+    <svg class="brujula-aguja" viewBox="0 0 100 120"
+         xmlns="http://www.w3.org/2000/svg"
+         aria-hidden="true">
+        <path class="estrella-brujula"
+              d="M50 5 L59 39 L91 25 L67 50
+                 L96 61 L62 65 L76 99 L50 76
+                 L24 99 L38 65 L4 61 L33 50
+                 L9 25 L41 39 Z"/>
 
-<polygon
-points="5,50 42,38 34,50 42,62"
-fill="#163D6A"/>
+        <path class="aguja-base"
+              d="M50 12 L78 91 L50 72 L22 91 Z"/>
 
-<polygon
-points="95,50 58,62 66,50 58,38"
-fill="#163D6A"/>
+        <path class="aguja-norte"
+              d="M50 12 L72 82 L50 68 L28 82 Z"/>
 
-<circle
-cx="50"
-cy="50"
-r="6"
-fill="#FFFFFF"/>
+        <path class="aguja-sur"
+              d="M50 72 L72 82 L50 108 L28 82 Z"/>
 
-<text
-x="50"
-y="18"
-text-anchor="middle"
-font-size="18"
-font-weight="bold"
-fill="white">
+        <path class="aguja-borde"
+              d="M50 12 L78 91 L50 72 L22 91 Z"/>
+    </svg>
 
-N
-
-</text>
-
-</svg>
-
+    <div class="brujula-centro"></div>
 </div>
+```
 
 `;
 
