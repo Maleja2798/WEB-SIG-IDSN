@@ -4222,12 +4222,12 @@ body.panel-mapa-activo #map .leaflet-municipios-pane {
    ENCABEZADO PRINCIPAL — SIG IDSN
 ========================================================= */
 
+
 .topbar{
     position:absolute !important;
     top:0 !important;
     left:0 !important;
     right:0 !important;
-
     width:100% !important;
     height:100px !important;
     min-height:100px !important;
@@ -4239,27 +4239,13 @@ body.panel-mapa-activo #map .leaflet-municipios-pane {
     gap:20px !important;
     padding:0 24px !important;
 
-    background:linear-gradient(
-        105deg,
-        #0A2921 0%,
-        #103C30 58%,
-        #0B3028 100%
-    ) !important;
-
+    background:transparent !important;
     border:0 !important;
-    border-bottom:1px solid rgba(255,255,255,.18) !important;
+    box-shadow:none !important;
     border-radius:0 !important;
-    box-shadow:0 6px 20px rgba(0,0,0,.22) !important;
-
-    overflow:hidden !important;
+    overflow:visible !important;
     z-index:5000 !important;
 }
-
-.topbar > *{
-    position:relative !important;
-    z-index:20 !important;
-}
-
 
 /* =========================================================
    IDENTIDAD IZQUIERDA
@@ -4316,40 +4302,6 @@ body.panel-mapa-activo #map .leaflet-municipios-pane {
         0 0 12px rgba(51,218,221,.22) !important;
 
     z-index:30 !important;
-}
-
-
-/* pequeña zona de identidad */
-
-.topbar .header-left::after{
-
-    content:"" !important;
-
-    position:absolute !important;
-
-    left:14px !important;
-
-    top:13px !important;
-
-    width:435px !important;
-
-    height:66px !important;
-
-    border-radius:12px !important;
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(255,255,255,.055),
-            rgba(255,255,255,.018)
-        ) !important;
-
-    border:
-        1px solid rgba(255,255,255,.055) !important;
-
-    pointer-events:none !important;
-
-    z-index:-1 !important;
 }
 
 
