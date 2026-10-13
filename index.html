@@ -9615,6 +9615,111 @@ if(selectorMunicipio){
     };
 
 }
+
+
+/* INICIALIZAR LOS FILTROS DE AUTORIZACIONES */
+
+document.querySelectorAll(
+    '#panel-body .filtro-personalizado[data-select-id^="autorizaciones-"]'
+).forEach(contenedor => {
+
+    const selector = contenedor.querySelector(
+        ".dashboard-select"
+    );
+
+    const boton = contenedor.querySelector(
+        ".filtro-boton"
+    );
+
+    const valor = contenedor.querySelector(
+        ".filtro-valor"
+    );
+
+    const lista = contenedor.querySelector(
+        ".filtro-opciones"
+    );
+
+    if(!selector || !boton || !valor || !lista){
+        return;
+    }
+
+    function actualizarVista(){
+
+        const opcion =
+            selector.options[selector.selectedIndex];
+
+        valor.textContent =
+            opcion ? opcion.textContent.trim() : "";
+
+        lista.innerHTML = "";
+
+        Array.from(selector.options).forEach(opcion => {
+
+            const item = document.createElement("button");
+
+            item.type = "button";
+            item.className = "filtro-opcion";
+            item.textContent = opcion.textContent.trim();
+
+            if(opcion.value === selector.value){
+                item.classList.add("seleccionada");
+            }
+
+            item.addEventListener("click", () => {
+
+                selector.value = opcion.value;
+
+                contenedor.classList.remove("abierto");
+                boton.setAttribute("aria-expanded", "false");
+
+                selector.dispatchEvent(
+                    new Event("change", { bubbles: true })
+                );
+
+            });
+
+            lista.appendChild(item);
+
+        });
+
+    }
+
+    boton.onclick = () => {
+
+        const estabaAbierto =
+            contenedor.classList.contains("abierto");
+
+        document.querySelectorAll(
+            "#panel-body .filtro-personalizado.abierto"
+        ).forEach(otro => {
+
+            otro.classList.remove("abierto");
+
+            const otroBoton =
+                otro.querySelector(".filtro-boton");
+
+            if(otroBoton){
+                otroBoton.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+            }
+
+        });
+
+        if(!estabaAbierto){
+            contenedor.classList.add("abierto");
+            boton.setAttribute("aria-expanded", "true");
+        }
+
+    };
+
+    selector.addEventListener("change", actualizarVista);
+
+    actualizarVista();
+
+});
+
   
   lucide.createIcons();
 
