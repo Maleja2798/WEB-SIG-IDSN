@@ -5389,6 +5389,145 @@ flex:0 1 auto !important;
     left: 16px;
 }
 
+
+/* FILTROS PERSONALIZADOS DEL CENTRO DE CONTROL */
+
+.filtro-personalizado{
+    position:relative;
+    min-width:0;
+    width:100%;
+    font-family:'Poppins',sans-serif;
+}
+
+/* Ocultar el select nativo, conservando su funcionalidad */
+.filtro-personalizado > .dashboard-select{
+    display:none !important;
+}
+
+.filtro-boton{
+    width:100%;
+    min-height:46px;
+    box-sizing:border-box;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:12px 16px;
+
+    color:#F5FFFF;
+    font-family:'Poppins',sans-serif;
+    font-size:14px;
+    font-weight:500;
+    text-align:left;
+
+    background:linear-gradient(
+        145deg,
+        rgba(3,29,29,.98),
+        rgba(1,17,20,.98)
+    );
+
+    border:1px solid rgba(35,218,213,.28);
+    border-radius:12px;
+    cursor:pointer;
+    transition:border-color .2s, background .2s;
+}
+
+.filtro-boton:hover,
+.filtro-boton[aria-expanded="true"]{
+    background:linear-gradient(
+        145deg,
+        #073A40,
+        #031C25
+    );
+    border-color:rgba(35,218,213,.70);
+    outline:none;
+}
+
+.filtro-valor{
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+}
+
+.filtro-flecha{
+    width:9px;
+    height:9px;
+    flex:0 0 9px;
+    border-right:2px solid #D9FFFC;
+    border-bottom:2px solid #D9FFFC;
+    transform:rotate(45deg) translateY(-2px);
+    transition:transform .2s;
+}
+
+.filtro-boton[aria-expanded="true"] .filtro-flecha{
+    transform:rotate(225deg) translate(-2px,-1px);
+}
+
+.filtro-opciones{
+    display:none;
+    position:absolute;
+    top:calc(100% + 5px);
+    left:0;
+    right:0;
+    z-index:5000;
+
+    max-height:230px;
+    overflow-y:auto;
+    padding:5px;
+
+    background:#031C25;
+    border:1px solid rgba(35,218,213,.42);
+    border-radius:12px;
+    box-shadow:0 12px 28px rgba(0,0,0,.45);
+}
+
+.filtro-personalizado.abierto .filtro-opciones{
+    display:block;
+}
+
+.filtro-opcion{
+    width:100%;
+    display:block;
+    box-sizing:border-box;
+    padding:10px 12px;
+
+    color:#F5FFFF;
+    font-family:'Poppins',sans-serif;
+    font-size:13px;
+    text-align:left;
+
+    background:transparent;
+    border:0;
+    border-radius:7px;
+    cursor:pointer;
+}
+
+.filtro-opcion:hover,
+.filtro-opcion:focus-visible{
+    background:#073A40;
+    color:#FFFFFF;
+    outline:none;
+}
+
+.filtro-opcion.seleccionada{
+    background:rgba(35,218,213,.16);
+    color:#FFFFFF;
+    box-shadow:inset 3px 0 0 #23DAD5;
+}
+
+.filtro-opciones::-webkit-scrollbar{
+    width:6px;
+}
+
+.filtro-opciones::-webkit-scrollbar-track{
+    background:#031C25;
+    border-radius:8px;
+}
+
+.filtro-opciones::-webkit-scrollbar-thumb{
+    background:rgba(35,218,213,.40);
+    border-radius:8px;
+}
     
   </style>
 </head>
@@ -8596,27 +8735,31 @@ function mostrarDashboard(){
 
         <!-- FILTROS -->
 
-        <div class="dashboard-filtros">
+<div class="dashboard-filtros">
 
-            <select
-                class="dashboard-select"
-                id="dashboard-anio">
+    <div class="filtro-personalizado" data-select-id="dashboard-anio">
+        <select class="dashboard-select" id="dashboard-anio">
+            ${opcionesAnios}
+        </select>
+        <button type="button" class="filtro-boton" aria-expanded="false">
+            <span class="filtro-valor"></span>
+            <span class="filtro-flecha"></span>
+        </button>
+        <div class="filtro-opciones"></div>
+    </div>
 
-                ${opcionesAnios}
+    <div class="filtro-personalizado" data-select-id="dashboard-municipio">
+        <select class="dashboard-select" id="dashboard-municipio">
+            ${opcionesMunicipios}
+        </select>
+        <button type="button" class="filtro-boton" aria-expanded="false">
+            <span class="filtro-valor"></span>
+            <span class="filtro-flecha"></span>
+        </button>
+        <div class="filtro-opciones"></div>
+    </div>
 
-            </select>
-
-
-            <select
-                class="dashboard-select"
-                id="dashboard-municipio">
-
-                ${opcionesMunicipios}
-
-            </select>
-
-        </div>
-
+</div>
 
         <!--==================================================
     RESUMEN
@@ -8876,6 +9019,116 @@ function mostrarDashboard(){
 
        lucide.createIcons();
 
+    // Inicializar los filtros personalizados
+    document.querySelectorAll(
+        ".filtro-personalizado"
+    ).forEach(contenedor => {
+
+        const selector = contenedor.querySelector(
+            ".dashboard-select"
+        );
+
+        const boton = contenedor.querySelector(
+            ".filtro-boton"
+        );
+
+        const valor = contenedor.querySelector(
+            ".filtro-valor"
+        );
+
+        const lista = contenedor.querySelector(
+            ".filtro-opciones"
+        );
+
+        if(!selector || !boton || !valor || !lista){
+            return;
+        }
+
+        function actualizarVista(){
+
+            const opcionSeleccionada =
+                selector.options[selector.selectedIndex];
+
+            valor.textContent =
+                opcionSeleccionada
+                    ? opcionSeleccionada.textContent.trim()
+                    : "";
+
+            lista.innerHTML = "";
+
+            Array.from(selector.options).forEach(opcion => {
+
+                const elemento = document.createElement("button");
+
+                elemento.type = "button";
+                elemento.className = "filtro-opcion";
+                elemento.textContent = opcion.textContent.trim();
+
+                if(opcion.value === selector.value){
+                    elemento.classList.add("seleccionada");
+                    elemento.setAttribute("aria-selected","true");
+                }
+
+                elemento.addEventListener("click", () => {
+
+                    selector.value = opcion.value;
+
+                    contenedor.classList.remove("abierto");
+                    boton.setAttribute("aria-expanded","false");
+
+                    // Ejecuta la lógica original del filtro
+                    selector.dispatchEvent(
+                        new Event("change",{bubbles:true})
+                    );
+
+                    // Actualiza la etiqueta si el panel sigue abierto
+                    if(document.body.contains(contenedor)){
+                        actualizarVista();
+                    }
+
+                });
+
+                lista.appendChild(elemento);
+
+            });
+
+        }
+
+        boton.addEventListener("click", () => {
+
+            const estabaAbierto =
+                contenedor.classList.contains("abierto");
+
+            document.querySelectorAll(
+                ".filtro-personalizado.abierto"
+            ).forEach(otro => {
+
+                otro.classList.remove("abierto");
+
+                const otroBoton =
+                    otro.querySelector(".filtro-boton");
+
+                if(otroBoton){
+                    otroBoton.setAttribute(
+                        "aria-expanded","false"
+                    );
+                }
+
+            });
+
+            if(!estabaAbierto){
+                contenedor.classList.add("abierto");
+                boton.setAttribute("aria-expanded","true");
+            }
+
+        });
+
+        selector.addEventListener("change", actualizarVista);
+
+        actualizarVista();
+
+    });
+  
     actualizarEstadoVisualTarjetas();
 
 
