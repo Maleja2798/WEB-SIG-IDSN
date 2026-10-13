@@ -2641,9 +2641,8 @@ CENTRO DE CONTROL - VERSION FINAL
 
 #panel-content{
 
-    border:
-        1px solid
-        rgba(255,255,255,.42) !important;
+    border: 1px solid
+        rgba(35, 218, 213, .38) !important;
 
     box-shadow:
         0 10px 30px
@@ -2933,12 +2932,11 @@ CENTRO DE CONTROL - VERSION FINAL
     -webkit-appearance:none;
     -moz-appearance:none;
 
-    background:
-        linear-gradient(
-            135deg,
-            rgba(35,75,110,.92),
-            rgba(15,43,70,.96)
-        ) !important;
+    background: linear-gradient(
+        145deg,
+        rgba(3, 29, 29, .98),
+        rgba(1, 17, 20, .98)
+    ) !important;
 
     color:#F4FAFF !important;
 
@@ -2985,14 +2983,13 @@ CENTRO DE CONTROL - VERSION FINAL
 .dashboard-select:hover{
 
     border-color:
-        rgba(255,255,255,.48) !important;
+        rgba(35,218,213,.45) !important;
 
-    background:
-        linear-gradient(
-            135deg,
-            rgba(43,91,132,.96),
-            rgba(18,51,80,.98)
-        ) !important;
+    background: linear-gradient(
+        145deg,
+        #073A40,
+        #031C25
+    ) !important;
 
 }
 
@@ -3004,12 +3001,12 @@ CENTRO DE CONTROL - VERSION FINAL
 .dashboard-select:focus{
 
     border-color:
-        rgba(86,190,255,.75) !important;
+        rgba(35,218,213,.65) !important;
 
     box-shadow:
 
         0 0 0 2px
-        rgba(54,171,238,.18),
+        rgba(35,218,213,.12),
 
         inset 0 1px 0
         rgba(255,255,255,.10),
@@ -3027,7 +3024,7 @@ CENTRO DE CONTROL - VERSION FINAL
 .dashboard-select option{
 
     background:
-        #102F49 !important;
+        #031C25 !important;
 
     color:
         #F4FAFF !important;
@@ -3054,7 +3051,7 @@ CENTRO DE CONTROL - VERSION FINAL
 .dashboard-select option:checked{
 
     background:
-        #1D6FA5 !important;
+        #073A40 !important;
 
     color:
         #FFFFFF !important;
@@ -3069,7 +3066,7 @@ CENTRO DE CONTROL - VERSION FINAL
 .dashboard-select option:hover{
 
     background:
-        #245F87 !important;
+        #0A4547 !important;
 
     color:
         #FFFFFF !important;
@@ -3614,13 +3611,14 @@ CENTRO DE CONTROL - VERSION FINAL
     overflow:hidden !important;
 
 background: linear-gradient(
-        145deg,
-        #073A40,
-        #031C25
-    ) !important;
+    145deg,
+    rgba(3, 29, 29, .98),
+    rgba(1, 17, 20, .98)
+) !important;
 
-    border: 1px solid
-        rgba(35, 210, 213, .22) !important;
+border: 1px solid
+    rgba(35, 218, 213, .22) !important;
+
   }
     
 /*==================================================
@@ -8349,14 +8347,20 @@ map.panBy(
 
 function abrirPanel(titulo, contenido){
 
-    if(titulo === "Años"){
+    
+if(titulo === "Años" || titulo === "Centro de Control"){
 
-        panelTitle.innerHTML = `
-            <span class="panel-titulo-icono">
-                <i data-lucide="calendar-days"></i>
-            </span>
-            <span>Años</span>
-        `;
+        
+panelTitle.innerHTML = `
+    <span class="panel-titulo-icono">
+        <i data-lucide="${
+            titulo === "Años"
+                ? "calendar-days"
+                : "layout-dashboard"
+        }"></i>
+    </span>
+    <span>${titulo}</span>
+`;
 
     } else {
 
