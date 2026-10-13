@@ -154,6 +154,41 @@ font-weight:600;
 }
 
 
+.panel-titulo-icono{
+    width:48px;
+    height:48px;
+    min-width:48px;
+
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+
+    background:linear-gradient(
+        145deg,
+        #073A40,
+        #031C25
+    );
+
+    border:1px solid rgba(35,210,213,.48);
+    border-radius:13px;
+
+    color:#FFFFFF;
+}
+
+.panel-titulo-icono svg{
+    width:25px;
+    height:25px;
+    stroke:#FFFFFF;
+    stroke-width:2;
+}
+
+#panel-title{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+    
+
 #cerrar-panel{
     font-size:24px;
     cursor:pointer;
@@ -8307,9 +8342,24 @@ map.panBy(
 
 };
 
-function abrirPanel(titulo,contenido){
 
-    panelTitle.innerHTML = titulo;
+function abrirPanel(titulo, contenido){
+
+    if(titulo === "Años"){
+
+        panelTitle.innerHTML = `
+            <span class="panel-titulo-icono">
+                <i data-lucide="calendar-days"></i>
+            </span>
+            <span>Años</span>
+        `;
+
+    } else {
+
+        panelTitle.innerHTML = titulo;
+
+    }
+
     panelBody.innerHTML = contenido;
 
     panel.classList.add("show");
@@ -8318,30 +8368,34 @@ function abrirPanel(titulo,contenido){
         "panel-mapa-activo"
     );
 
+    if(window.lucide){
+        lucide.createIcons();
+    }
+
     setTimeout(() => {
 
-    map.invalidateSize();
+        map.invalidateSize();
 
-    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
 
-        map.setView(
-            [2.00, -78.45],
-            7.5,
-            {
-                animate:false
-            }
-        );
+            map.setView(
+                [2.00, -78.45],
+                7.5,
+                {
+                    animate:false
+                }
+            );
 
-        map.panBy(
-            [-220, 70],
-            {
-                animate:false
-            }
-        );
+            map.panBy(
+                [-220, 70],
+                {
+                    animate:false
+                }
+            );
 
-    });
+        });
 
-}, 350);
+    }, 350);
 }
 
 /*==================================================
