@@ -1368,15 +1368,14 @@ CENTRO DE CONTROL - VERSION FINAL
 
     position:relative;
 
-    background:
-        linear-gradient(
-            135deg,
-            rgba(22,68,105,.88),
-            rgba(8,38,68,.94)
-        );
+    background: linear-gradient(
+    145deg,
+    rgba(3, 29, 29, .98),
+    rgba(1, 17, 20, .98)
+    );
 
-    border:1px solid rgba(130,190,225,.18);
-    border-left:4px solid rgba(130,190,225,.18);
+    border:1px solid rgba(35,218,213,.22);
+    border-left:4px solid rgba(35,218,213,.30);
 
     border-radius:16px;
 
@@ -9460,56 +9459,72 @@ const listaAutorizaciones =
         </div>
 
 
-        <!-- FILTROS -->
 
-        <div class="dashboard-filtros">
+<!-- FILTROS PERSONALIZADOS DE AUTORIZACIONES -->
 
+<div class="dashboard-filtros">
 
-            <select
-                class="dashboard-select"
+    <div class="filtro-personalizado"
+         data-select-id="autorizaciones-anio">
+
+        <select class="dashboard-select"
                 id="autorizaciones-anio">
 
-                ${Object.keys(datosPorAnio)
-                    .sort()
-                    .map(a => `
+            ${Object.keys(datosPorAnio)
+                .sort()
+                .map(a => `
+                    <option value="${a}"
+                        ${a === anio ? "selected" : ""}>
+                        ${a}
+                    </option>
+                `)
+                .join("")}
 
-                        <option
-                            value="${a}"
-                            ${a === anio
-                                ? "selected"
-                                : ""}>
+        </select>
 
-                            ${a}
+        <button type="button"
+                class="filtro-boton"
+                aria-expanded="false">
+            <span class="filtro-valor"></span>
+            <span class="filtro-flecha"></span>
+        </button>
 
-                        </option>
+        <div class="filtro-opciones"></div>
+    </div>
 
-                    `)
-                    .join("")}
+    <div class="filtro-personalizado"
+         data-select-id="autorizaciones-municipio">
 
-            </select>
+        <select class="dashboard-select"
+                id="autorizaciones-municipio">
 
-<select
-    class="dashboard-select"
-    id="autorizaciones-municipio">
-
-    <option value="TODOS" selected>
-        Todos los municipios
-    </option>
-
-    ${Array.from(municipios)
-        .sort()
-        .map(municipio => `
-
-            <option value="${municipio}">
-                ${municipio}
+            <option value="TODOS" selected>
+                Todos los municipios
             </option>
 
-        `)
-        .join("")}
+            ${Array.from(municipios)
+                .sort()
+                .map(municipio => `
+                    <option value="${municipio}">
+                        ${municipio}
+                    </option>
+                `)
+                .join("")}
 
-</select>
+        </select>
 
-        </div>
+        <button type="button"
+                class="filtro-boton"
+                aria-expanded="false">
+            <span class="filtro-valor"></span>
+            <span class="filtro-flecha"></span>
+        </button>
+
+        <div class="filtro-opciones"></div>
+    </div>
+
+</div>
+
 
 
         <div class="autorizaciones-resumen">
