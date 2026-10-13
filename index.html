@@ -9667,22 +9667,36 @@ if(selectorMunicipio){
 
             if(coordenadas.length === 1){
 
-                map.setView(
-                    coordenadas[0],
-                    12,
-                    { animate: true }
-                );
+                
+map.setView(
+    coordenadas[0],
+    12,
+    { animate: false }
+);
+
+// Desplazar el centro para que el municipio
+// quede visible al lado del panel.
+requestAnimationFrame(() => {
+
+    map.panBy(
+        [-280, 0],
+        { animate: true }
+    );
+
+});
+
 
             } else if(coordenadas.length > 1){
 
-                map.fitBounds(
-                    coordenadas,
-                    {
-                        padding: [35, 35],
-                        maxZoom: 12,
-                        animate: true
-                    }
-                );
+    map.fitBounds(
+    coordenadas,
+    {
+        paddingTopLeft: [300, 35],
+        paddingBottomRight: [35, 35],
+        maxZoom: 12,
+        animate: false
+    }
+);
 
             } else {
 
