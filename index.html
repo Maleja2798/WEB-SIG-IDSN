@@ -9603,19 +9603,101 @@ if(selectorMunicipio){
         const municipioSeleccionado =
             this.value;
 
-        /*
-         * Filtrar solamente la lista
-         * del panel.
-         */
+        // 1. Filtrar la lista de autorizaciones
         filtrarListaAutorizaciones(
             anioActivo,
             municipioSeleccionado
         );
 
+        // 2. Hacer zoom al municipio seleccionado
+        if(
+            municipioSeleccionado !== "TODOS" &&
+            typeof map !== "undefined" &&
+            map
+        ){
+
+            const filas =
+                datosPorAnio[anioActivo] || [];
+
+            const nombreBuscado =
+                municipioSeleccionado
+                    .trim()
+                    .toUpperCase();
+
+            const coordenadas = [];
+
+            filas.forEach(row => {
+
+                const nombreMunicipio =
+                    (row["MUNICIPIO"] || "")
+                        .toString()
+                        .trim()
+                        .toUpperCase();
+
+                if(nombreMunicipio !== nombreBuscado){
+                    return;
+                }
+
+                const lat = parseFloat(
+                    (
+                        row["LATITUD DECIMAL"] ||
+                        row["LATITUD DECIMAL "] ||
+                        ""
+                    ).toString().replace(",", ".")
+                );
+
+                const lon = parseFloat(
+                    (
+                        row["LONGITUD DECIMAL"] ||
+                        row["LONGITUD DECIMAL "] ||
+                        ""
+                    ).toString().replace(",", ".")
+                );
+
+                if(
+                    Number.isFinite(lat) &&
+                    Number.isFinite(lon) &&
+                    lat >= -90 && lat <= 90 &&
+                    lon >= -180 && lon <= 180
+                ){
+                    coordenadas.push([lat, lon]);
+                }
+
+            });
+
+            if(coordenadas.length === 1){
+
+                map.setView(
+                    coordenadas[0],
+                    12,
+                    { animate: true }
+                );
+
+            } else if(coordenadas.length > 1){
+
+                map.fitBounds(
+                    coordenadas,
+                    {
+                        padding: [35, 35],
+                        maxZoom: 12,
+                        animate: true
+                    }
+                );
+
+            } else {
+
+                console.warn(
+                    "No se encontraron coordenadas para:",
+                    municipioSeleccionado
+                );
+
+            }
+
+        }
+
     };
 
 }
-
 
 /* INICIALIZAR LOS FILTROS DE AUTORIZACIONES */
 
