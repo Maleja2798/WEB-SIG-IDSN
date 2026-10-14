@@ -11217,7 +11217,28 @@ function centrarNarino(){
     map.invalidateSize();
 }
 
+// ==============================================
+// VISTA INICIAL DEFINITIVA DEL SIG: NARIÑO
+// ==============================================
 
+window.addEventListener("load", () => {
+
+    setTimeout(() => {
+
+        map.invalidateSize();
+
+        map.setView(
+            [1.289, -77.29],
+            8,
+            {
+                animate: false
+            }
+        );
+
+    }, 1200);
+
+});
+    
 /* =========================================================
    CLIMA, FECHA Y HORA — SIG IDSN
 ========================================================= */
