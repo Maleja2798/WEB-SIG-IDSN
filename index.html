@@ -5834,43 +5834,55 @@ flex:0 1 auto !important;
 }
 
 
-/* ======================================
-   ENCABEZADO — AUTORIZACIONES SANITARIAS
-   ====================================== */
-
-.sidebar-brand {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 12px 4px 20px;
+/* ENCABEZADO DEL MENÚ LATERAL: AJUSTE DEFINITIVO */
+#sidebar .sidebar-header {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    padding: 16px 14px 20px !important;
+    box-sizing: border-box !important;
 }
 
-.sidebar-brand .brand-title {
-    margin: 0 0 7px 0;
-    font-size: 17px;
-    line-height: 1.18;
-    letter-spacing: -0.3px;
-    font-weight: 800;
-    max-width: 155px;
+#sidebar .sidebar-header > .logo-circle {
+    flex: 0 0 56px !important;
+    width: 56px !important;
+    min-width: 56px !important;
+    height: 56px !important;
+    margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
 }
 
-.sidebar-brand .brand-title span {
-    display: block;
-    color: #23DAD5;
-    margin-top: 2px;
+#sidebar .sidebar-header > div:not(.logo-circle) {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    text-align: left !important;
 }
 
-.sidebar-brand .brand-description {
-    margin: 0;
-    font-size: 11px;
-    line-height: 1.45;
-    color: #C0D5D5;
-    max-width: 160px;
+#sidebar .sidebar-title {
+    font-size: 16px !important;
+    line-height: 1.25 !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.35px !important;
+    margin: 0 0 5px 0 !important;
+    white-space: normal !important;
+    overflow-wrap: normal !important;
 }
 
-.sidebar-brand .brand-icon {
-    flex-shrink: 0;
+#sidebar .sidebar-subtitle {
+    font-size: 11px !important;
+    line-height: 1.5 !important;
+    font-weight: 400 !important;
+    margin: 0 !important;
+    white-space: normal !important;
+    overflow-wrap: break-word !important;
 }
+
+#sidebar .sidebar-header * {
+    box-sizing: border-box;
+}
+
     
   </style>
 </head>
