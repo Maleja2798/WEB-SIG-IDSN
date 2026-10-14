@@ -11217,41 +11217,39 @@ function centrarNarino() {
 
     map.invalidateSize();
 
-    // Centrar Nariño y mantener el zoom
+    // Centro inicial de Nariño
     map.setView([1.42, -77.05], 8, {
         animate: false
     });
 
-    // Ajustar la posición después de actualizar el mapa
+    // Subir el territorio en pantalla.
+    // En Leaflet, un desplazamiento Y negativo mueve
+    // el contenido geográfico hacia abajo; positivo, hacia arriba.
     requestAnimationFrame(() => {
-        map.panBy([-180, -100], {
+        map.panBy([0, 100], {
             animate: false
         });
     });
 }
-// ==============================================
-// VISTA INICIAL DEL SIG — NARIÑO
-// ==============================================
+
+ // ==============================================
+ // VISTA INICIAL DEL SIG — NARIÑO
+ // ==============================================
 
 window.addEventListener("load", () => {
-
     setTimeout(() => {
-
         map.invalidateSize();
 
-        map.setView(
-            [1.42, -77.05],
-            8,
-            { animate: false }
-        );
+        map.setView([1.42, -77.05], 8, {
+            animate: false
+        });
 
-        map.panBy(
-            [-180, -40],
-            { animate: false }
-        );
+        // Ajuste final: subir Nariño en la pantalla
+        map.panBy([0, 160], {
+            animate: false
+        });
 
     }, 1200);
-
 });
     
 /* =========================================================
