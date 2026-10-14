@@ -11217,10 +11217,10 @@ function centrarNarino() {
 
     map.invalidateSize();
 
-    // Centro inicial de Nariño
     map.setView([1.42, -77.05], 8, {
         animate: false
     });
+}
 
     // Subir el territorio en pantalla.
     // En Leaflet, un desplazamiento Y negativo mueve
@@ -11232,7 +11232,7 @@ function centrarNarino() {
     });
 }
 
- // ==============================================
+// ==============================================
  // VISTA INICIAL DEL SIG — NARIÑO
  // ==============================================
 
@@ -11240,12 +11240,13 @@ window.addEventListener("load", () => {
     setTimeout(() => {
         map.invalidateSize();
 
+        // Centro geográfico de Nariño
         map.setView([1.42, -77.05], 8, {
             animate: false
         });
 
-        // Ajuste final: subir Nariño en la pantalla
-        map.panBy([0, 160], {
+        // Mantener el mapa centrado en la pantalla
+        map.panBy([0, 0], {
             animate: false
         });
 
