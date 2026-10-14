@@ -8090,9 +8090,12 @@ const nombre =
                         .replace(/[\u0300-\u036f]/g, "")
                         .toUpperCase();
 
-                if(nombreNormalizado === nombreBuscado){
-                    municipioLayer = layer;
-                }
+               if (
+    nombreNormalizado === nombreBuscado ||
+    nombreNormalizado.endsWith(" " + nombreBuscado)
+) {
+    municipioLayer = layer;
+}
 
             });
 
@@ -9177,25 +9180,15 @@ if (selectorAnio) {
 
         const nuevoAnio = this.value;
 
-        // Activar los datos y la capa del año seleccionado
         activarAnio(nuevoAnio);
 
-        // Actualizar el Dashboard
         mostrarDashboard();
 
-        // Mostrar los puntos del año seleccionado
         setTimeout(() => {
 
-            mostrarTodosLosPuntosMapa();
+            map.invalidateSize();
 
-            // Si posteriormente conservas un municipio seleccionado,
-            // volver a aplicar su zoom.
-            if (
-                municipioFiltroActivo &&
-                municipioFiltroActivo !== "TODOS"
-            ) {
-                aplicarFiltrosMapa(true);
-            }
+            aplicarFiltrosMapa(false);
 
         }, 450);
 
