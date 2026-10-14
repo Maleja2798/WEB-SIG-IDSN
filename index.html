@@ -6756,6 +6756,7 @@ fetch("https://raw.githubusercontent.com/ytolosa/mapas-colombia/main/output/geoj
     });
 
     let geojsonLayer;
+    let municipioAutorizacionesActivo = "TODOS";
 
     // ---------- Variables de gestión ----------
     const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSKeiBBKiYlwHasbQMehxNAL7d4gbjb57bHVnVc4Ui5NWr5XetoTGtMGdd4KRoMWAkXDyuCcRbx0oj8/pub?output=csv"; // <--- ruta local que indicaste
@@ -9645,7 +9646,52 @@ if(selectorMunicipio){
 
         const municipioSeleccionado =
             this.value;
+      
+// Guardar el municipio seleccionado en Autorizaciones
+municipioAutorizacionesActivo = municipioSeleccionado;
 
+// Normalizar nombres: quitar tildes y aclaraciones entre paréntesis
+const normalizarNombreMapa = (nombre) => {
+    return (nombre || "")
+        .toString()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/\s*\([^)]*\)/g, "")
+        .trim()
+        .toUpperCase()
+        .replace(/\s+/g, " ");
+};
+
+// Restaurar el estilo de todos los municipios
+if (geojsonLayer) {
+    geojsonLayer.eachLayer(layer => {
+        geojsonLayer.resetStyle(layer);
+    });
+
+    // Resaltar el polígono seleccionado
+    if (municipioSeleccionado !== "TODOS") {
+        geojsonLayer.eachLayer(layer => {
+            const nombre =
+                layer.feature?.properties?.NOMBRE_ENT || "";
+
+            if (
+                normalizarNombreMapa(nombre) ===
+                normalizarNombreMapa(municipioSeleccionado)
+            ) {
+                layer.setStyle({
+                    color: "#23DAD5",
+                    weight: 3,
+                    opacity: 1,
+                    fillColor: "#23DAD5",
+                    fillOpacity: 0.28
+                });
+
+                layer.bringToFront();
+            }
+        });
+    }
+}
+      
         // 1. Filtrar la lista de autorizaciones
         filtrarListaAutorizaciones(
             anioActivo,
