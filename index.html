@@ -8009,189 +8009,169 @@ function filtrarMunicipio(nombreMunicipio){
 
 }
 
-/*==================================================
-APLICAR FILTROS AL MAPA
-==================================================*/
 
-function aplicarFiltrosMapa(
-    ajustarVista = false
-){
+function aplicarFiltrosMapa(ajustarVista = false){
 
     if(!anioActivo){
-
         return;
-
     }
 
-
-    const capa =
-        markersPorAnio[anioActivo];
-
-
-    if(!capa){
-
-        return;
-
-    }
-
-
+    const capa = markersPorAnio[anioActivo];
     const coordenadasVisibles = [];
 
+    /*
+     * 1. Filtrar puntos del año activo.
+     * El zoom del polígono no dependerá
+     * de que exista esta capa.
+     */
+    if(capa){
 
-    capa.eachLayer(marker => {
+        capa.eachLayer(marker => {
 
+            const estadoOK =
+                estadoFiltroActivo === "TODOS" ||
+                estadoFiltroActivo === "todos" ||
+                marker.estado === estadoFiltroActivo;
 
-        
-const estadoOK =
-    estadoFiltroActivo === "TODOS" ||
-    estadoFiltroActivo === "todos" ||
-    marker.estado === estadoFiltroActivo;
+            marker.setOpacity(estadoOK ? 1 : 0);
 
-/*
- * Mantener visibles los puntos de todos
- * los municipios del año seleccionado.
- * El municipio se destacará con su polígono.
- */
-marker.setOpacity(
-    estadoOK ? 1 : 0
-);
+            if(estadoOK){
+                const p = marker.getLatLng();
+                coordenadasVisibles.push([p.lat, p.lng]);
+            }
 
-if(estadoOK){
+        });
 
-    const p = marker.getLatLng();
-
-    coordenadasVisibles.push([
-        p.lat,
-        p.lng
-    ]);
-
-}
-
-        if(visible){
-
-            const p =
-                marker.getLatLng();
-
-
-            coordenadasVisibles.push([
-
-                p.lat,
-
-                p.lng
-
-            ]);
-
-        }
-
-    });
-
+    }
 
     /*
-     * Ajustar mapa cuando cambia municipio
+     * 2. Resaltar y acercar el polígono
+     * aunque el año no tenga marcadores.
      */
+    if(
+        ajustarVista &&
+        municipioFiltroActivo !== "TODOS"
+    ){
 
-  if(
-    ajustarVista &&
-    municipioFiltroActivo !== "TODOS"
-){
+        const buscarPoligono = () => {
 
-    setTimeout(() => {
+            if(!geojsonLayer){
+                console.warn("El GeoJSON municipal aún no está cargado.");
+                return;
+            }
 
-        map.invalidateSize();
+            let municipioLayer = null;
 
-        /*
-         * Buscar el polígono del municipio seleccionado
-         */
-        let municipioLayer = null;
-
-        if(geojsonLayer){
+            const nombreBuscado =
+                municipioFiltroActivo
+                    .toString()
+                    .trim()
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "")
+                    .toUpperCase();
 
             geojsonLayer.eachLayer(layer => {
 
                 const nombre =
-                    layer.feature &&
-                    layer.feature.properties &&
-                    layer.feature.properties.NOMBRE_ENT;
+                    layer.feature?.properties?.NOMBRE_ENT;
 
-                if(
-                    nombre &&
-                    nombre.toUpperCase() ===
-                    municipioFiltroActivo.toUpperCase()
-                ){
+                const nombreNormalizado =
+                    (nombre || "")
+                        .toString()
+                        .trim()
+                        .normalize("NFD")
+                        .replace(/[\u0300-\u036f]/g, "")
+                        .toUpperCase();
 
+                if(nombreNormalizado === nombreBuscado){
                     municipioLayer = layer;
-
                 }
 
             });
 
-        }
+            if(municipioLayer){
+
+                /*
+                 * Restaurar el estilo de los demás municipios.
+                 */
+                geojsonLayer.eachLayer(layer => {
+                    geojsonLayer.resetStyle(layer);
+                });
+
+                /*
+                 * Resaltar el municipio elegido.
+                 */
+                municipioLayer.setStyle({
+                    color: "#23DAD5",
+                    weight: 3,
+                    opacity: 1,
+                    fillColor: "#23DAD5",
+                    fillOpacity: 0.28
+                });
+
+                municipioLayer.bringToFront();
+
+                /*
+                 * Reservar espacio para el panel.
+                 */
+                map.fitBounds(
+                    municipioLayer.getBounds(),
+                    {
+                        paddingTopLeft: [850, 45],
+                        paddingBottomRight: [45, 45],
+                        maxZoom: 10,
+                        animate: true
+                    }
+                );
+
+            } else if(coordenadasVisibles.length){
+
+                /*
+                 * Alternativa: acercar a los puntos
+                 * del municipio si no se encuentra
+                 * su polígono en el GeoJSON.
+                 */
+                map.fitBounds(
+                    coordenadasVisibles,
+                    {
+                        paddingTopLeft: [850, 45],
+                        paddingBottomRight: [45, 45],
+                        maxZoom: 10,
+                        animate: true
+                    }
+                );
+
+                console.warn(
+                    "No se encontró el polígono de:",
+                    municipioFiltroActivo
+                );
+
+            } else {
+
+                console.warn(
+                    "No se encontraron polígono ni puntos para:",
+                    municipioFiltroActivo,
+                    "Año:",
+                    anioActivo
+                );
+
+            }
+
+        };
 
         /*
-         * Si encontramos el municipio,
-         * centrar el mapa en su territorio.
+         * Esperar a que el panel y el mapa
+         * terminen de actualizarse.
          */
-        if(municipioLayer){
+        setTimeout(() => {
+            map.invalidateSize();
+            buscarPoligono();
+        }, 400);
 
-          /*
- * Resaltar municipio seleccionado
- */
-
-geojsonLayer.eachLayer(layer => {
-
-    geojsonLayer.resetStyle(layer);
-
-});
-
-
-municipioLayer.setStyle({
-
-    color: "#23DAD5",
-    weight: 3,
-    opacity: 1,
-    fillColor: "#23DAD5",
-    fillOpacity: 0.28
-
-});
-
-
-map.fitBounds(
-    municipioLayer.getBounds(),
-    {
-        paddingTopLeft: [850, 45],
-        paddingBottomRight: [45, 45],
-        maxZoom: 10,
-        animate: true
     }
-);
-
-
-/*
- * Si por alguna razón no existe
- * el polígono, usamos los puntos.
- */
-} else if(coordenadasVisibles.length){
-
-    map.fitBounds(
-        coordenadasVisibles,
-        {
-            padding: [
-                100,
-                100
-            ],
-
-            maxZoom: 9,
-
-            animate: true
-        }
-    );
 
 }
 
-    },350);
-
-}
-}
   
 function filtrarMarcadoresEstado(estado){
 
@@ -9177,40 +9157,44 @@ function mostrarDashboard(){
   
     actualizarEstadoVisualTarjetas();
 
+//==================================================
+// CAMBIO DE AÑO DEL DASHBOARD
+//==================================================
 
-    //==================================================
-    // CAMBIO DE AÑO
-    //==================================================
+const selectorAnio =
+    document.getElementById("dashboard-anio");
 
-    const selectorAnio =
-        document.getElementById("dashboard-anio");
+if (selectorAnio) {
 
-    if(selectorAnio){
+    selectorAnio.onchange = function () {
 
-        selectorAnio.onchange = function(){
+        const nuevoAnio = this.value;
 
-    const nuevoAnio =
-        this.value;
+        // Activar los datos y la capa del año seleccionado
+        activarAnio(nuevoAnio);
 
+        // Actualizar el Dashboard
+        mostrarDashboard();
 
-    activarAnio(
-        nuevoAnio
-    );
+        // Mostrar los puntos del año seleccionado
+        setTimeout(() => {
 
+            mostrarTodosLosPuntosMapa();
 
-    mostrarDashboard();
+            // Si posteriormente conservas un municipio seleccionado,
+            // volver a aplicar su zoom.
+            if (
+                municipioFiltroActivo &&
+                municipioFiltroActivo !== "TODOS"
+            ) {
+                aplicarFiltrosMapa(true);
+            }
 
+        }, 450);
 
-    setTimeout(() => {
+    };
 
-        mostrarTodosLosPuntosMapa();
-
-    },450);
-
-};
-
-    }
-
+}
 
     //==================================================
     // CAMBIO DE MUNICIPIO
@@ -10191,10 +10175,6 @@ function actualizarReporte(){
     lucide.createIcons();
 
 }    
-
-    /*==============================================
-    CAMBIO DE AÑO
-    ==============================================*/
 
 /*==============================================
 CAMBIO DE AÑO
