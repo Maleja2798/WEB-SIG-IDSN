@@ -8038,8 +8038,14 @@ function activarAnio(anio){
  */
 
 map.setView(
-    [1.25, -77.50],
-    7
+    [1.42, -77.05],
+    8,
+    { animate: false }
+);
+
+map.panBy(
+    [-180, -100],
+    { animate: false }
 );
 
 setTimeout(() => {
