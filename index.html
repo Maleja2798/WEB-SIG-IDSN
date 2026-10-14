@@ -8041,40 +8041,31 @@ function aplicarFiltrosMapa(
     capa.eachLayer(marker => {
 
 
-        const municipioOK =
+        
+const estadoOK =
+    estadoFiltroActivo === "TODOS" ||
+    estadoFiltroActivo === "todos" ||
+    marker.estado === estadoFiltroActivo;
 
-            municipioFiltroActivo === "TODOS"
+/*
+ * Mantener visibles los puntos de todos
+ * los municipios del año seleccionado.
+ * El municipio se destacará con su polígono.
+ */
+marker.setOpacity(
+    estadoOK ? 1 : 0
+);
 
-            ||
+if(estadoOK){
 
-            marker.municipio ===
-            municipioFiltroActivo;
+    const p = marker.getLatLng();
 
+    coordenadasVisibles.push([
+        p.lat,
+        p.lng
+    ]);
 
-        const estadoOK =
-
-            estadoFiltroActivo === "TODOS"
-
-            ||
-
-            marker.estado ===
-            estadoFiltroActivo;
-
-
-        const visible =
-            municipioOK &&
-            estadoOK;
-
-
-        /*
-         * NO eliminamos el marcador.
-         * Solamente lo mostramos/ocultamos.
-         */
-
-        marker.setOpacity(
-            visible ? 1 : 0
-        );
-
+}
 
         if(visible){
 
@@ -8152,24 +8143,28 @@ geojsonLayer.eachLayer(layer => {
 
 });
 
+
 municipioLayer.setStyle({
 
-    weight:3,
-
-    color:"#FFFFFF",
-
-    fillOpacity:0.35
+    color: "#23DAD5",
+    weight: 3,
+    opacity: 1,
+    fillColor: "#23DAD5",
+    fillOpacity: 0.28
 
 });
+
 
 map.fitBounds(
     municipioLayer.getBounds(),
     {
-        padding: [100, 100],
+        paddingTopLeft: [850, 45],
+        paddingBottomRight: [45, 45],
         maxZoom: 10,
         animate: true
     }
 );
+
 
 /*
  * Si por alguna razón no existe
@@ -8433,7 +8428,59 @@ if(enTramite){
             const nombreMunicipio = feature.properties.NOMBRE_ENT;
             const nombreFormateado = nombreMunicipio ? nombreMunicipio.charAt(0).toUpperCase() + nombreMunicipio.slice(1).toLowerCase() : 'Desconocido';
             layer.bindPopup(`<b>MUNICIPIO</b><br>${nombreFormateado}`);
-            layer.on({ mouseover: function(e){ e.target.setStyle({ weight:3, color:'#FFFF00', fillOpacity:0.7}); e.target.bringToFront(); }, mouseout: function(e){ geojsonLayer.resetStyle(e.target); }, click: function(e){ layer.openPopup(); map.fitBounds(layer.getBounds()); } });
+            
+layer.on({
+    mouseover: function(e){
+
+        if(
+            typeof municipioFiltroActivo !== "undefined" &&
+            nombreMunicipio &&
+            nombreMunicipio.toUpperCase() ===
+            municipioFiltroActivo.toUpperCase()
+        ){
+            return;
+        }
+
+        e.target.setStyle({
+            weight: 2,
+            color: "#23DAD5",
+            fillOpacity: 0.7
+        });
+
+        e.target.bringToFront();
+    },
+
+    mouseout: function(e){
+
+        const nombre =
+            e.target.feature &&
+            e.target.feature.properties &&
+            e.target.feature.properties.NOMBRE_ENT;
+
+        if(
+            typeof municipioFiltroActivo !== "undefined" &&
+            nombre &&
+            nombre.toUpperCase() ===
+            municipioFiltroActivo.toUpperCase()
+        ){
+            e.target.setStyle({
+                color: "#23DAD5",
+                weight: 3,
+                opacity: 1,
+                fillColor: "#23DAD5",
+                fillOpacity: 0.28
+            });
+        } else {
+            geojsonLayer.resetStyle(e.target);
+        }
+    },
+
+    click: function(e){
+        layer.openPopup();
+        map.fitBounds(layer.getBounds());
+    }
+});
+
           }
         }).addTo(map);
        geojsonLayer.bringToFront();
