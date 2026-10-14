@@ -5627,6 +5627,75 @@ flex:0 1 auto !important;
     border: 1px solid rgba(35, 218, 213, 0.10);
     color: #A9C6C6 !important;
 }
+
+/* =========================================
+   AUTORIZACIONES: BORDES SEGÚN EL ESTADO
+   ========================================= */
+
+/* Base de las tarjetas */
+#panel-body .autorizacion-card {
+    border-left: 4px solid #23DAD5 !important;
+    border-radius: 17px !important;
+    transition: border-color 0.25s ease,
+                box-shadow 0.25s ease;
+}
+
+/* VENCIDA: rojo */
+#panel-body .autorizacion-card.estado-vencida {
+    border-left-color: #FF4667 !important;
+}
+
+/* PRÓXIMA A VENCER: amarillo */
+#panel-body .autorizacion-card.estado-proxima {
+    border-left-color: #FFC247 !important;
+}
+
+/* VIGENTE: verde */
+#panel-body .autorizacion-card.estado-vigente {
+    border-left-color: #20D58A !important;
+}
+
+/* EN TRÁMITE: azul turquesa */
+#panel-body .autorizacion-card.estado-tramite {
+    border-left-color: #23DAD5 !important;
+}
+
+
+/* =========================================
+   CONTADOR DESTACADO
+   ========================================= */
+
+#panel-body .autorizaciones-resumen {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(
+        115deg,
+        rgba(35, 218, 213, 0.20),
+        rgba(0, 38, 39, 0.98) 75%
+    ) !important;
+
+    border: 1px solid rgba(35, 218, 213, 0.48) !important;
+    border-radius: 15px !important;
+    box-shadow: 0 0 18px rgba(35, 218, 213, 0.08);
+    color: #D8FFFD !important;
+    padding: 15px 18px !important;
+}
+
+/* Número de autorizaciones */
+#panel-body .autorizaciones-resumen b {
+    display: inline-block;
+    margin-right: 7px;
+    color: #23DAD5 !important;
+    font-size: 21px !important;
+    font-weight: 900 !important;
+    text-shadow: 0 0 12px rgba(35, 218, 213, 0.32);
+}
+
+/* Texto del contador */
+#panel-body .autorizaciones-resumen {
+    font-weight: 600;
+    letter-spacing: 0.1px;
+}
     
   </style>
 </head>
