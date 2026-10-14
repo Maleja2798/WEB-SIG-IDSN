@@ -11212,21 +11212,30 @@ function seleccionarMenu(elemento){
     }
 }
 
+
 function centrarNarino() {
-    if (!map) return;
+    if (!map || !geojsonLayer) {
+        console.warn("El GeoJSON de Nariño aún no está cargado.");
+        return;
+    }
+
+    const limites = geojsonLayer.getBounds();
+
+    if (!limites.isValid()) {
+        console.warn("Los límites de Nariño no son válidos.");
+        return;
+    }
 
     map.invalidateSize();
 
-    map.fitBounds(
-        geojsonLayer.getBounds(),
-        {
-            paddingTopLeft: [300, 40],
-            paddingBottomRight: [40, 40],
-            maxZoom: 8,
-            animate: false
-        }
-    );
+    map.fitBounds(limites, {
+        paddingTopLeft: [300, 40],
+        paddingBottomRight: [40, 40],
+        maxZoom: 8,
+        animate: false
+    });
 }
+
 
     // Subir el territorio en pantalla.
     // En Leaflet, un desplazamiento Y negativo mueve
