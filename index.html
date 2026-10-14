@@ -11223,20 +11223,6 @@ function centrarNarino() {
     });
 }
 
-// ==============================================
-// VISTA INICIAL DEL SIG — NARIÑO
-// ==============================================
-
-window.addEventListener("load", () => {
-    setTimeout(() => {
-        map.invalidateSize();
-
-        map.setView([1.42, -77.05], 8, {
-            animate: false
-        });
-    }, 800);
-});
-
 
  // ==============================================
  // VISTA INICIAL DEL SIG — NARIÑO
@@ -11248,20 +11234,19 @@ window.addEventListener("load", () => {
 
         map.invalidateSize();
 
-        // Centrar Nariño al abrir el SIG
         map.setView([1.42, -77.05], 8, {
             animate: false
         });
 
-        // Subir un poco el territorio en pantalla
-        map.panBy([0, 55], {
+        // Bajar Nariño y moverlo un poco a la derecha
+        map.panBy([-35, -45], {
             animate: false
         });
 
     }, 800);
 });
 
- 
+
 /* =========================================================
    CLIMA, FECHA Y HORA — SIG IDSN
 ========================================================= */
