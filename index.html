@@ -9754,24 +9754,89 @@ if (geojsonLayer) {
 
             });
 
-            
-if(coordenadas.length > 0){
+if (coordenadas.length > 0) {
 
-    // Calcular los límites de las coordenadas
-    const limitesMunicipio =
-        L.latLngBounds(coordenadas);
+    let poligonoMunicipio = null;
 
-    // Mostrar todos los puntos y reservar espacio
-    // para el panel, que permanece en su sitio.
-    map.fitBounds(
-        limitesMunicipio,
-        {
-            paddingTopLeft: [300, 35],
-            paddingBottomRight: [35, 35],
-            maxZoom: 10,
-            animate: true
-        }
-    );
+    // Normalizar nombres para encontrar el polígono
+    const normalizarNombre = (nombre) => {
+        return (nombre || "")
+            .toString()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .replace(/\s*\([^)]*\)/g, "")
+            .trim()
+            .toUpperCase()
+            .replace(/\s+/g, " ");
+    };
+
+    // Buscar el polígono completo del municipio
+    if (geojsonLayer) {
+
+        geojsonLayer.eachLayer(layer => {
+
+            const nombre =
+                layer.feature?.properties?.NOMBRE_ENT || "";
+
+            if (
+                normalizarNombre(nombre) ===
+                normalizarNombre(municipioSeleccionado)
+            ) {
+                poligonoMunicipio = layer;
+            }
+
+        });
+
+    }
+
+    if (poligonoMunicipio) {
+
+        // Ajustar el estilo de todos los municipios
+        geojsonLayer.eachLayer(layer => {
+            geojsonLayer.resetStyle(layer);
+        });
+
+        // Resaltar el municipio seleccionado
+        poligonoMunicipio.setStyle({
+            color: "#23DAD5",
+            weight: 3,
+            opacity: 1,
+            fillColor: "#23DAD5",
+            fillOpacity: 0.28
+        });
+
+        poligonoMunicipio.bringToFront();
+
+        // Mostrar el municipio completo junto al panel
+        map.fitBounds(
+            poligonoMunicipio.getBounds(),
+            {
+                paddingTopLeft: [850, 45],
+                paddingBottomRight: [45, 45],
+                maxZoom: 10,
+                animate: true
+            }
+        );
+
+    } else {
+
+        // Alternativa si el GeoJSON no contiene el municipio
+        map.fitBounds(
+            L.latLngBounds(coordenadas),
+            {
+                paddingTopLeft: [850, 45],
+                paddingBottomRight: [45, 45],
+                maxZoom: 10,
+                animate: true
+            }
+        );
+
+        console.warn(
+            "No se encontró el polígono completo de:",
+            municipioSeleccionado
+        );
+
+    }
 
 } else {
 
