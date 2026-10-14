@@ -11217,6 +11217,7 @@ function centrarNarino() {
 
     map.invalidateSize();
 
+    // Centro inicial de Nariño
     map.setView([1.42, -77.05], 8, {
         animate: false
     });
@@ -11235,23 +11236,23 @@ function centrarNarino() {
 // ==============================================
  // VISTA INICIAL DEL SIG — NARIÑO
  // ==============================================
-
 window.addEventListener("load", () => {
     setTimeout(() => {
         map.invalidateSize();
 
-        // Centro geográfico de Nariño
+        // Centrar Nariño con un pequeño ajuste vertical
         map.setView([1.42, -77.05], 8, {
             animate: false
         });
 
-        // Mantener el mapa centrado en la pantalla
-        map.panBy([0, 0], {
+        // Bajar un poco el territorio en pantalla
+        map.panBy([0, -70], {
             animate: false
         });
 
     }, 1200);
 });
+
     
 /* =========================================================
    CLIMA, FECHA Y HORA — SIG IDSN
