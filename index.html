@@ -5527,6 +5527,106 @@ flex:0 1 auto !important;
     background:rgba(35,218,213,.40);
     border-radius:8px;
 }
+
+/* ==================================================
+   AUTORIZACIONES — PALETA TURQUESA UNIFICADA
+   ================================================== */
+
+:root {
+    --autorizaciones-turquesa: #23DAD5;
+    --autorizaciones-turquesa-oscuro: #06383A;
+    --autorizaciones-fondo: #001C1D;
+    --autorizaciones-borde: rgba(35, 218, 213, 0.28);
+}
+
+/* Contador de autorizaciones encontradas */
+#panel-body .autorizaciones-resumen {
+    background: linear-gradient(
+        135deg,
+        rgba(35, 218, 213, 0.14),
+        rgba(0, 28, 29, 0.96)
+    ) !important;
+
+    border: 1px solid var(--autorizaciones-borde) !important;
+    color: #C7F7F5 !important;
+    border-radius: 14px;
+}
+
+/* Número del contador */
+#panel-body .autorizaciones-resumen b {
+    color: var(--autorizaciones-turquesa) !important;
+}
+
+/* Tarjetas de autorizaciones */
+#panel-body .autorizacion-card {
+    background: linear-gradient(
+        145deg,
+        rgba(3, 35, 36, 0.98),
+        rgba(0, 20, 21, 0.98)
+    ) !important;
+
+    border-color: var(--autorizaciones-borde) !important;
+}
+
+/* Botón Ver en el mapa */
+#panel-body .btn-ver-mapa {
+    background: linear-gradient(
+        135deg,
+        #23DAD5,
+        #0BA7A8
+    ) !important;
+
+    color: #002526 !important;
+    border: 1px solid #23DAD5 !important;
+    box-shadow: 0 0 12px rgba(35, 218, 213, 0.12);
+    font-weight: 700;
+    transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Efecto al pasar el cursor */
+#panel-body .btn-ver-mapa:hover {
+    background: #5BE8E0 !important;
+    box-shadow: 0 0 18px rgba(35, 218, 213, 0.28);
+}
+
+/* Icono del botón */
+#panel-body .btn-ver-mapa svg,
+#panel-body .btn-ver-mapa i {
+    color: #002526 !important;
+}
+
+/* Selectores de año y municipio */
+#panel-body #autorizaciones-anio,
+#panel-body #autorizaciones-municipio {
+    background-color: #001C1D !important;
+    color: #E6FFFE !important;
+    border-color: var(--autorizaciones-borde) !important;
+}
+
+/* Borde turquesa al seleccionar */
+#panel-body #autorizaciones-anio:focus,
+#panel-body #autorizaciones-municipio:focus {
+    border-color: var(--autorizaciones-turquesa) !important;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(35, 218, 213, 0.12);
+}
+
+/* Separador del encabezado */
+#panel-body .dashboard-line {
+    border-color: rgba(35, 218, 213, 0.18) !important;
+}
+
+/* Texto secundario */
+#panel-body .dashboard-subtitle {
+    color: #B5CECE;
+}
+
+/* Aviso de ubicación no disponible */
+#panel-body .sin-coordenadas {
+    background: rgba(35, 218, 213, 0.07) !important;
+    border: 1px solid rgba(35, 218, 213, 0.10);
+    color: #A9C6C6 !important;
+}
     
   </style>
 </head>
