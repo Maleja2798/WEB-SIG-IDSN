@@ -6199,8 +6199,9 @@ Bienvenido al Sistema de Información Geográfica de Autorizaciones Sanitarias d
 
   <script>
     // ---------- Inicialización Mapa (sin cambios importantes) ----------
-    const map = L.map("map", { zoomControl: false })
-    .setView([1.57, -77.28], 8);
+    const map = L.map("map", {
+    zoomControl: false
+}).setView([1.42, -77.05], 8);
 
     window.addEventListener("load", () => {
     setTimeout(() => {
@@ -11206,19 +11207,27 @@ function seleccionarMenu(elemento){
 }
 
 
-function centrarNarino(){
-    if(typeof map === "undefined" || !map) return;
+function centrarNarino() {
 
-    map.setView([1.289, -77.05], 8, {
-    animate: true,
-    duration: 0.8
-    });
+    if (!map) return;
+
+    map.setView(
+        [1.42, -77.05],
+        8,
+        { animate: false }
+    );
+
+    // Desplazar Nariño hacia la derecha y un poco hacia abajo
+    map.panBy(
+        [-180, -40],
+        { animate: false }
+    );
 
     map.invalidateSize();
 }
 
 // ==============================================
-// VISTA INICIAL DEFINITIVA DEL SIG: NARIÑO
+// VISTA INICIAL DEL SIG — NARIÑO
 // ==============================================
 
 window.addEventListener("load", () => {
@@ -11228,11 +11237,14 @@ window.addEventListener("load", () => {
         map.invalidateSize();
 
         map.setView(
-            [1.289, -77.29],
+            [1.42, -77.05],
             8,
-            {
-                animate: false
-            }
+            { animate: false }
+        );
+
+        map.panBy(
+            [-180, -40],
+            { animate: false }
         );
 
     }, 1200);
