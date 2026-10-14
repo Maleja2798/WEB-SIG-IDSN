@@ -11217,10 +11217,15 @@ function centrarNarino() {
 
     map.invalidateSize();
 
-    // Centro inicial de Nariño
-    map.setView([1.42, -77.05], 8, {
-        animate: false
-    });
+    map.fitBounds(
+        geojsonLayer.getBounds(),
+        {
+            paddingTopLeft: [300, 40],
+            paddingBottomRight: [40, 40],
+            maxZoom: 8,
+            animate: false
+        }
+    );
 }
 
     // Subir el territorio en pantalla.
