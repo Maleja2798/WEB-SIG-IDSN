@@ -9665,47 +9665,33 @@ if(selectorMunicipio){
 
             });
 
-            if(coordenadas.length === 1){
+            
+if(coordenadas.length > 0){
 
-                
-map.setView(
-    coordenadas[0],
-    12,
-    { animate: false }
-);
+    // Calcular los límites de las coordenadas
+    const limitesMunicipio =
+        L.latLngBounds(coordenadas);
 
-// Desplazar el centro para que el municipio
-// quede visible al lado del panel.
-requestAnimationFrame(() => {
-
-    map.panBy(
-        [-280, 0],
-        { animate: true }
+    // Mostrar todos los puntos y reservar espacio
+    // para el panel, que permanece en su sitio.
+    map.fitBounds(
+        limitesMunicipio,
+        {
+            paddingTopLeft: [300, 35],
+            paddingBottomRight: [35, 35],
+            maxZoom: 10,
+            animate: true
+        }
     );
 
-});
+} else {
 
+    console.warn(
+        "No se encontraron coordenadas para:",
+        municipioSeleccionado
+    );
 
-            } else if(coordenadas.length > 1){
-
-    map.fitBounds(
-    coordenadas,
-    {
-        paddingTopLeft: [300, 35],
-        paddingBottomRight: [35, 35],
-        maxZoom: 12,
-        animate: false
-    }
-);
-
-            } else {
-
-                console.warn(
-                    "No se encontraron coordenadas para:",
-                    municipioSeleccionado
-                );
-
-            }
+}
 
         }
 
