@@ -8072,8 +8072,15 @@ function aplicarFiltrosMapa(ajustarVista = false){
 
             geojsonLayer.eachLayer(layer => {
 
-                const nombre =
-                    layer.feature?.properties?.NOMBRE_ENT;
+  
+const propiedades = layer.feature?.properties || {};
+
+const nombre =
+    propiedades.NOMBRE_ENT ||
+    propiedades.NOMBRE_MPIO ||
+    propiedades.NOMBRE ||
+    propiedades.MUNICIPIO ||
+    "";
 
                 const nombreNormalizado =
                     (nombre || "")
