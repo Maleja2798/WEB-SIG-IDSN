@@ -8090,9 +8090,21 @@ const nombre =
                         .replace(/[\u0300-\u036f]/g, "")
                         .toUpperCase();
 
-               if (
-    nombreNormalizado === nombreBuscado ||
-    nombreNormalizado.endsWith(" " + nombreBuscado)
+              // Quitar tildes y aclaraciones entre paréntesis
+const limpiarNombreMunicipio = (nombre) => {
+    return (nombre || "")
+        .toString()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/\s*\([^)]*\)/g, "")
+        .trim()
+        .toUpperCase()
+        .replace(/\s+/g, " ");
+};
+
+if (
+    limpiarNombreMunicipio(nombre) ===
+    limpiarNombreMunicipio(municipioFiltroActivo)
 ) {
     municipioLayer = layer;
 }
