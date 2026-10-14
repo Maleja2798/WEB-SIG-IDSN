@@ -5834,55 +5834,52 @@ flex:0 1 auto !important;
 }
 
 
-/* ENCABEZADO DEL MENÚ LATERAL: AJUSTE DEFINITIVO */
-#sidebar .sidebar-header {
+/* AJUSTE REAL DEL ENCABEZADO LATERAL */
+#sidebar .panel-marca {
     display: flex !important;
     align-items: center !important;
-    gap: 12px !important;
-    padding: 16px 14px 20px !important;
+    gap: 10px !important;
+    padding: 18px 12px 22px !important;
+    width: 100% !important;
     box-sizing: border-box !important;
 }
 
-#sidebar .sidebar-header > .logo-circle {
+#sidebar .panel-logo {
     flex: 0 0 56px !important;
     width: 56px !important;
-    min-width: 56px !important;
     height: 56px !important;
     margin: 0 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
 }
 
-#sidebar .sidebar-header > div:not(.logo-circle) {
-    flex: 1 1 auto !important;
+#sidebar .panel-marca-texto {
+    flex: 1 1 0 !important;
     min-width: 0 !important;
+    width: 0 !important;
     text-align: left !important;
 }
 
-#sidebar .sidebar-title {
+#sidebar .panel-titulo {
     font-size: 16px !important;
-    line-height: 1.25 !important;
-    font-weight: 800 !important;
+    line-height: 1.22 !important;
     letter-spacing: -0.35px !important;
-    margin: 0 0 5px 0 !important;
-    white-space: normal !important;
+    font-weight: 800 !important;
+    margin: 0 0 6px 0 !important;
     overflow-wrap: normal !important;
+    word-break: normal !important;
 }
 
-#sidebar .sidebar-subtitle {
-    font-size: 11px !important;
-    line-height: 1.5 !important;
-    font-weight: 400 !important;
-    margin: 0 !important;
-    white-space: normal !important;
+#sidebar .panel-titulo span {
+    display: block !important;
+    margin-top: 1px !important;
+    color: #23DAD5 !important;
+}
+
+#sidebar .panel-subtitulo {
+    font-size: 10.5px !important;
+    line-height: 1.4 !important;
+    margin: 0 0 3px 0 !important;
     overflow-wrap: break-word !important;
 }
-
-#sidebar .sidebar-header * {
-    box-sizing: border-box;
-}
-
     
   </style>
 </head>
