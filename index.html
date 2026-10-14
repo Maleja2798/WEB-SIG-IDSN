@@ -11238,19 +11238,21 @@ function centrarNarino() {
  // ==============================================
 window.addEventListener("load", () => {
     setTimeout(() => {
+        if (!map) return;
+
         map.invalidateSize();
 
-        // Centrar Nariño con un pequeño ajuste vertical
+        // Centrar el territorio en la pantalla
         map.setView([1.42, -77.05], 8, {
             animate: false
         });
 
-        // Bajar un poco el territorio en pantalla
-        map.panBy([0, -70], {
+        // Ajuste vertical: prueba con -100 para bajar más el territorio
+        map.panBy([0, -100], {
             animate: false
         });
 
-    }, 1200);
+    }, 1500);
 });
 
     
