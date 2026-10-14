@@ -11212,26 +11212,23 @@ function seleccionarMenu(elemento){
     }
 }
 
-
 function centrarNarino() {
-
     if (!map) return;
 
-    map.setView(
-        [1.42, -77.05],
-        8,
-        { animate: false }
-    );
-
-    // Desplazar Nariño hacia la derecha y un poco hacia abajo
-    map.panBy(
-    [-180, 180],
-    { animate: false }
-    );
-
     map.invalidateSize();
-}
 
+    // Centrar Nariño y mantener el zoom
+    map.setView([1.42, -77.05], 8, {
+        animate: false
+    });
+
+    // Ajustar la posición después de actualizar el mapa
+    requestAnimationFrame(() => {
+        map.panBy([-180, -100], {
+            animate: false
+        });
+    });
+}
 // ==============================================
 // VISTA INICIAL DEL SIG — NARIÑO
 // ==============================================
