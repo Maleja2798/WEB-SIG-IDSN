@@ -8092,10 +8092,6 @@ function mostrarDashboard(){
 
 </div>
 
-        <!--==================================================
-    RESUMEN
-==================================================-->
-
 <div class="dashboard-grid">
 
 
@@ -8180,10 +8176,6 @@ function mostrarDashboard(){
 
 </div>
 
-
-<!-- ESTADOS -->
-
-
         <div class="dashboard-estados">
 
 
@@ -8260,9 +8252,6 @@ function mostrarDashboard(){
 
             </div>
 
-
-            <!-- VENCIDAS -->
-
             <div
                 class="estado-card
                        estado-card-rojo"
@@ -8297,7 +8286,6 @@ function mostrarDashboard(){
 
             </div>
 
-<!-- EN TRÁMITE -->
 
 <div
     class="estado-card
@@ -9214,10 +9202,6 @@ document.querySelectorAll(
 
 } 
 
-/*==================================================
- RESUMEN DEL REPORTE
-==================================================*/
-
 function generarResumenReporte(datos){
 
     let vigentes = 0;
@@ -9337,10 +9321,6 @@ function generarResumenReporte(datos){
     `;
 
 }
-
-/*==================================================
- TABLA DEL REPORTE
-==================================================*/
 
 function generarTablaReporte(datos){
 
@@ -9489,10 +9469,6 @@ function generarTablaReporte(datos){
     `;
 
 }
-    
-/*==================================================
- ACTUALIZAR REPORTE
-==================================================*/
 
 function actualizarReporte(){
 
@@ -9552,10 +9528,6 @@ function actualizarReporte(){
 
 }    
 
-/*==============================================
-CAMBIO DE AÑO
-==============================================*/
-
 const selectorAnio =
     document.getElementById(
         "autorizaciones-anio"
@@ -9575,23 +9547,12 @@ if(selectorAnio){
 
 }
 
-/*==================================================
- VER AUTORIZACIÓN EN EL MAPA
-==================================================*/
-
 window.irAAutorizacion = function(lat, lon){
 
-    /*----------------------------------------------
-      CONVERTIR COORDENADAS
-    ----------------------------------------------*/
 
     lat = parseFloat(lat);
     lon = parseFloat(lon);
 
-
-    /*----------------------------------------------
-      VALIDAR COORDENADAS
-    ----------------------------------------------*/
 
     if(
         isNaN(lat) ||
@@ -9608,11 +9569,6 @@ window.irAAutorizacion = function(lat, lon){
 
     }
 
-
-    /*----------------------------------------------
-      CERRAR PANEL
-    ----------------------------------------------*/
-
     const panelActual =
         document.getElementById(
             "panel-content"
@@ -9626,11 +9582,6 @@ window.irAAutorizacion = function(lat, lon){
 
     }
 
-
-    /*----------------------------------------------
-      CENTRAR MAPA
-    ----------------------------------------------*/
-
     map.setView(
         [lat, lon],
         15,
@@ -9638,11 +9589,6 @@ window.irAAutorizacion = function(lat, lon){
             animate:true
         }
     );
-
-
-    /*----------------------------------------------
-      BUSCAR MARCADOR DEL AÑO ACTIVO
-    ----------------------------------------------*/
 
     const capa =
         markersPorAnio[anioActivo];
@@ -9658,11 +9604,6 @@ window.irAAutorizacion = function(lat, lon){
         return;
 
     }
-
-
-    /*----------------------------------------------
-      BUSCAR MARCADOR MÁS CERCANO
-    ----------------------------------------------*/
 
     let marcadorCercano = null;
 
@@ -9706,11 +9647,6 @@ window.irAAutorizacion = function(lat, lon){
 
     });
 
-
-    /*----------------------------------------------
-      ABRIR POPUP
-    ----------------------------------------------*/
-
     if(marcadorCercano){
 
         setTimeout(() => {
@@ -9731,10 +9667,6 @@ window.irAAutorizacion = function(lat, lon){
     }
 
 };
-
-/*==================================================
- FILTRAR AUTORIZACIONES
-==================================================*/
 
 function filtrarListaAutorizaciones(
     anio,
@@ -10004,11 +9936,6 @@ function filtrarListaAutorizaciones(
     lucide.createIcons();
 
   }
-    
-    
-/*==================================================
-  PANEL DE AÑOS — CUADRÍCULA VITRADA
-==================================================*/
 
 function mostrarPanelAnios(){
 
@@ -10095,10 +10022,6 @@ function mostrarPanelAnios(){
 
 }
 
-/*==================================================
-SELECCIONAR AÑO
-==================================================*/
-
 function seleccionarAnio(anio){
 
     activarAnio(anio);
@@ -10163,11 +10086,6 @@ function centrarNarino() {
     });
 }
 
-
- // ==============================================
- // VISTA INICIAL DEL SIG — NARIÑO
- // ==============================================
-
 window.addEventListener("load", () => {
     setTimeout(() => {
         if (!map) return;
@@ -10178,7 +10096,6 @@ window.addEventListener("load", () => {
             animate: false
         });
 
-        // Bajar Nariño y moverlo un poco a la derecha
         
 map.panBy([-100, -45], {
     animate: false
@@ -10186,11 +10103,6 @@ map.panBy([-100, -45], {
 
     }, 800);
 });
-
-
-/* =========================================================
-   CLIMA, FECHA Y HORA — SIG IDSN
-========================================================= */
 
 (function iniciarModuloInformativo(){
 
